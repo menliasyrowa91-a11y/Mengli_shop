@@ -81,7 +81,7 @@
 <div id="admin-stats">📊 Statistika ýüklenýär...</div>
 
 <footer style="text-align: center; padding: 30px; background: var(--dag); color: #d7ccc8;">
-    <p><b>© Admin: Meňli Aşyrowa</b><br>2026 Ýyl. Garakel</p>
+    <p><b>© Admin: Meňli Aşyrowa</b><br>2026 Garakel</p>
 </footer>
 
 <div class="bottom">
@@ -191,7 +191,8 @@
         const h = harytlar.find(x => x.id === id);
         const inCart = basket.some(x => x.id === h.id);
         document.getElementById('modalContent').innerHTML = `
-            <img src="${h.img}" class="modal-img" onerror="this.src='https://via.placeholder.com/150'">
+            <img src="./${h.img}" onerror="this.src='https://via.placeholder.com/150'">
+
             <h2>${h.name}</h2>
             <p style="color:#546e7a; font-size:0.95rem; line-height:1.5;">${h.desc}</p>
             <h3 style="color:var(--yasyl);">${h.price} TMT</h3>
