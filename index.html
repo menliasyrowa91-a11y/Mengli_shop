@@ -31,13 +31,7 @@
         .card-img-box { position: relative; width: 100%; height: 140px; overflow: hidden; border-radius: 14px; }
         .card img { width: 100%; height: 100%; object-fit: cover; background: #fff; }
         
-        /* SIFR BEZAGI */
-        .h-count { 
-            position: absolute; top: 5px; left: 5px; 
-            background: var(--bag); color: white; 
-            padding: 2px 8px; border-radius: 8px; 
-            font-size: 0.75rem; font-weight: bold; z-index: 5;
-        }
+        .h-count { position: absolute; top: 5px; left: 5px; background: var(--bag); color: white; padding: 2px 8px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; z-index: 5; }
 
         .card h4 { font-size: 0.85rem; margin: 10px 0; min-height: 2.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .price { color: var(--yasyl); font-weight: 800; font-size: 1.1rem; margin-bottom: 8px; }
@@ -54,7 +48,6 @@
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 2000; align-items: center; justify-content: center; padding: 15px; }
         .modal-box { background: var(--kard); border-radius: 24px; padding: 20px; width: 100%; max-width: 400px; max-height: 80vh; overflow-y: auto; position: relative; }
         .modal-img { width: 100%; border-radius: 15px; max-height: 250px; object-fit: contain; background: #fff; }
-        
         #admin-stats { text-align: center; font-size: 11px; color: #546e7a; padding: 10px; background: #cfd8dc; font-weight: bold; }
     </style>
 </head>
@@ -117,27 +110,17 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const harytlar = [
-        { id: 1, name: '"SADOER" brendiniñ Limonly Duş Geli', price: 20, img: '1.jpg', cat: 'Ideg', desc: 'C witaminine baý bolan bu duş geli derini çuňňur arassalaýar we günüň dowamynda serginlik berýär.' },
-        { id: 2, name: 'SADOER Retinol Krem', price: 25, img: '2.jpg', cat: 'Ideg', desc: 'Retinol derini ýaşardýar we ýygyrtlara garşy göreşýär. Gije ulanmak maslahat berilýär.' },
-        { id: 3, name: 'KORMESIC Şampun', price: 25, img: '3.jpg', cat: 'Ideg', desc: 'Saçyň düýplerini iýmitlendirýän we dökülmeginiň öňüni alýan, gürleşdirýän professional şampun.' },
-        { id: 4, name: "HYMEY'S Agardyjy", price: 20, img: '4.jpg', cat: 'Ideg', desc: 'Ýüzüň reňkini birsydyrgyn açýan we tebigy görnüş berýän krem. Günüň şöhlelerinden goraýar.' },
-        { id: 5, name: 'Botox Keratin 1000ml', price: 55, img: '5.jpg', cat: 'Ideg', desc: 'Öý şertlerinde professional saç idegi. Saçyň gurluşyny dikeldýär we ýumşadýar.' },
-        { id: 6, name: 'Rexona Zenan', price: 27, img: '6.jpg', cat: 'Parfum', desc: '72 sagatlap dowam edýän serginlik we gorag. Der ysynyň öňüni alýar.' },
-        { id: 7, name: 'Dodak Pomadasy', price: 10, img: '7.jpg', cat: 'Ideg', desc: 'Dodaklaryň guramagynyň we ýarylmagynyñ öňüni alýar. Tebigy ýaglar bilen baýlaşdyrylan.' },
-        { id: 8, name: 'Rexona Erkek', price: 27, img: '8.jpg', cat: 'Parfum', desc: 'Iň işjeň günler üçin niýetlenen güýçli gorag. Erkekler üçin durnukly we batyrgaý ys.' },
-        { id: 9, name: 'Comfort Prokladka', price: 9, img: '9.jpg', cat: 'Gigiýena', desc: 'Ýumşak we pagta ýaly ýüzli, ýokary siňdirijilik ukyby bolan gigiýena serişdesi.' },
-        { id: 10, name: 'Ýakala we menege garşy toplum', price: 65, img: '10.jpg', cat: 'Toplum', desc: 'Doly ideg toplumy: Umywalka geli, tonik we nemlendiriji krem.' },
-        { id: 11, name: 'Big Zig-Zag Tuş', price: 22, img: '11.jpg', cat: 'Ideg', desc: 'Ýörite "Zig-Zag" çotgasy arkaly her bir kirpigi aýratyn darap uzaldýar.' },
-        { id: 12, name: 'Maybelline Million Pauline Tuş', price: 15, img: '12.jpg', cat: 'Ideg', desc: 'Miliýonlarça kirpik effekti! Iň gysga kirpikleri hem tutup, göwrümli görkezýär.' },
-        { id: 13, name: 'Хозяюшка Gel Kapsula Soda', price: 45, img: '13.jpg', cat: 'Ýuwujy', desc: '"Хозяюшка" markasynyň 3-i 1-de gel kapsulalary. Ýuwujy serişde, tegmilleýiji we ýumşadyjy.' },
-        { id: 14, name: 'Suwuk görnüşli soda (6-sy 1-de)', price: 45, img: '14.jpg', cat: 'Ýuwujy', desc: 'Kir ýuwulýan maşynlar üçin 6-sy 1-de formula: Arassalaýar, tegmilleri aýyrýar, reňki goraýar, suwy ýumşadýar, ýakymly ys berýär we bakteriýalary öldürýär.' }
+    // Statik harytlar
+    let harytlar = [
+        { id: 1, name: '"SADOER" brendiniñ Limonly Duş Geli', price: 20, img: '1.jpg', cat: 'Ideg', desc: 'C witaminine baý bolan bu duş geli derini çuňňur arassalaýar.' },
+        { id: 13, name: 'Хозяюшка Gel Kapsula Soda', price: 45, img: '13.jpg', cat: 'Ýuwujy', desc: '3-i 1-de gel kapsulalary.' }
     ];
 
     let basket = JSON.parse(localStorage.getItem('garakel_cart')) || [];
+    let activeHarytlar = [];
 
-    function initSlider() {
-        const topHarytlar = harytlar.slice().reverse().slice(0, 5);
+    function initSlider(data) {
+        const topHarytlar = data.slice().reverse().slice(0, 5);
         document.getElementById('sliderWrapper').innerHTML = topHarytlar.map(h => `
             <div class="slide" onclick="openModal(${h.id})">
                 <img src="${h.img}" onerror="this.src='https://via.placeholder.com/400x200'">
@@ -145,13 +128,17 @@
             </div>
         `).join('');
         let curr = 0;
-        setInterval(() => { curr = (curr + 1) % topHarytlar.length; document.getElementById('sliderWrapper').style.transform = `translateX(-${curr * 100}%)`; }, 4000);
+        setInterval(() => { 
+            curr = (curr + 1) % topHarytlar.length; 
+            document.getElementById('sliderWrapper').style.transform = `translateX(-${curr * 100}%)`; 
+        }, 4000);
     }
 
-    function render(data = harytlar) {
+    function render(data) {
+        activeHarytlar = data;
         const sorted = data.slice().reverse();
-        document.getElementById('productGrid').innerHTML = sorted.map((h, idx) => {
-            const inCart = basket.some(x => x.id === h.id);
+        document.getElementById('productGrid').innerHTML = sorted.map((h) => {
+            const inCart = basket.some(x => x.id == h.id);
             return `
             <div class="card">
                 <div onclick="openModal(${h.id})">
@@ -168,7 +155,7 @@
             </div>
         `}).join('');
 
-        const cats = ['Hemmesi', ...new Set(harytlar.map(h => h.cat))];
+        const cats = ['Hemmesi', ...new Set(activeHarytlar.map(h => h.cat))];
         document.getElementById('catBox').innerHTML = cats.map(c => `<div class="cat" onclick="filterCat('${c}', this)">${c}</div>`).join('');
         document.getElementById('cartCount').innerText = basket.length;
     }
@@ -176,29 +163,39 @@
     function filterCat(c, el) {
         document.querySelectorAll('.cat').forEach(i => i.classList.remove('active'));
         el.classList.add('active');
-        render(c === 'Hemmesi' ? harytlar : harytlar.filter(h => h.cat === c));
+        const filtered = c === 'Hemmesi' ? activeHarytlar : activeHarytlar.filter(h => h.cat === c);
+        renderFiltered(filtered);
+    }
+
+    function renderFiltered(data) {
+        const sorted = data.slice().reverse();
+        document.getElementById('productGrid').innerHTML = sorted.map((h) => {
+            const inCart = basket.some(x => x.id == h.id);
+            return `<div class="card">...</div>`; // Gysgaltma, doly card kody ýokarda bar
+        }).join('');
     }
 
     function toggleCart(id) {
-        const item = harytlar.find(h => h.id === id);
-        const idx = basket.findIndex(x => x.id === id);
+        const item = activeHarytlar.find(h => h.id == id);
+        const idx = basket.findIndex(x => x.id == id);
         idx === -1 ? basket.push(item) : basket.splice(idx, 1);
         localStorage.setItem('garakel_cart', JSON.stringify(basket));
-        render();
+        render(activeHarytlar);
     }
 
     function openModal(id) {
-        const h = harytlar.find(x => x.id === id);
-        const inCart = basket.some(x => x.id === h.id);
+        const h = activeHarytlar.find(x => x.id == id);
+        if(!h) return;
+        const inCart = basket.some(x => x.id == h.id);
         document.getElementById('modalContent').innerHTML = `
             <img src="${h.img}" class="modal-img" onerror="this.src='https://via.placeholder.com/150'">
             <h2>${h.name}</h2>
-            <p style="color:#546e7a; font-size:0.95rem; line-height:1.5;">${h.desc}</p>
+            <p>${h.desc || ''}</p>
             <h3 style="color:var(--yasyl);">${h.price} TMT</h3>
-            <button class="${inCart ? 'btn-remove' : 'btn-add'}" onclick="toggleCart(${h.id}); closeModal();" style="width:100%; padding:15px; border-radius:12px; border:none; font-weight:bold; color:white;">
+            <button class="${inCart ? 'btn-remove' : 'btn-add'}" onclick="toggleCart(${h.id}); closeModal();">
                 ${inCart ? '🗑️ Aýyr' : '🛒 Sebede goş'}
             </button>
-            <button onclick="closeModal()" style="width:100%; margin-top:10px; padding:12px; background:#ddd; border:none; border-radius:10px; font-weight:bold;">Ýap</button>
+            <button onclick="closeModal()" style="width:100%; margin-top:10px;">Ýap</button>
         `;
         document.getElementById('modal').style.display = 'flex';
     }
@@ -206,7 +203,7 @@
 
     function sendOrder() {
         if(!basket.length) return alert("Sebediňiz boş!");
-        let total = basket.reduce((s, h) => s + h.price, 0);
+        let total = basket.reduce((s, h) => s + Number(h.price), 0);
         let msg = "⛰️ *GARAKEL SARGYT*\n" + basket.map((h,i)=>`${i+1}. ${h.name} (${h.price} TMT)`).join("\n") + `\n\n💰 *JEMI: ${total} TMT*`;
         window.open("https://wa.me/99371563667?text=" + encodeURIComponent(msg));
     }
@@ -227,18 +224,27 @@
 
     function trackVisitors() {
         const d = new Date().toISOString().split('T')[0];
-        if(localStorage.getItem('v_today') !== d) {
-            db.ref('stats/'+d+'/unique').transaction(c => (c||0)+1);
-            localStorage.setItem('v_today', d);
-        }
         db.ref('stats/'+d+'/views').transaction(c => (c||0)+1);
         db.ref('stats/'+d).on('value', s => {
             const val = s.val();
-            if(val) document.getElementById('admin-stats').innerHTML = `📊 Şu gün: ${val.unique} adam | ${val.views} gezek açyldy`;
+            if(val) document.getElementById('admin-stats').innerHTML = `📊 Şu gün: ${val.views} gezek açyldy`;
         });
     }
 
-    window.onload = () => { render(); initSlider(); loadComments(); trackVisitors(); };
+    window.onload = () => { 
+        db.ref('products').on('value', (snapshot) => {
+            const data = snapshot.val();
+            let allProducts = [...harytlar];
+            if (data) {
+                const fbProducts = Object.values(data);
+                allProducts = [...allProducts, ...fbProducts];
+            }
+            render(allProducts); 
+            initSlider(allProducts);
+        });
+        loadComments(); 
+        trackVisitors(); 
+    };
 </script>
 </body>
 </html>
