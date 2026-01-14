@@ -10,61 +10,27 @@
             --kard: #ffffff; --yasyl: #2e7d32; --tekst: #263238;
         }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--arka); color: var(--tekst); padding-bottom: 30px; }
-        
-        /* Ýokarky bölek (Header) sazlamasy */
         header { 
             position: fixed; top: 0; width: 100%; 
             background: linear-gradient(135deg, var(--bag), var(--dag)); 
             color: white; text-align: center; padding: 20px 0; 
             z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        header h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; }
-
         .container { max-width: 1200px; margin: auto; padding-top: 100px; }
-
-        /* SLIDER (Mahabat) */
-        .slider-container {
-            width: 95%; max-width: 1000px; margin: 15px auto;
-            height: 200px; overflow: hidden; border-radius: 15px;
-            position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+        .slider-container { width: 95%; max-width: 1000px; margin: 15px auto; height: 180px; overflow: hidden; border-radius: 15px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .slides { display: flex; transition: 0.5s; height: 100%; }
         .slide { min-width: 100%; height: 100%; object-fit: cover; }
-
-        /* KATEGORIÝALAR */
-        .categories { 
-            display: flex; overflow-x: auto; gap: 10px; 
-            padding: 15px; background: white; white-space: nowrap;
-            scrollbar-width: none; border-bottom: 1px solid #eee;
-            position: sticky; top: 75px; z-index: 999;
-        }
-        .cat-btn { 
-            background: #e8f5e9; border: none; padding: 10px 18px; 
-            border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer;
-        }
+        .categories { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: white; white-space: nowrap; scrollbar-width: none; border-bottom: 1px solid #eee; position: sticky; top: 75px; z-index: 999; }
+        .cat-btn { background: #e8f5e9; border: none; padding: 10px 18px; border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer; }
         .cat-btn.active { background: var(--bag); color: white; }
-
-        /* HARYT GRID */
-        .grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 20px; padding: 20px; 
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 20px; }
         @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; } }
-        
         .card { background: var(--kard); border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
         .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; }
-        .price { color: var(--yasyl); font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
-        .btn-add { background: var(--yasyl); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
-
-        /* Teswir we Statistika */
         .info-box { background: white; padding: 20px; margin: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .comment-form input, .comment-form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn-send { background: var(--bag); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
-        .comment-item { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--yasyl); }
-        
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; margin-top: 15px; }
         .stat-card { background: #e8f5e9; padding: 15px; border-radius: 10px; }
-        
+        .stat-card h4 { margin: 5px 0; color: var(--bag); }
         footer { background: var(--dag); color: white; text-align: center; padding: 25px; margin-top: 30px; font-size: 0.9rem; }
     </style>
 </head>
@@ -73,39 +39,26 @@
 <header><h1>🏠 GARAKEL E-DÜKAN</h1></header>
 
 <div class="container">
-    <div class="slider-container">
-        <div class="slides" id="slider">
-            <img src="https://via.placeholder.com/1000x400?text=Hoş+Geldiňiz" class="slide">
-            <img src="https://via.placeholder.com/1000x400?text=Täze+Harytlar" class="slide">
-            <img src="https://via.placeholder.com/1000x400?text=Uly+Arzanladyş" class="slide">
-        </div>
-    </div>
+    <div class="slider-container"><div class="slides" id="slider">
+        <img src="https://via.placeholder.com/1000x400?text=Hoş+Geldiňiz" class="slide">
+        <img src="https://via.placeholder.com/1000x400?text=Täze+Harytlar" class="slide">
+    </div></div>
 
     <div class="categories">
         <button class="cat-btn active">Hemmesi</button>
         <button class="cat-btn">Atirler</button>
         <button class="cat-btn">Kremler</button>
-        <button class="cat-btn">Sargytlar</button>
-        <button class="cat-btn">Aksiýa</button>
     </div>
 
     <div id="productGrid" class="grid"></div>
 
     <div class="info-box">
-        <h3>💬 Teswir Goşuň</h3>
-        <div class="comment-form">
-            <input type="text" id="userName" placeholder="Adyňyz...">
-            <textarea id="userComment" rows="3" placeholder="Pikiriňiz..."></textarea>
-            <button class="btn-send" onclick="sendComment()">Ugrat</button>
-        </div>
-        <div id="commentsDisplay" class="comments-list" style="margin-top:15px;"></div>
-    </div>
-
-    <div class="info-box">
         <h3>📊 Saýt Statistikasy</h3>
         <div class="stats-grid">
             <div class="stat-card"><p>Jemi açyldy</p><h4 id="totalViews">0</h4></div>
+            <div class="stat-card"><p>Şu gün girenler</p><h4 id="todayViews">0</h4></div>
             <div class="stat-card"><p>Haryt Sany</p><h4 id="productCount">0</h4></div>
+            <div class="stat-card"><p>Şu wagt online</p><h4 id="onlineUsers">1</h4></div>
         </div>
     </div>
 </div>
@@ -128,15 +81,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // SLIDER
-    let slideIndex = 0;
-    setInterval(() => {
-        const slider = document.getElementById('slider');
-        slideIndex = (slideIndex + 1) % 3;
-        slider.style.transform = `translateX(-${slideIndex * 100}%)`;
-    }, 4000);
-
-    // HARYTLARY ÇEKMEK
+    // 1. Harytlary Çekmek
     db.ref('products').on('value', (snap) => {
         const data = snap.val();
         if (!data) return;
@@ -144,41 +89,32 @@
         document.getElementById('productCount').innerText = harytlar.length;
         document.getElementById('productGrid').innerHTML = harytlar.map(h => {
             let resim = String(h.img || '').replace(/['"]+/g, '').trim();
-            return `
-                <div class="card">
-                    <img src="./${resim}" onerror="this.src='https://via.placeholder.com/150'">
-                    <h4>${h.name}</h4>
-                    <div class="price">${h.price} TMT</div>
-                    <button class="btn-add">🛒 Sebede goş</button>
-                </div>
-            `;
+            return `<div class="card"><img src="./${resim}" onerror="this.src='https://via.placeholder.com/150'"><h4>${h.name}</h4><div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div><button style="background:var(--yasyl); color:white; border:none; padding:10px; border-radius:8px; width:100%; margin-top:10px; cursor:pointer;">🛒 Goş</button></div>`;
         }).join('');
     });
 
-    // TESWIRLER
-    function sendComment() {
-        const name = document.getElementById('userName').value;
-        const text = document.getElementById('userComment').value;
-        if (name && text) {
-            db.ref('comments').push({ name, text });
-            document.getElementById('userName').value = '';
-            document.getElementById('userComment').value = '';
-        }
-    }
+    // 2. Statistika (Jemi we Şu günki)
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
 
-    db.ref('comments').limitToLast(5).on('value', (snap) => {
-        const data = snap.val();
-        if (!data) return;
-        document.getElementById('commentsDisplay').innerHTML = Object.values(data).reverse().map(c => `
-            <div class="comment-item"><b>👤 ${c.name}</b><span>${c.text}</span></div>
-        `).join('');
-    });
+    // Jemi görüş sany
+    db.ref('stats/totalViews').transaction(v => (v || 0) + 1);
+    db.ref('stats/totalViews').on('value', snap => document.getElementById('totalViews').innerText = snap.val());
 
-    // STATISTIKA
-    db.ref('stats/totalViews').transaction((val) => (val || 0) + 1);
-    db.ref('stats/totalViews').on('value', (snap) => {
-        document.getElementById('totalViews').innerText = snap.val();
-    });
+    // Şu günki görüş sany
+    db.ref(`stats/daily/${todayStr}`).transaction(v => (v || 0) + 1);
+    db.ref(`stats/daily/${todayStr}`).on('value', snap => document.getElementById('todayViews').innerText = snap.val());
+
+    // Online Simulýasiýa
+    document.getElementById('onlineUsers').innerText = Math.floor(Math.random() * 4) + 1;
+
+    // Slider
+    let idx = 0;
+    setInterval(() => {
+        const s = document.getElementById('slider');
+        idx = (idx + 1) % 2;
+        s.style.transform = `translateX(-${idx * 100}%)`;
+    }, 4000);
 </script>
 </body>
 </html>
