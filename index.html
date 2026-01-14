@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏠 GARAKEL E-DÜKAN | 2026</title>
+    <title>🏠 GARAKEL E-DÜKAN</title>
     <style>
         :root {
             --bag: #1b5e20; --dag: #3e2723; --arka: #f4f7f1;
@@ -34,7 +34,6 @@
         .cat-btn { background: #e8f5e9; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer; white-space: nowrap; }
         .cat-btn.active { background: var(--bag); color: white; }
 
-        /* KARTLARYŇ DÜWMELERINI DEŇLEÝÄN BÖLEK */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px; align-items: stretch; }
         @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
         
@@ -51,9 +50,8 @@
         .add-btn { background: var(--bag); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .remove-btn { background: var(--gyp); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        /* STATISTIKA */
-        .stats-box { background: white; padding: 20px; margin: 15px; border-radius: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; }
-        .stat-item h4 { margin: 5px 0; color: var(--bag); }
+        .stats-box { background: white; padding: 20px; margin: 15px; border-radius: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-item h4 { margin: 5px 0; color: var(--bag); font-size: 18px; }
 
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
         .modal-box { background: white; padding: 20px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 85vh; overflow-y: auto; }
@@ -62,6 +60,7 @@
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #eee; z-index: 1000; }
         .nav-item { text-align: center; font-size: 13px; cursor: pointer; color: #555; position: relative; }
         .cart-count { position: absolute; top: -8px; right: -5px; background: var(--gyp); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
+        footer { text-align: center; padding: 20px; color: #777; font-size: 14px; margin-bottom: 70px; }
     </style>
 </head>
 <body>
@@ -86,16 +85,16 @@
 
     <div class="stats-box">
         <div class="stat-item">
-            <p>Jemi giriş</p>
+            <p style="margin:0; font-size:12px; color:#777;">Jemi giriş</p>
             <h4 id="totalViews">0</h4>
         </div>
         <div class="stat-item">
-            <p>Şu gün giren</p>
+            <p style="margin:0; font-size:12px; color:#777;">Şu gün giren</p>
             <h4 id="todayViews">0</h4>
         </div>
     </div>
 
-    <div style="background: white; padding: 20px; margin: 15px; border-radius: 15px;">
+    <div style="background: white; padding: 20px; margin: 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
         <h3>💬 Teswirler</h3>
         <div id="commentsDisplay"></div>
         <input type="text" id="uName" placeholder="Adyňyz..." style="width:100%; padding:10px; margin-top:10px; border-radius:8px; border:1px solid #ddd; box-sizing: border-box;">
@@ -103,6 +102,8 @@
         <button onclick="sendComment()" style="width:100%; background:var(--bag); color:white; border:none; padding:12px; margin-top:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Ugrat</button>
     </div>
 </div>
+
+<footer>&copy; 2025 Garakel E-Dükan</footer>
 
 <div id="modal">
     <div class="modal-box">
@@ -211,7 +212,6 @@
     }
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
-    // STATISTIKA LOGIKASY
     const today = new Date().toISOString().slice(0, 10);
     db.ref('stats/totalViews').transaction(v => (v || 0) + 1);
     db.ref('stats/totalViews').on('value', s => document.getElementById('totalViews').innerText = s.val());
