@@ -53,9 +53,20 @@
         .stats-box { background: white; padding: 20px; margin: 15px; border-radius: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .stat-item h4 { margin: 5px 0; color: var(--bag); font-size: 18px; }
 
+        /* MODAL MAGAZYNY - TEKSTLERI DÜZETMEK */
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 20px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 85vh; overflow-y: auto; }
+        .modal-box { background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
         .close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; }
+        
+        /* Haryt düşündirişiniň abzaslary we setir aralygy */
+        #modalDesc { 
+            color: #444; 
+            line-height: 1.6; /* Setirleriň arasy açyk bolar */
+            font-size: 15px; 
+            text-align: left; 
+            margin-top: 15px; 
+            white-space: pre-line; /* Firebase-däki "Enter" (täze setir) belgilerini görkezer */
+        }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #eee; z-index: 1000; }
         .nav-item { text-align: center; font-size: 13px; cursor: pointer; color: #555; position: relative; }
@@ -103,14 +114,15 @@
     </div>
 </div>
 
-<footer>&copy; 2026 Garakel E-Dükan</footer>
+<footer>&copy; 2025 Garakel E-Dükan</footer>
 
 <div id="modal">
     <div class="modal-box">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        <img id="modalImg" style="width:100%; border-radius:15px; max-height:300px; object-fit:contain;">
-        <h2 id="modalTitle"></h2>
-        <h3 id="modalPrice" style="color:var(--yasyl);"></h3>
+        <img id="modalImg" style="width:100%; border-radius:15px; max-height:280px; object-fit:contain; background:#f9f9f9;">
+        <h2 id="modalTitle" style="margin:20px 0 5px 0; font-size:22px;"></h2>
+        <h3 id="modalPrice" style="color:var(--yasyl); margin-bottom:15px;"></h3>
+        <hr style="border:0; border-top:1px solid #eee;">
         <p id="modalDesc"></p>
     </div>
 </div>
@@ -207,6 +219,7 @@
         document.getElementById('modalImg').src = "./" + h.img;
         document.getElementById('modalTitle').innerText = h.name;
         document.getElementById('modalPrice').innerText = h.price + " TMT";
+        // Firebase-den gelýän tekstde täze setirleri (Enter) goldamak üçin:
         document.getElementById('modalDesc').innerText = h.desc || "Maglumat ýok.";
         document.getElementById('modal').style.display = 'flex';
     }
