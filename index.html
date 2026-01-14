@@ -16,30 +16,50 @@
             color: white; text-align: center; padding: 15px 0; 
             z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
         }
-        .container { max-width: 1200px; margin: auto; padding-top: 100px; }
+        .container { max-width: 1200px; margin: auto; padding-top: 80px; }
+
+        /* SLIDER Sazlamalary */
+        .slider-container {
+            width: 95%; max-width: 1000px; margin: 15px auto;
+            height: 180px; overflow: hidden; border-radius: 15px;
+            position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .slides { display: flex; transition: 0.5s; height: 100%; }
+        .slide { min-width: 100%; height: 100%; object-fit: cover; }
+
+        /* KATEGORIÝALAR */
+        .categories { 
+            display: flex; overflow-x: auto; gap: 10px; 
+            padding: 15px; background: white; white-space: nowrap;
+            scrollbar-width: none; border-bottom: 1px solid #eee;
+        }
+        .cat-btn { 
+            background: #e8f5e9; border: none; padding: 10px 20px; 
+            border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer;
+        }
+        .cat-btn.active { background: var(--bag); color: white; }
+
+        /* HARYT GRID */
         .grid { 
             display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
             gap: 20px; padding: 20px; 
         }
         @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; } }
+        
         .card { background: var(--kard); border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
         .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; }
         .price { color: var(--yasyl); font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
-        .btn-add { background: var(--yasyl); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; }
+        .btn-add { background: var(--yasyl); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
 
-        /* Teswir Ýazylýan Bölüm */
+        /* Teswir we Statistika */
         .info-box { background: white; padding: 20px; margin: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .comment-form input, .comment-form textarea { 
-            width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;
-        }
-        .btn-send { background: var(--bag); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
-        .comments-list { margin-top: 20px; max-height: 300px; overflow-y: auto; }
+        .comment-form input, .comment-form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-send { background: var(--bag); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
         .comment-item { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--yasyl); }
-        .comment-item b { color: var(--bag); display: block; margin-bottom: 3px; }
-
-        /* Statistika */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; margin-top: 20px; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; margin-top: 15px; }
         .stat-card { background: #e8f5e9; padding: 15px; border-radius: 10px; }
+        
         footer { background: var(--dag); color: white; text-align: center; padding: 25px; margin-top: 30px; }
     </style>
 </head>
@@ -48,38 +68,44 @@
 <header><h1>🏠 GARAKEL E-DÜKAN</h1></header>
 
 <div class="container">
+    <div class="slider-container">
+        <div class="slides" id="slider">
+            <img src="https://via.placeholder.com/1000x400?text=Hoş+Geldiňiz" class="slide">
+            <img src="https://via.placeholder.com/1000x400?text=Täze+Harytlar" class="slide">
+            <img src="https://via.placeholder.com/1000x400?text=Uly+Arzanladyş" class="slide">
+        </div>
+    </div>
+
+    <div class="categories">
+        <button class="cat-btn active">Hemmesi</button>
+        <button class="cat-btn">Atirler</button>
+        <button class="cat-btn">Kremler</button>
+        <button class="cat-btn">Sargytlar</button>
+        <button class="cat-btn">Aksiýa</button>
+    </div>
+
     <div id="productGrid" class="grid"></div>
 
     <div class="info-box">
         <h3>💬 Teswir Goşuň</h3>
         <div class="comment-form">
-            <input type="text" id="userName" placeholder="Adyňyz..." required>
-            <textarea id="userComment" rows="3" placeholder="Teswiriňiz..." required></textarea>
+            <input type="text" id="userName" placeholder="Adyňyz...">
+            <textarea id="userComment" rows="3" placeholder="Pikiriňiz..."></textarea>
             <button class="btn-send" onclick="sendComment()">Ugrat</button>
         </div>
-        <div class="comments-list" id="commentsDisplay">
-            <p>Teswirler ýüklenýär...</p>
-        </div>
+        <div id="commentsDisplay" class="comments-list" style="margin-top:15px;"></div>
     </div>
 
     <div class="info-box">
         <h3>📊 Saýt Statistikasy</h3>
         <div class="stats-grid">
-            <div class="stat-card">
-                <p>Jemi açyldy</p>
-                <h4 id="totalViews">0</h4>
-            </div>
-            <div class="stat-card">
-                <p>Haryt Sany</p>
-                <h4 id="productCount">0</h4>
-            </div>
+            <div class="stat-card"><p>Jemi açyldy</p><h4 id="totalViews">0</h4></div>
+            <div class="stat-card"><p>Haryt Sany</p><h4 id="productCount">0</h4></div>
         </div>
     </div>
 </div>
 
-<footer>
-    <p>&copy; 2026 Garakel E-Dükan. Ähli hukuklar goragly.</p>
-</footer>
+<footer><p>&copy; 2026 Garakel E-Dükan. Ähli hukuklar goragly.</p></footer>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -97,11 +123,19 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 1. Harytlary çekmek
+    // SLIDER AWTO-AÝLANMA
+    let slideIndex = 0;
+    setInterval(() => {
+        const slider = document.getElementById('slider');
+        slideIndex = (slideIndex + 1) % 3;
+        slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+    }, 4000);
+
+    // HARYTLARY ÇEKMEK
     db.ref('products').on('value', (snap) => {
         const data = snap.val();
         if (!data) return;
-        const harytlar = Object.keys(data).map(key => data[key]);
+        const harytlar = Object.values(data);
         document.getElementById('productCount').innerText = harytlar.length;
         document.getElementById('productGrid').innerHTML = harytlar.map(h => {
             let resim = String(h.img || '').replace(/['"]+/g, '').trim();
@@ -116,31 +150,26 @@
         }).join('');
     });
 
-    // 2. Teswirleri ugratmak we görkezmek
+    // TESWIRLER
     function sendComment() {
-        const name = document.getElementById('userName').value.trim();
-        const text = document.getElementById('userComment').value.trim();
+        const name = document.getElementById('userName').value;
+        const text = document.getElementById('userComment').value;
         if (name && text) {
-            db.ref('comments').push({ name, text, date: Date.now() });
+            db.ref('comments').push({ name, text });
             document.getElementById('userName').value = '';
             document.getElementById('userComment').value = '';
-        } else { alert("Adyňyzy we teswiriňizi ýazyň!"); }
+        }
     }
 
-    db.ref('comments').limitToLast(10).on('value', (snap) => {
+    db.ref('comments').limitToLast(5).on('value', (snap) => {
         const data = snap.val();
-        const display = document.getElementById('commentsDisplay');
-        if (!data) { display.innerHTML = "<p>Entek teswir ýok.</p>"; return; }
-        const list = Object.values(data).reverse();
-        display.innerHTML = list.map(c => `
-            <div class="comment-item">
-                <b>👤 ${c.name}</b>
-                <span>${c.text}</span>
-            </div>
+        if (!data) return;
+        document.getElementById('commentsDisplay').innerHTML = Object.values(data).reverse().map(c => `
+            <div class="comment-item"><b>👤 ${c.name}</b><span>${c.text}</span></div>
         `).join('');
     });
 
-    // 3. Jemi açylyş statistikasyny (Total Views) täzelemek
+    // STATISTIKA
     db.ref('stats/totalViews').transaction((val) => (val || 0) + 1);
     db.ref('stats/totalViews').on('value', (snap) => {
         document.getElementById('totalViews').innerText = snap.val();
