@@ -13,37 +13,45 @@
         header { 
             position: fixed; top: 0; width: 100%; 
             background: linear-gradient(135deg, var(--bag), var(--dag)); 
-            color: white; text-align: center; padding: 20px 0; 
+            color: white; text-align: center; padding: 15px 0; 
             z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .container { max-width: 1200px; margin: auto; padding-top: 100px; }
-        .slider-container { width: 95%; max-width: 1000px; margin: 15px auto; height: 200px; overflow: hidden; border-radius: 15px; position: relative; background: #eee; }
-        .slides { display: flex; transition: 0.5s; height: 100%; }
-        .slide { min-width: 100%; height: 100%; object-fit: cover; position: relative; }
-        .slide-info { position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.5); color: white; padding: 10px; box-sizing: border-box; }
+        .container { max-width: 1200px; margin: auto; padding-top: 80px; }
         
-        .categories { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: white; position: sticky; top: 75px; z-index: 999; border-bottom: 1px solid #eee; }
-        .cat-btn { background: #e8f5e9; border: none; padding: 10px 18px; border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer; white-space: nowrap; }
+        /* SLIDER ÖLÇEGLERI DÜZELDILDI */
+        .slider-container { 
+            width: 95%; max-width: 800px; margin: 10px auto; 
+            height: 160px; overflow: hidden; border-radius: 12px; 
+            position: relative; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .slides { display: flex; transition: 0.5s; height: 100%; }
+        .slide { min-width: 100%; height: 100%; display: flex; align-items: center; background: white; }
+        .slide img { width: 40%; height: 100%; object-fit: contain; padding: 10px; }
+        .slide-info { width: 60%; padding: 15px; text-align: left; }
+        .slide-info h3 { margin: 0; color: var(--bag); font-size: 16px; }
+        .slide-info p { margin: 5px 0 0 0; font-weight: bold; color: var(--yasyl); }
+
+        .categories { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: white; position: sticky; top: 60px; z-index: 999; border-bottom: 1px solid #eee; }
+        .cat-btn { background: #e8f5e9; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer; white-space: nowrap; }
         .cat-btn.active { background: var(--bag); color: white; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; padding: 15px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px; }
         @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
         
-        .card { background: var(--kard); border-radius: 15px; padding: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; position: relative; }
-        .card img { width: 100%; height: 160px; object-fit: cover; border-radius: 10px; cursor: pointer; }
-        .like-btn { position: absolute; top: 15px; right: 15px; font-size: 22px; cursor: pointer; color: #ccc; }
+        .card { background: var(--kard); border-radius: 12px; padding: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; position: relative; }
+        .card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; cursor: pointer; }
+        .like-btn { position: absolute; top: 15px; right: 15px; font-size: 20px; cursor: pointer; color: #ccc; }
         .like-btn.liked { color: var(--gyp); }
-        .add-btn { background: var(--bag); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; margin-top: 8px; cursor: pointer; font-weight: bold; }
-        .remove-btn { background: var(--gyp); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; margin-top: 8px; cursor: pointer; font-weight: bold; }
+        .add-btn { background: var(--bag); color: white; border: none; width: 100%; padding: 8px; border-radius: 8px; margin-top: 8px; cursor: pointer; font-weight: bold; }
+        .remove-btn { background: var(--gyp); color: white; border: none; width: 100%; padding: 8px; border-radius: 8px; margin-top: 8px; cursor: pointer; font-weight: bold; }
 
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 20px; border-radius: 20px; width: 90%; max-width: 500px; position: relative; animation: zoom 0.3s; }
-        @keyframes zoom { from {transform: scale(0.5)} to {transform: scale(1)} }
+        .modal-box { background: white; padding: 20px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 80vh; overflow-y: auto; }
         .close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #ddd; z-index: 1000; }
-        .nav-item { text-align: center; font-size: 12px; cursor: pointer; position: relative; }
-        .cart-badge { position: absolute; top: -5px; right: 5px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid #eee; z-index: 1000; }
+        .nav-item { text-align: center; font-size: 14px; cursor: pointer; color: #555; position: relative; }
+        .cart-count { position: absolute; top: -10px; right: -5px; background: var(--gyp); color: white; border-radius: 50%; padding: 2px 6px; font-size: 11px; }
     </style>
 </head>
 <body>
@@ -53,11 +61,11 @@
 <div class="container">
     <div class="slider-container">
         <div class="slides" id="slider">
-            <p style="text-align:center; width:100%; padding-top:80px;">Harytlar ýüklenýär...</p>
+            <p style="text-align:center; width:100%; padding-top:60px;">Harytlar ýüklenýär...</p>
         </div>
     </div>
 
-    <div class="categories">
+    <div class="categories" id="catBar">
         <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
         <button class="cat-btn" onclick="filterCat('Ideg serişdeleri', this)">Ideg</button>
         <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
@@ -78,17 +86,17 @@
 <div id="modal">
     <div class="modal-box">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        <img id="modalImg" style="width:100%; border-radius:15px; max-height:300px; object-fit:contain;">
-        <h2 id="modalTitle" style="margin-top:10px;"></h2>
+        <img id="modalImg" style="width:100%; border-radius:15px;">
+        <h2 id="modalTitle"></h2>
         <h3 id="modalPrice" style="color:var(--yasyl);"></h3>
         <p id="modalDesc"></p>
     </div>
 </div>
 
 <div class="bottom-nav">
-    <div onclick="showAll()">🏠<br>Baş sahypa</div>
-    <div onclick="showLikes()">❤️<br>Halanlarym</div>
-    <div onclick="showCart()" style="position:relative;">🛒<br>Sebedim <span class="cart-badge" id="cartCount">0</span></div>
+    <div class="nav-item" onclick="showAll()">🏠<br>Baş sahypa</div>
+    <div class="nav-item" onclick="showLikes()">❤️<br>Halanlarym</div>
+    <div class="nav-item" onclick="showCart()">🛒<br>Sebedim <span class="cart-count" id="cartCount">0</span></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -116,11 +124,14 @@
         if (!data) return;
         allProducts = Object.values(data);
         
-        // SLIDERI HARYTLAR BILEN DOLDURMAK
+        // SLIDERI DOLDURMAK
         document.getElementById('slider').innerHTML = allProducts.slice(0, 5).map(h => `
             <div class="slide">
-                <img src="./${h.img}" onerror="this.src='https://via.placeholder.com/1000x400?text=${h.name}'">
-                <div class="slide-info"><h3>${h.name} - ${h.price} TMT</h3></div>
+                <img src="./${h.img}" onerror="this.src='https://via.placeholder.com/150'">
+                <div class="slide-info">
+                    <h3>${h.name}</h3>
+                    <p>${h.price} TMT</p>
+                </div>
             </div>
         `).join('');
 
@@ -135,7 +146,7 @@
                 <div class="card">
                     <span class="like-btn ${isLiked}" onclick="toggleLike('${h.name}')">❤️</span>
                     <img src="./${h.img}" onclick='openModal(${JSON.stringify(h)})' onerror="this.src='https://via.placeholder.com/150'">
-                    <h4 style="margin:8px 0;">${h.name}</h4>
+                    <h4>${h.name}</h4>
                     <div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div>
                     ${inCart ? `<button class="remove-btn" onclick="toggleCart('${h.name}')">Aýyr</button>` : `<button class="add-btn" onclick="toggleCart('${h.name}')">Sebede goş</button>`}
                 </div>`;
@@ -178,7 +189,6 @@
     }
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
-    // TESWIRLER
     function sendComment() {
         const n = document.getElementById('uName').value;
         const c = document.getElementById('uComm').value;
@@ -191,7 +201,6 @@
         `).join('');
     });
 
-    // SLIDERIŇ HEREKETI
     let si = 0; setInterval(() => {
         const s = document.getElementById('slider');
         if(s && s.children.length > 1) {
