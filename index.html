@@ -9,7 +9,7 @@
             --bag: #1b5e20; --dag: #3e2723; --arka: #f4f7f1;
             --kard: #ffffff; --yasyl: #2e7d32; --tekst: #263238;
         }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--arka); color: var(--tekst); }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--arka); color: var(--tekst); padding-bottom: 30px; }
         header { 
             position: fixed; top: 0; width: 100%; 
             background: linear-gradient(135deg, var(--bag), var(--dag)); 
@@ -23,18 +23,24 @@
         }
         @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; } }
         .card { background: var(--kard); border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; }
+        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; }
         .price { color: var(--yasyl); font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
-        .btn-add { background: var(--yasyl); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
+        .btn-add { background: var(--yasyl); color: white; border: none; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; }
 
-        /* Teswirler we Statistika Dizaýny */
+        /* Teswir Ýazylýan Bölüm */
         .info-box { background: white; padding: 20px; margin: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
-        .stat-card { background: #f9fdf9; padding: 10px; border-radius: 10px; }
-        .stat-card h4 { margin: 5px 0; color: var(--bag); font-size: 1.4rem; }
-        .comment { border-bottom: 1px solid #eee; padding: 8px 0; font-size: 0.9rem; }
-        
-        footer { background: var(--dag); color: white; text-align: center; padding: 25px; font-size: 0.9rem; }
+        .comment-form input, .comment-form textarea { 
+            width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;
+        }
+        .btn-send { background: var(--bag); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
+        .comments-list { margin-top: 20px; max-height: 300px; overflow-y: auto; }
+        .comment-item { background: #f9f9f9; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--yasyl); }
+        .comment-item b { color: var(--bag); display: block; margin-bottom: 3px; }
+
+        /* Statistika */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; margin-top: 20px; }
+        .stat-card { background: #e8f5e9; padding: 15px; border-radius: 10px; }
+        footer { background: var(--dag); color: white; text-align: center; padding: 25px; margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -45,10 +51,14 @@
     <div id="productGrid" class="grid"></div>
 
     <div class="info-box">
-        <h3>💬 Müşteri Teswirleri</h3>
-        <div id="commentsList">
-            <div class="comment"><b>Aýna:</b> Örän gowy krem ekeni!</div>
-            <div class="comment"><b>Maksat:</b> Sag boluň, harytlar wagtynda geldi.</div>
+        <h3>💬 Teswir Goşuň</h3>
+        <div class="comment-form">
+            <input type="text" id="userName" placeholder="Adyňyz..." required>
+            <textarea id="userComment" rows="3" placeholder="Teswiriňiz..." required></textarea>
+            <button class="btn-send" onclick="sendComment()">Ugrat</button>
+        </div>
+        <div class="comments-list" id="commentsDisplay">
+            <p>Teswirler ýüklenýär...</p>
         </div>
     </div>
 
@@ -57,11 +67,11 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <p>Jemi açyldy</p>
-                <h4 id="totalViews">...</h4>
+                <h4 id="totalViews">0</h4>
             </div>
             <div class="stat-card">
-                <p>Şu wagt saýtda</p>
-                <h4 id="liveUsers">1</h4>
+                <p>Haryt Sany</p>
+                <h4 id="productCount">0</h4>
             </div>
         </div>
     </div>
@@ -92,6 +102,7 @@
         const data = snap.val();
         if (!data) return;
         const harytlar = Object.keys(data).map(key => data[key]);
+        document.getElementById('productCount').innerText = harytlar.length;
         document.getElementById('productGrid').innerHTML = harytlar.map(h => {
             let resim = String(h.img || '').replace(/['"]+/g, '').trim();
             return `
@@ -105,19 +116,35 @@
         }).join('');
     });
 
-    // 2. Jemi görüş sanyny (Total Views) täzelemek
-    const viewsRef = db.ref('stats/totalViews');
-    viewsRef.transaction((currentValue) => {
-        return (currentValue || 0) + 1;
+    // 2. Teswirleri ugratmak we görkezmek
+    function sendComment() {
+        const name = document.getElementById('userName').value.trim();
+        const text = document.getElementById('userComment').value.trim();
+        if (name && text) {
+            db.ref('comments').push({ name, text, date: Date.now() });
+            document.getElementById('userName').value = '';
+            document.getElementById('userComment').value = '';
+        } else { alert("Adyňyzy we teswiriňizi ýazyň!"); }
+    }
+
+    db.ref('comments').limitToLast(10).on('value', (snap) => {
+        const data = snap.val();
+        const display = document.getElementById('commentsDisplay');
+        if (!data) { display.innerHTML = "<p>Entek teswir ýok.</p>"; return; }
+        const list = Object.values(data).reverse();
+        display.innerHTML = list.map(c => `
+            <div class="comment-item">
+                <b>👤 ${c.name}</b>
+                <span>${c.text}</span>
+            </div>
+        `).join('');
     });
-    viewsRef.on('value', (snap) => {
+
+    // 3. Jemi açylyş statistikasyny (Total Views) täzelemek
+    db.ref('stats/totalViews').transaction((val) => (val || 0) + 1);
+    db.ref('stats/totalViews').on('value', (snap) => {
         document.getElementById('totalViews').innerText = snap.val();
     });
-
-    // 3. Online ulanyjylar (Live Users) - Ýönekeýleşdirilen görnüş
-    // Hakyky ulanyjy sany üçin Firebase Presence gerek, häzirki wagtda random simulýasiýa:
-    document.getElementById('liveUsers').innerText = Math.floor(Math.random() * 5) + 1;
-
 </script>
 </body>
 </html>
