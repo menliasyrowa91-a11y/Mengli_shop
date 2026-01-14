@@ -10,18 +10,22 @@
             --kard: #ffffff; --yasyl: #2e7d32; --tekst: #263238;
         }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--arka); color: var(--tekst); padding-bottom: 30px; }
+        
+        /* Ýokarky bölek (Header) sazlamasy */
         header { 
             position: fixed; top: 0; width: 100%; 
             background: linear-gradient(135deg, var(--bag), var(--dag)); 
-            color: white; text-align: center; padding: 15px 0; 
-            z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
+            color: white; text-align: center; padding: 20px 0; 
+            z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .container { max-width: 1200px; margin: auto; padding-top: 80px; }
+        header h1 { margin: 0; font-size: 1.6rem; letter-spacing: 1px; }
 
-        /* SLIDER Sazlamalary */
+        .container { max-width: 1200px; margin: auto; padding-top: 100px; }
+
+        /* SLIDER (Mahabat) */
         .slider-container {
             width: 95%; max-width: 1000px; margin: 15px auto;
-            height: 180px; overflow: hidden; border-radius: 15px;
+            height: 200px; overflow: hidden; border-radius: 15px;
             position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .slides { display: flex; transition: 0.5s; height: 100%; }
@@ -32,9 +36,10 @@
             display: flex; overflow-x: auto; gap: 10px; 
             padding: 15px; background: white; white-space: nowrap;
             scrollbar-width: none; border-bottom: 1px solid #eee;
+            position: sticky; top: 75px; z-index: 999;
         }
         .cat-btn { 
-            background: #e8f5e9; border: none; padding: 10px 20px; 
+            background: #e8f5e9; border: none; padding: 10px 18px; 
             border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer;
         }
         .cat-btn.active { background: var(--bag); color: white; }
@@ -60,7 +65,7 @@
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; margin-top: 15px; }
         .stat-card { background: #e8f5e9; padding: 15px; border-radius: 10px; }
         
-        footer { background: var(--dag); color: white; text-align: center; padding: 25px; margin-top: 30px; }
+        footer { background: var(--dag); color: white; text-align: center; padding: 25px; margin-top: 30px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -123,7 +128,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // SLIDER AWTO-AÝLANMA
+    // SLIDER
     let slideIndex = 0;
     setInterval(() => {
         const slider = document.getElementById('slider');
