@@ -10,64 +10,31 @@
             --kard: #ffffff; --yasyl: #2e7d32; --tekst: #263238;
         }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: var(--arka); color: var(--tekst); }
-        
-        /* Header Sazlamalary */
         header { 
             position: fixed; top: 0; width: 100%; 
             background: linear-gradient(135deg, var(--bag), var(--dag)); 
             color: white; text-align: center; padding: 15px 0; 
             z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); 
         }
-
         .container { max-width: 1200px; margin: auto; padding-top: 100px; }
-
-        /* Kategoriýalar */
-        .categories { 
-            display: flex; overflow-x: auto; gap: 10px; 
-            padding: 15px; background: white; position: sticky; top: 70px; z-index: 999;
-        }
-        .cat-btn { 
-            background: #e8f5e9; border: none; padding: 10px 20px; 
-            border-radius: 25px; font-weight: bold; color: var(--bag); cursor: pointer;
-        }
-        .cat-btn.active { background: var(--bag); color: white; }
-
-        /* Haryt Grid (Kompýuterde 4, telefonda 2 sütün) */
         .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
             gap: 20px; padding: 20px; 
         }
         @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; } }
-
-        .card { 
-            background: var(--kard); border-radius: 15px; padding: 15px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center;
-            transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; cursor: pointer; }
+        .card { background: var(--kard); border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; }
         .price { color: var(--yasyl); font-weight: bold; font-size: 1.2rem; margin: 10px 0; }
         .btn-add { background: var(--yasyl); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
 
-        /* Statistika Bölümi */
-        .stats { 
-            display: flex; justify-content: space-around; background: white; 
-            padding: 30px; margin: 20px; border-radius: 15px; text-align: center;
-        }
-        .stat-item h3 { color: var(--yasyl); margin: 0; font-size: 2rem; }
-
-        /* Teswirler Bölümi */
-        .comments-section { padding: 20px; background: #fff; margin: 20px; border-radius: 15px; }
-        .comment { border-bottom: 1px solid #eee; padding: 10px 0; }
-        .comment b { color: var(--bag); }
-
-        /* Footer */
-        footer { background: var(--dag); color: white; text-align: center; padding: 30px; margin-top: 40px; }
-        .admin-link { color: #ffeb3b; text-decoration: none; font-weight: bold; }
-
-        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 500px; }
+        /* Teswirler we Statistika Dizaýny */
+        .info-box { background: white; padding: 20px; margin: 20px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
+        .stat-card { background: #f9fdf9; padding: 10px; border-radius: 10px; }
+        .stat-card h4 { margin: 5px 0; color: var(--bag); font-size: 1.4rem; }
+        .comment { border-bottom: 1px solid #eee; padding: 8px 0; font-size: 0.9rem; }
+        
+        footer { background: var(--dag); color: white; text-align: center; padding: 25px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -75,40 +42,34 @@
 <header><h1>🏠 GARAKEL E-DÜKAN</h1></header>
 
 <div class="container">
-    <div class="categories">
-        <button class="cat-btn active">Hemmesi</button>
-        <button class="cat-btn">Ideg serişdeleri</button>
-        <button class="cat-btn">Arassalyk serideleri</button>
-        <button class="cat-btn">Ýuwujy serişdeleri</button>
-        <button class="cat-btn">Parfum</button>
-        <button class="cat-btn">Arzanladyş</button>
-    </div>
-
     <div id="productGrid" class="grid"></div>
 
-    <div class="stats">
-        <div class="stat-item"><h3 id="count-products">0</h3><p>Harytlar</p></div>
-        <div class="stat-item"><h3 id="count-views">1.2k</h3><p>Görülenler</p></div>
-        <div class="stat-item"><h3>4.9</h3><p>Reyting</p></div>
-    </div>
-
-    <div class="comments-section">
+    <div class="info-box">
         <h3>💬 Müşteri Teswirleri</h3>
         <div id="commentsList">
-            <div class="comment"><b>Aýna:</b> Örän gowy krem ekeni, maslahat berýärin!</div>
-            <div class="comment"><b>Merjen:</b> Arzan eken zatlar. Sag boluň!</div>
+            <div class="comment"><b>Aýna:</b> Örän gowy krem ekeni!</div>
+            <div class="comment"><b>Maksat:</b> Sag boluň, harytlar wagtynda geldi.</div>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <h3>📊 Saýt Statistikasy</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p>Jemi açyldy</p>
+                <h4 id="totalViews">...</h4>
+            </div>
+            <div class="stat-card">
+                <p>Şu wagt saýtda</p>
+                <h4 id="liveUsers">1</h4>
+            </div>
         </div>
     </div>
 </div>
 
 <footer>
     <p>&copy; 2026 Garakel E-Dükan. Ähli hukuklar goragly.</p>
-    <p><a href="#" class="admin-link">🔐 Admin Giriş</a> | <a href="#" style="color:white">Hyzmatdaşlyk</a></p>
 </footer>
-
-<div id="modal" onclick="this.style.display='none'">
-    <div id="modalContent" class="modal-box" onclick="event.stopPropagation()"></div>
-</div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -126,20 +87,16 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Harytlary çekmek we Sanamak
+    // 1. Harytlary çekmek
     db.ref('products').on('value', (snap) => {
         const data = snap.val();
-        const grid = document.getElementById('productGrid');
         if (!data) return;
-
         const harytlar = Object.keys(data).map(key => data[key]);
-        document.getElementById('count-products').innerText = harytlar.length;
-
-        grid.innerHTML = harytlar.map(h => {
+        document.getElementById('productGrid').innerHTML = harytlar.map(h => {
             let resim = String(h.img || '').replace(/['"]+/g, '').trim();
             return `
                 <div class="card">
-                    <img src="./${resim}" onclick='openModal(${JSON.stringify(h)})' onerror="this.src='https://via.placeholder.com/150'">
+                    <img src="./${resim}" onerror="this.src='https://via.placeholder.com/150'">
                     <h4>${h.name}</h4>
                     <div class="price">${h.price} TMT</div>
                     <button class="btn-add">🛒 Sebede goş</button>
@@ -148,19 +105,19 @@
         }).join('');
     });
 
-    function openModal(h) {
-        const modal = document.getElementById('modal');
-        const content = document.getElementById('modalContent');
-        let resim = String(h.img || '').replace(/['"]+/g, '').trim();
-        content.innerHTML = `
-            <img src="./${resim}" style="width:100%; border-radius:15px;">
-            <h2>${h.name}</h2>
-            <p class="price">${h.price} TMT</p>
-            <p>Bu haryt hakynda giňişleýin maglumat ýakynda goşular.</p>
-            <button class="btn-add" onclick="document.getElementById('modal').style.display='none'">Ýap</button>
-        `;
-        modal.style.display = 'flex';
-    }
+    // 2. Jemi görüş sanyny (Total Views) täzelemek
+    const viewsRef = db.ref('stats/totalViews');
+    viewsRef.transaction((currentValue) => {
+        return (currentValue || 0) + 1;
+    });
+    viewsRef.on('value', (snap) => {
+        document.getElementById('totalViews').innerText = snap.val();
+    });
+
+    // 3. Online ulanyjylar (Live Users) - Ýönekeýleşdirilen görnüş
+    // Hakyky ulanyjy sany üçin Firebase Presence gerek, häzirki wagtda random simulýasiýa:
+    document.getElementById('liveUsers').innerText = Math.floor(Math.random() * 5) + 1;
+
 </script>
 </body>
 </html>
