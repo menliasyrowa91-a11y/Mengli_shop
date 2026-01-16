@@ -59,19 +59,17 @@
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
         .modal-box { background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
         .close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; }
-        
         #modalDesc { color: #444; line-height: 1.6; font-size: 15px; text-align: left; margin-top: 15px; white-space: pre-line; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #eee; z-index: 1000; }
-        .nav-item { text-align: center; font-size: 13px; cursor: pointer; color: #555; position: relative; }
-        .cart-count { position: absolute; top: -8px; right: -5px; background: var(--gyp); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
-        
-        /* TÄZE: Kontakt düwmeleri stili */
         .contact-btns { display: flex; gap: 10px; margin-top: 15px; }
         .contact-link { flex: 1; text-decoration: none; color: white; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; text-align: center; }
         .wa-btn { background: #25D366; }
         .imo-btn { background: #00a1ff; }
 
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #eee; z-index: 1000; }
+        .nav-item { text-align: center; font-size: 13px; cursor: pointer; color: #555; position: relative; }
+        .cart-count { position: absolute; top: -8px; right: -5px; background: var(--gyp); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
+        
         footer { text-align: center; padding: 20px; color: #777; font-size: 14px; margin-bottom: 70px; }
     </style>
 </head>
@@ -93,7 +91,7 @@
         <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
         <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg serişdeleri</button>
         <button class="cat-btn" onclick="filterCat('Arassalyk', this)">Arassalyk serişdeleri</button>
-        <button class="cat-btn" onclick="filterCat('Ýuwujy', this)">Ýuwujy serişdeler</button>
+        <button class="cat-btn" onclick="filterCat('Ýuwujy', this)">Ýuwujy serişdeleri</button>
         <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
     </div>
 
@@ -167,16 +165,11 @@
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let likes = JSON.parse(localStorage.getItem('likes')) || [];
 
-    // Maglumatlaryň durnukly gelmegi üçin ID-leri hem saklaýarys
+    // HARYTLARY ALMAK WE SLIDER
     db.ref('products').on('value', snap => {
         const data = snap.val();
         if (!data) return;
-        
-        // Harytlaryň hemme maglumatyny we açyş (key) ID-sini saklaýarys
-        allProducts = Object.keys(data).map(key => ({
-            id: key,
-            ...data[key]
-        }));
+        allProducts = Object.keys(data).map(key => ({ id: key, ...data[key] }));
         
         document.getElementById('slider').innerHTML = allProducts.slice(0, 5).map(h => `
             <div class="slide">
@@ -187,15 +180,14 @@
                 </div>
             </div>
         `).join('');
-
         renderProducts(allProducts);
     });
 
+    // HARYTLARY EKRANA ÇYKARMAGYŇ ESASY FUNKSIÝASY
     function renderProducts(list) {
         document.getElementById('productGrid').innerHTML = list.map(h => {
             const isLiked = likes.includes(h.name) ? 'liked' : '';
             const inCart = cart.some(item => item.name === h.name);
-            // Haryt maglumaty açylmagy üçin ID arkaly ibermek has ygtybarly
             return `
                 <div class="card">
                     <span class="like-btn ${isLiked}" onclick="toggleLike('${h.name}')">❤️</span>
@@ -210,12 +202,39 @@
         document.getElementById('cartCount').innerText = cart.length;
     }
 
-    // TÄZE: ID arkaly açmak funksiýasy (Haryt maglumaty ýitmezligi üçin)
+    // MODALY AÇMAK (Kategoriýa süzülende hem dogry işlemegi üçin ID ulanýarys)
     function openProductById(id) {
         const h = allProducts.find(p => p.id === id);
         if(h) openModal(h);
     }
 
+    function openModal(h) {
+        document.getElementById('modalImg').src = "./" + h.img;
+        document.getElementById('modalTitle').innerText = h.name;
+        document.getElementById('modalPrice').innerText = h.price + " TMT";
+        document.getElementById('modalDesc').innerText = h.desc || "Maglumat ýok.";
+        const msg = encodeURIComponent(`Salam, şu harydy aljak: ${h.name} (${h.price} TMT)`);
+        document.getElementById('waOrder').href = `https://wa.me/99371563667?text=${msg}`;
+        document.getElementById('imoOrder').href = `imo://99371563667?text=${msg}`;
+        document.getElementById('modal').style.display = 'flex';
+    }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+    // KATEGORIÝALARY SÜZMEK
+    function filterCat(cat, btn) {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if(cat === 'Hemmesi') {
+            renderProducts(allProducts);
+        } else {
+            const filtered = allProducts.filter(h => 
+                h.category && h.category.toString().toLowerCase().includes(cat.toLowerCase().trim())
+            );
+            renderProducts(filtered);
+        }
+    }
+
+    // SEBET WE LIKES
     function toggleCart(name) {
         const idx = cart.findIndex(i => i.name === name);
         if(idx > -1) cart.splice(idx, 1);
@@ -223,68 +242,53 @@
         localStorage.setItem('cart', JSON.stringify(cart));
         renderProducts(allProducts);
     }
-
     function toggleLike(name) {
         if(likes.includes(name)) likes = likes.filter(n => n !== name);
         else likes.push(name);
         localStorage.setItem('likes', JSON.stringify(likes));
         renderProducts(allProducts);
     }
-
-    // KATEGORIÝA: Süzgüç (Filter) funksiýasy düzeltildi
-    function filterCat(cat, btn) {
-        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        if(cat === 'Hemmesi') {
-            renderProducts(allProducts);
-        } else {
-            const filtered = allProducts.filter(h => h.category && h.category.toLowerCase().includes(cat.toLowerCase()));
-            renderProducts(filtered);
-        }
-    }
-
     function showCart() { renderProducts(cart); }
     function showLikes() { renderProducts(allProducts.filter(h => likes.includes(h.name))); }
     function showAll() { renderProducts(allProducts); }
 
-    function openModal(h) {
-        document.getElementById('modalImg').src = "./" + h.img;
-        document.getElementById('modalTitle').innerText = h.name;
-        document.getElementById('modalPrice').innerText = h.price + " TMT";
-        document.getElementById('modalDesc').innerText = h.desc || "Haryt barada maglumat goşulmandyr.";
-        
-        // WhatsApp we Imo zakaz linklerini sazla
-        const msg = encodeURIComponent(`Salam, men şu harydy aljak: ${h.name} (${h.price} TMT)`);
-        document.getElementById('waOrder').href = `https://wa.me/99362145678?text=${msg}`;
-        document.getElementById('imoOrder').href = `imo://99362145678?text=${msg}`;
-        
-        document.getElementById('modal').style.display = 'flex';
-    }
-    function closeModal() { document.getElementById('modal').style.display = 'none'; }
-
-    const today = new Date().toISOString().slice(0, 10);
-    db.ref('stats/totalViews').transaction(v => (v || 0) + 1);
-    db.ref('stats/totalViews').on('value', s => document.getElementById('totalViews').innerText = s.val());
-    db.ref(`stats/daily/${today}`).transaction(v => (v || 0) + 1);
-    db.ref(`stats/daily/${today}`).on('value', s => document.getElementById('todayViews').innerText = s.val() || 1);
-
+    // TESWIRLER WE JOGAPLAR
     function sendComment() {
         const n = document.getElementById('uName').value;
         const c = document.getElementById('uComm').value;
         if(n && c) { db.ref('comments').push({name:n, text:c, date: Date.now()}); document.getElementById('uComm').value=''; }
     }
-
-    // TÄZE: Teswirler we Admin jogaby bölümi
+    function replyTo(id, user) {
+        const txt = prompt(user + " üçin jogabyňyz:");
+        const name = document.getElementById('uName').value || "Müşderi";
+        if(txt) db.ref(`comments/${id}/replies`).push({name: name, text: txt, date: Date.now()});
+    }
     db.ref('comments').limitToLast(10).on('value', s => {
         const d = s.val(); if(!d) return;
-        document.getElementById('commentsDisplay').innerHTML = Object.entries(d).reverse().map(([key, i]) => `
-            <div style="background:#f9f9f9; padding:10px; border-radius:8px; margin-bottom:10px; border-left:4px solid var(--yasyl);">
+        document.getElementById('commentsDisplay').innerHTML = Object.entries(d).reverse().map(([key, i]) => {
+            let reps = "";
+            if(i.replies) {
+                reps = Object.values(i.replies).map(r => `
+                    <div style="margin:5px 0 5px 20px; padding:5px; background:#e8f5e9; border-left:3px solid var(--yasyl); border-radius:5px; font-size:13px;">
+                        <b>${r.name}:</b> ${r.text}
+                    </div>`).join('');
+            }
+            return `<div style="background:#f9f9f9; padding:10px; border-radius:8px; margin-bottom:10px; border-left:4px solid var(--yasyl);">
                 <b>${i.name}:</b> ${i.text}
-                ${i.reply ? `<div style="margin-top:5px; padding:5px; background:#e8f5e9; border-radius:5px; font-size:13px; color:var(--bag);"><b>Admin:</b> ${i.reply}</div>` : ''}
-            </div>
-        `).join('');
+                <div style="text-align:right;"><span onclick="replyTo('${key}','${i.name}')" style="color:var(--bag); font-size:11px; cursor:pointer; font-weight:bold;">[ Jogap ýaz ]</span></div>
+                ${reps}
+            </div>`;
+        }).join('');
     });
 
+    // STATISTIKA
+    const today = new Date().toISOString().slice(0, 10);
+    db.ref('stats/totalViews').transaction(v => (v || 0) + 1);
+    db.ref('stats/totalViews').on('value', s => document.getElementById('totalViews').innerText = s.val() || 0);
+    db.ref(`stats/daily/${today}`).transaction(v => (v || 0) + 1);
+    db.ref(`stats/daily/${today}`).on('value', s => document.getElementById('todayViews').innerText = s.val() || 0);
+
+    // SLIDERIŇ AÝLANMAGY
     let si = 0; setInterval(() => {
         const s = document.getElementById('slider');
         if(s && s.children.length > 1) {
