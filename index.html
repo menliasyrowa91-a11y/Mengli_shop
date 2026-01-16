@@ -59,8 +59,7 @@
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
         .modal-box { background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
         .close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; }
-        #modalDesc { color: #444; line-height: 1.6; font-size: 15px; text-align: left; margin-top: 15px; white-space: pre-line; }
-
+        
         .contact-btns { display: flex; gap: 10px; margin-top: 15px; }
         .contact-link { flex: 1; text-decoration: none; color: white; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; text-align: center; }
         .wa-btn { background: #25D366; }
@@ -71,6 +70,10 @@
         .cart-count { position: absolute; top: -8px; right: -5px; background: var(--gyp); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
         
         footer { text-align: center; padding: 20px; color: #777; font-size: 14px; margin-bottom: 70px; }
+
+        /* Teswir stilleri */
+        .admin-tag { background: var(--bag); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
+        .client-tag { color: #888; font-size: 11px; margin-left: 5px; }
     </style>
 </head>
 <body>
@@ -89,9 +92,9 @@
 
     <div class="categories" id="catBar">
         <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
-        <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg serişdeleri</button>
-        <button class="cat-btn" onclick="filterCat('Arassalyk', this)">Arassalyk serişdeleri</button>
-        <button class="cat-btn" onclick="filterCat('Ýuwujy', this)">Ýuwujy serişdeleri</button>
+        <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg</button>
+        <button class="cat-btn" onclick="filterCat('Arassalyk', this)">Arassalyk</button>
+        <button class="cat-btn" onclick="filterCat('Ýuwujy', this)">Ýuwujy</button>
         <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
     </div>
 
@@ -106,11 +109,6 @@
             <p style="margin:0; font-size:12px; color:#777;">Şu gün giren</p>
             <h4 id="todayViews">0</h4>
         </div>
-    </div>
-
-    <div style="padding: 15px; display: flex; gap: 10px;">
-        <a href="https://wa.me/99362145678" class="contact-link wa-btn" style="flex:1;">WhatsApp Hat ýaz</a>
-        <a href="imo://99362145678" class="contact-link imo-btn" style="flex:1;">Imo Hat ýaz</a>
     </div>
 
     <div style="background: white; padding: 20px; margin: 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -131,7 +129,7 @@
         <h2 id="modalTitle" style="margin:20px 0 5px 0; font-size:22px;"></h2>
         <h3 id="modalPrice" style="color:var(--yasyl); margin-bottom:15px;"></h3>
         <hr style="border:0; border-top:1px solid #eee;">
-        <p id="modalDesc"></p>
+        <p id="modalDesc" style="color: #444; line-height: 1.6; font-size: 15px; text-align: left; margin-top: 15px; white-space: pre-line;"></p>
         <div class="contact-btns">
             <a id="waOrder" href="#" class="contact-link wa-btn">WA Zakaz</a>
             <a id="imoOrder" href="#" class="contact-link imo-btn">Imo Zakaz</a>
@@ -165,7 +163,6 @@
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let likes = JSON.parse(localStorage.getItem('likes')) || [];
 
-    // HARYTLARY ALMAK WE SLIDER
     db.ref('products').on('value', snap => {
         const data = snap.val();
         if (!data) return;
@@ -183,7 +180,6 @@
         renderProducts(allProducts);
     });
 
-    // HARYTLARY EKRANA ÇYKARMAGYŇ ESASY FUNKSIÝASY
     function renderProducts(list) {
         document.getElementById('productGrid').innerHTML = list.map(h => {
             const isLiked = likes.includes(h.name) ? 'liked' : '';
@@ -202,7 +198,6 @@
         document.getElementById('cartCount').innerText = cart.length;
     }
 
-    // MODALY AÇMAK (Kategoriýa süzülende hem dogry işlemegi üçin ID ulanýarys)
     function openProductById(id) {
         const h = allProducts.find(p => p.id === id);
         if(h) openModal(h);
@@ -213,28 +208,23 @@
         document.getElementById('modalTitle').innerText = h.name;
         document.getElementById('modalPrice').innerText = h.price + " TMT";
         document.getElementById('modalDesc').innerText = h.desc || "Maglumat ýok.";
-        const msg = encodeURIComponent(`Salam, şu harydy aljak: ${h.name} (${h.price} TMT)`);
-        document.getElementById('waOrder').href = `https://wa.me/99371563667?text=${msg}`;
-        document.getElementById('imoOrder').href = `imo://99371563667?text=${msg}`;
+        const msg = encodeURIComponent(`Salam, şu harydy aljak: ${h.name}`);
+        document.getElementById('waOrder').href = `https://wa.me/99362145678?text=${msg}`;
+        document.getElementById('imoOrder').href = `imo://99362145678?text=${msg}`;
         document.getElementById('modal').style.display = 'flex';
     }
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
 
-    // KATEGORIÝALARY SÜZMEK
     function filterCat(cat, btn) {
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        if(cat === 'Hemmesi') {
-            renderProducts(allProducts);
-        } else {
-            const filtered = allProducts.filter(h => 
-                h.category && h.category.toString().toLowerCase().includes(cat.toLowerCase().trim())
-            );
+        if(cat === 'Hemmesi') { renderProducts(allProducts); } 
+        else {
+            const filtered = allProducts.filter(h => h.category && h.category.toString().toLowerCase().includes(cat.toLowerCase()));
             renderProducts(filtered);
         }
     }
 
-    // SEBET WE LIKES
     function toggleCart(name) {
         const idx = cart.findIndex(i => i.name === name);
         if(idx > -1) cart.splice(idx, 1);
@@ -242,53 +232,75 @@
         localStorage.setItem('cart', JSON.stringify(cart));
         renderProducts(allProducts);
     }
+
     function toggleLike(name) {
         if(likes.includes(name)) likes = likes.filter(n => n !== name);
         else likes.push(name);
         localStorage.setItem('likes', JSON.stringify(likes));
         renderProducts(allProducts);
     }
+
     function showCart() { renderProducts(cart); }
     function showLikes() { renderProducts(allProducts.filter(h => likes.includes(h.name))); }
     function showAll() { renderProducts(allProducts); }
 
-    // TESWIRLER WE JOGAPLAR
+    // --- TESWIRLERIŇ ADMIN/MÜŞDERI SAZLAMASY ---
+
+    function getTag(name) {
+        if (name.toLowerCase() === 'admin') {
+            return '<span class="admin-tag">ADMIN</span>';
+        } else {
+            return '<span class="client-tag">(Müşderi)</span>';
+        }
+    }
+
     function sendComment() {
-        const n = document.getElementById('uName').value;
-        const c = document.getElementById('uComm').value;
-        if(n && c) { db.ref('comments').push({name:n, text:c, date: Date.now()}); document.getElementById('uComm').value=''; }
+        const n = document.getElementById('uName').value.trim();
+        const c = document.getElementById('uComm').value.trim();
+        if(n && c) { 
+            db.ref('comments').push({name:n, text:c, date: Date.now()}); 
+            document.getElementById('uComm').value=''; 
+        } else {
+            alert("Adyňyzy we teswiriňizi ýazyň!");
+        }
     }
+
     function replyTo(id, user) {
+        const myName = document.getElementById('uName').value.trim();
+        if(!myName) { alert("Ilki 'Adyňyz' ýerine adyňyzy (ýa-da Admin) ýazyň!"); return; }
+        
         const txt = prompt(user + " üçin jogabyňyz:");
-        const name = document.getElementById('uName').value || "Müşderi";
-        if(txt) db.ref(`comments/${id}/replies`).push({name: name, text: txt, date: Date.now()});
+        if(txt) {
+            db.ref(`comments/${id}/replies`).push({name: myName, text: txt, date: Date.now()});
+        }
     }
-    db.ref('comments').limitToLast(10).on('value', s => {
+
+    db.ref('comments').on('value', s => {
         const d = s.val(); if(!d) return;
         document.getElementById('commentsDisplay').innerHTML = Object.entries(d).reverse().map(([key, i]) => {
             let reps = "";
             if(i.replies) {
                 reps = Object.values(i.replies).map(r => `
-                    <div style="margin:5px 0 5px 20px; padding:5px; background:#e8f5e9; border-left:3px solid var(--yasyl); border-radius:5px; font-size:13px;">
-                        <b>${r.name}:</b> ${r.text}
+                    <div style="margin:5px 0 5px 20px; padding:8px; background:${r.name.toLowerCase() === 'admin' ? '#e8f5e9' : '#fff'}; border-left:3px solid var(--yasyl); border-radius:5px; font-size:13px; border: 1px solid #eee;">
+                        <b>${r.name}</b> ${getTag(r.name)}: ${r.text}
                     </div>`).join('');
             }
-            return `<div style="background:#f9f9f9; padding:10px; border-radius:8px; margin-bottom:10px; border-left:4px solid var(--yasyl);">
-                <b>${i.name}:</b> ${i.text}
+            return `<div style="background:${i.name.toLowerCase() === 'admin' ? '#f1f8e9' : '#f9f9f9'}; padding:10px; border-radius:8px; margin-bottom:10px; border-left:4px solid var(--yasyl); border: 1px solid #eee;">
+                <b>${i.name}</b> ${getTag(i.name)}: ${i.text}
                 <div style="text-align:right;"><span onclick="replyTo('${key}','${i.name}')" style="color:var(--bag); font-size:11px; cursor:pointer; font-weight:bold;">[ Jogap ýaz ]</span></div>
                 ${reps}
             </div>`;
         }).join('');
     });
 
-    // STATISTIKA
+    // Statistika
     const today = new Date().toISOString().slice(0, 10);
     db.ref('stats/totalViews').transaction(v => (v || 0) + 1);
-    db.ref('stats/totalViews').on('value', s => document.getElementById('totalViews').innerText = s.val() || 0);
+    db.ref('stats/totalViews').on('value', s => document.getElementById('totalViews').innerText = s.val());
     db.ref(`stats/daily/${today}`).transaction(v => (v || 0) + 1);
-    db.ref(`stats/daily/${today}`).on('value', s => document.getElementById('todayViews').innerText = s.val() || 0);
+    db.ref(`stats/daily/${today}`).on('value', s => document.getElementById('todayViews').innerText = s.val() || 1);
 
-    // SLIDERIŇ AÝLANMAGY
+    // Slider
     let si = 0; setInterval(() => {
         const s = document.getElementById('slider');
         if(s && s.children.length > 1) {
