@@ -22,6 +22,7 @@
 
         .container { max-width: 1200px; margin: auto; padding-top: 115px; }
         
+        /* Slider */
         .slider-container { 
             width: 92%; max-width: 800px; margin: 20px auto;
             height: 160px; overflow: hidden; border-radius: 12px; 
@@ -32,65 +33,59 @@
         .slide img { width: 40%; height: 100%; object-fit: contain; padding: 10px; }
         .slide-info { width: 60%; padding: 15px; text-align: left; }
 
+        /* Categories & Sort */
         .categories { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: white; position: sticky; top: 75px; z-index: 999; border-bottom: 1px solid #eee; scrollbar-width: none; }
         .categories::-webkit-scrollbar { display: none; }
         .cat-btn { background: #e8f5e9; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; color: var(--bag); cursor: pointer; white-space: nowrap; }
         .cat-btn.active { background: var(--bag); color: white; }
+        .sort-bar { padding: 10px 15px; background: #f1f3ee; display: flex; align-items: center; gap: 10px; font-size: 13px; color: #555; }
+        .sort-select { border: 1px solid #ccc; padding: 5px; border-radius: 5px; color: var(--bag); font-weight: bold; outline: none; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px; align-items: stretch; }
+        /* Product Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 12px; }
         @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
-        
-        .card { 
-            background: var(--kard); border-radius: 12px; padding: 12px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; 
-            position: relative; display: flex; flex-direction: column; 
-            justify-content: space-between; height: 100%; box-sizing: border-box;
-        }
+        .card { background: var(--kard); border-radius: 12px; padding: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
         .card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; cursor: pointer; }
-        .card-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; margin: 10px 0; }
-        .like-btn { position: absolute; top: 12px; right: 12px; font-size: 20px; cursor: pointer; color: #ccc; }
+        .like-btn { position: absolute; top: 12px; right: 12px; font-size: 20px; cursor: pointer; color: #ccc; z-index: 10; }
         .like-btn.liked { color: var(--gyp); }
-        .add-btn { background: var(--bag); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .remove-btn { background: var(--gyp); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .add-btn { background: var(--bag); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .remove-btn { background: var(--gyp); color: white; border: none; width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
 
-        .stats-box { background: white; padding: 20px; margin: 15px; border-radius: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .stat-item h4 { margin: 5px 0; color: var(--bag); font-size: 18px; }
+        /* Stickers */
+        .sticker { position: absolute; top: 10px; left: 10px; color: white; font-size: 9px; padding: 3px 7px; border-radius: 5px; font-weight: bold; z-index: 5; text-transform: uppercase; }
+        .s-taze { background: var(--yasyl); }
+        .s-yok { background: var(--gyp); }
 
-        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-box { background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
+        /* Sebet Jem Bahasy */
+        .total-box { background: var(--bag); color: white; padding: 15px; margin: 15px; border-radius: 12px; text-align: center; }
+        .order-btns { display: flex; gap: 10px; margin-top: 10px; }
+        .order-btn { flex:1; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; font-size: 14px; }
+        .wa-order { background: #25D366; }
+        .imo-order { background: #00a1ff; }
+
+        /* Modals & Popups */
+        #modal, #welcomePopup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-box, .welcome-box { background: white; padding: 25px; border-radius: 20px; width: 90%; max-width: 450px; position: relative; max-height: 85vh; overflow-y: auto; }
         .close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; }
-        
-        .contact-btns { display: flex; gap: 10px; margin-top: 15px; }
-        .contact-link { flex: 1; text-decoration: none; color: white; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; text-align: center; }
-        .wa-btn { background: #25D366; }
-        .imo-btn { background: #00a1ff; }
+
+        /* Comments */
+        .admin-tag { background: var(--bag); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
+        .client-tag { color: #888; font-size: 11px; margin-left: 5px; }
+        .reply-box { margin: 8px 0 8px 25px; padding: 8px; background: #fff; border-left: 3px solid var(--yasyl); border-radius: 5px; font-size: 13px; border: 1px solid #eee; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #eee; z-index: 1000; }
         .nav-item { text-align: center; font-size: 13px; cursor: pointer; color: #555; position: relative; }
         .cart-count { position: absolute; top: -8px; right: -5px; background: var(--gyp); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; }
-        
-        footer { text-align: center; padding: 20px; color: #777; font-size: 14px; margin-bottom: 70px; }
-
-        .admin-tag { background: var(--bag); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
-        .client-tag { color: #888; font-size: 11px; margin-left: 5px; }
-
-        /* Welcome Popup Style */
-        #welcomePopup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; align-items: center; justify-content: center; }
-        .welcome-box { background: white; padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
 <div id="welcomePopup">
-    <div class="welcome-box">
+    <div class="welcome-box" style="text-align: center;">
         <div style="font-size: 50px;">👋</div>
-        <h2 style="color: var(--bag); margin-top: 10px;">Salam!</h2>
-        <p style="color: #444; line-height: 1.5; font-size: 16px;">
-            Mähriban müşderi! Sizi online dükanymyzda hoş gördük! 
-            Göwnüňize ýaran harytlaryňyzy dükanymyzdan tapyp bilersiňiz diýip umyt edýäris. 
-            <br><br><b>Haýryny görüň!!!</b>
-        </p>
-        <button onclick="closeWelcome()" style="background: var(--bag); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px;">Dowam et</button>
+        <h2 style="color: var(--bag);">Salam!</h2>
+        <p>Mähriban müşderi! Sizi online dükanymyzda hoş gördük! Sargytlaryňyzy etrap içine arkaýyn edip bilersiňiz. <br><br><b>Haýryny görüň!!!</b></p>
+        <button onclick="closeWelcome()" style="background: var(--bag); color: white; border: none; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer;">Dowam et</button>
     </div>
 </div>
 
@@ -100,62 +95,63 @@
 </header>
 
 <div class="container">
-    <div class="slider-container">
-        <div class="slides" id="slider">
-            <p style="text-align:center; width:100%; padding-top:65px;">Ýüklenýär...</p>
-        </div>
-    </div>
+    <div class="slider-container"><div class="slides" id="slider"></div></div>
 
     <div class="categories" id="catBar">
         <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
-        <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg</button>
-        <button class="cat-btn" onclick="filterCat('Arassalyk', this)">Arassalyk</button>
-        <button class="cat-btn" onclick="filterCat('Ýuwujy', this)">Ýuwujy</button>
+        <button class="cat-btn" onclick="filterCat('Ideg Ideg serişdeleri', this)">Ideg serişdeleri</button>
+        <button class="cat-btn" onclick="filterCat('Arassalaýyş serişdeleri', this)">Arassalaýyş serişdeleri</button>
+        <button class="cat-btn" onclick="filterCat('Ýuwujy serişdeler', this)">Ýuwujy serişdeler</button>
         <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
+    </div>
+
+    <div class="sort-bar">
+        <span>Süzgüç:</span>
+        <select class="sort-select" onchange="sortProducts(this.value)">
+            <option value="new">Täzeden könä</option>
+            <option value="cheap">Arzandan gymmada</option>
+            <option value="expensive">Gymmatdan arzana</option>
+        </select>
+    </div>
+
+    <div id="cartSummary" style="display:none;">
+        <div class="total-box">
+            <h3 style="margin:0;">Jemi baha: <span id="totalPriceDisplay">0</span> TMT</h3>
+            <div class="order-btns">
+                <a id="waOrderBtn" href="#" class="order-btn wa-order">WhatsApp Zakaz</a>
+                <a id="imoOrderBtn" href="#" class="order-btn imo-order">Imo Zakaz</a>
+            </div>
+        </div>
     </div>
 
     <div id="productGrid" class="grid"></div>
 
-    <div class="stats-box">
-        <div class="stat-item">
-            <p style="margin:0; font-size:12px; color:#777;">Jemi giriş</p>
-            <h4 id="totalViews">0</h4>
-        </div>
-        <div class="stat-item">
-            <p style="margin:0; font-size:12px; color:#777;">Şu gün giren</p>
-            <h4 id="todayViews">0</h4>
-        </div>
-    </div>
-
     <div style="background: white; padding: 20px; margin: 15px; border-radius: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
         <h3>💬 Teswirler</h3>
         <div id="commentsDisplay"></div>
+        <hr>
         <input type="text" id="uName" placeholder="Adyňyz..." style="width:100%; padding:10px; margin-top:10px; border-radius:8px; border:1px solid #ddd; box-sizing: border-box;">
         <textarea id="uComm" placeholder="Teswiriňiz..." style="width:100%; padding:10px; margin-top:10px; border-radius:8px; border:1px solid #ddd; box-sizing: border-box;"></textarea>
         <button onclick="sendComment()" style="width:100%; background:var(--bag); color:white; border:none; padding:12px; margin-top:10px; border-radius:8px; font-weight:bold; cursor:pointer;">Ugrat</button>
     </div>
 </div>
 
-<footer>&copy; 2026 Garakel E-Dükan</footer>
-
 <div id="modal">
     <div class="modal-box">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <img id="modalImg" style="width:100%; border-radius:15px; max-height:280px; object-fit:contain; background:#f9f9f9;">
-        <h2 id="modalTitle" style="margin:20px 0 5px 0; font-size:22px;"></h2>
-        <h3 id="modalPrice" style="color:var(--yasyl); margin-bottom:15px;"></h3>
-        <hr style="border:0; border-top:1px solid #eee;">
-        <p id="modalDesc" style="color: #444; line-height: 1.6; font-size: 15px; text-align: left; margin-top: 15px; white-space: pre-line;"></p>
-        <div class="contact-btns">
-            <a id="waOrder" href="#" class="contact-link wa-btn">WA Zakaz</a>
-            <a id="imoOrder" href="#" class="contact-link imo-btn">Imo Zakaz</a>
+        <h2 id="modalTitle" style="margin:20px 0 5px 0;"></h2>
+        <h3 id="modalPrice" style="color:var(--yasyl);"></h3>
+        <p id="modalDesc" style="color:#444; white-space:pre-line;"></p>
+        <div class="order-btns">
+            <a id="waSingle" href="#" class="order-btn wa-order">WhatsApp Zakaz</a>
+            <a id="imoSingle" href="#" class="order-btn imo-order">Imo Zakaz</a>
         </div>
     </div>
 </div>
 
 <div class="bottom-nav">
     <div class="nav-item" onclick="showAll()">🏠<br>Baş sahypa</div>
-    <div class="nav-item" onclick="showLikes()">❤️<br>Halanlarym</div>
     <div class="nav-item" onclick="showCart()">🛒<br>Sebedim <span class="cart-count" id="cartCount">0</span></div>
 </div>
 
@@ -175,148 +171,132 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let allProducts = [];
+    let allProducts = [], displayedProducts = [];
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let likes = JSON.parse(localStorage.getItem('likes')) || [];
 
-    // --- WELCOME POPUP FUNKSIÝASY ---
     function checkWelcome() {
-        const lastVisit = localStorage.getItem('lastWelcomeDate');
+        const last = localStorage.getItem('lastWelcomeDate');
         const today = new Date().toISOString().slice(0, 10);
-        
-        if (lastVisit !== today) {
-            document.getElementById('welcomePopup').style.display = 'flex';
-        }
+        if (last !== today) document.getElementById('welcomePopup').style.display = 'flex';
     }
     function closeWelcome() {
-        const today = new Date().toISOString().slice(0, 10);
-        localStorage.setItem('lastWelcomeDate', today);
+        localStorage.setItem('lastWelcomeDate', new Date().toISOString().slice(0, 10));
         document.getElementById('welcomePopup').style.display = 'none';
     }
     window.onload = checkWelcome;
 
     db.ref('products').on('value', snap => {
-        const data = snap.val();
-        if (!data) return;
+        const data = snap.val(); if (!data) return;
         allProducts = Object.keys(data).map(key => ({ id: key, ...data[key] }));
         
-        document.getElementById('slider').innerHTML = allProducts.slice(0, 5).map(h => `
+        document.getElementById('slider').innerHTML = allProducts.slice(-5).reverse().map(h => `
             <div class="slide">
                 <img src="./${h.img}" onerror="this.src='https://via.placeholder.com/150'">
-                <div class="slide-info">
-                    <h3>${h.name}</h3>
-                    <p>${h.price} TMT</p>
-                </div>
-            </div>
-        `).join('');
-        renderProducts(allProducts);
+                <div class="slide-info"><h3>${h.name}</h3><p>${h.price} TMT</p></div>
+            </div>`).join('');
+        
+        displayedProducts = [...allProducts].reverse();
+        renderProducts(displayedProducts);
     });
 
-    function renderProducts(list) {
+    function renderProducts(list, isCartView = false) {
+        let total = 0;
         document.getElementById('productGrid').innerHTML = list.map(h => {
-            const isLiked = likes.includes(h.name) ? 'liked' : '';
             const inCart = cart.some(item => item.name === h.name);
+            if(isCartView) total += parseFloat(h.price || 0);
+            
+            let sticker = "";
+            if(h.status === "taze") sticker = '<span class="sticker s-taze">Täze</span>';
+            else if(h.status === "yok") sticker = '<span class="sticker s-yok">Elde ýok</span>';
+
             return `
-                <div class="card">
-                    <span class="like-btn ${isLiked}" onclick="toggleLike('${h.name}')">❤️</span>
+                <div class="card" style="${h.status === 'yok' ? 'opacity:0.7' : ''}">
+                    ${sticker}
                     <img src="./${h.img}" onclick='openProductById("${h.id}")' onerror="this.src='https://via.placeholder.com/150'">
-                    <div class="card-content">
-                        <h4 style="margin:5px 0; font-size:14px;">${h.name}</h4>
-                        <div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div>
-                    </div>
-                    ${inCart ? `<button class="remove-btn" onclick="toggleCart('${h.name}')">Aýyr</button>` : `<button class="add-btn" onclick="toggleCart('${h.name}')">Sebede goş</button>`}
+                    <h4 style="font-size:14px; margin:10px 0 5px 0;">${h.name}</h4>
+                    <div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div>
+                    ${h.status === 'yok' 
+                        ? `<button class="add-btn" style="background:#ccc; cursor:not-allowed;" disabled>Elde ýok</button>`
+                        : (inCart ? `<button class="remove-btn" onclick="toggleCart('${h.name}')">Aýyr</button>` : `<button class="add-btn" onclick="toggleCart('${h.name}')">Sebede goş</button>`)
+                    }
                 </div>`;
         }).join('');
+
         document.getElementById('cartCount').innerText = cart.length;
+        if(isCartView && cart.length > 0) {
+            document.getElementById('cartSummary').style.display = 'block';
+            document.getElementById('totalPriceDisplay').innerText = total;
+            const msg = encodeURIComponent("Salam Garakel! Zakazlarym:\n" + cart.map(i => "- " + i.name + " (" + i.price + " TMT)").join("\n") + "\n\n*Jemi: " + total + " TMT*");
+            document.getElementById('waOrderBtn').href = "https://wa.me/99371563667?text=" + msg;
+            document.getElementById('imoOrderBtn').href = "imo://99371563667?text=" + msg;
+        } else {
+            document.getElementById('cartSummary').style.display = 'none';
+        }
     }
 
     function openProductById(id) {
         const h = allProducts.find(p => p.id === id);
-        if(h) openModal(h);
-    }
-
-    function openModal(h) {
+        if(!h) return;
         document.getElementById('modalImg').src = "./" + h.img;
         document.getElementById('modalTitle').innerText = h.name;
         document.getElementById('modalPrice').innerText = h.price + " TMT";
         document.getElementById('modalDesc').innerText = h.desc || "Maglumat ýok.";
-        const msg = encodeURIComponent(`Salam, şu harydy aljak: ${h.name}`);
-        document.getElementById('waOrder').href = `https://wa.me/99362145678?text=${msg}`;
-        document.getElementById('imoOrder').href = `imo://99362145678?text=${msg}`;
+        const msg = encodeURIComponent("Salam, şu harydy aljak: " + h.name);
+        document.getElementById('waSingle').href = "https://wa.me/99371563667?text=" + msg;
+        document.getElementById('imoSingle').href = "imo://99371563667?text=" + msg;
         document.getElementById('modal').style.display = 'flex';
     }
     function closeModal() { document.getElementById('modal').style.display = 'none'; }
-
-    function filterCat(cat, btn) {
-        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        if(cat === 'Hemmesi') { renderProducts(allProducts); } 
-        else {
-            const filtered = allProducts.filter(h => h.category && h.category.toString().toLowerCase().includes(cat.toLowerCase()));
-            renderProducts(filtered);
-        }
-    }
 
     function toggleCart(name) {
         const idx = cart.findIndex(i => i.name === name);
         if(idx > -1) cart.splice(idx, 1);
         else cart.push(allProducts.find(h => h.name === name));
         localStorage.setItem('cart', JSON.stringify(cart));
-        renderProducts(allProducts);
+        renderProducts(displayedProducts, document.getElementById('cartSummary').style.display === 'block');
     }
 
-    function toggleLike(name) {
-        if(likes.includes(name)) likes = likes.filter(n => n !== name);
-        else likes.push(name);
-        localStorage.setItem('likes', JSON.stringify(likes));
-        renderProducts(allProducts);
+    function showCart() { renderProducts(cart, true); }
+    function showAll() { displayedProducts = [...allProducts].reverse(); renderProducts(displayedProducts, false); }
+
+    function sortProducts(type) {
+        if (type === 'new') displayedProducts.sort((a, b) => b.id.localeCompare(a.id));
+        else if (type === 'cheap') displayedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        else if (type === 'expensive') displayedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        renderProducts(displayedProducts);
     }
 
-    function showCart() { renderProducts(cart); }
-    function showLikes() { renderProducts(allProducts.filter(h => likes.includes(h.name))); }
-    function showAll() { renderProducts(allProducts); }
-
-    function getTag(name) {
-        if (name.toLowerCase() === 'admin') return '<span class="admin-tag">ADMIN</span>';
-        return '<span class="client-tag">(Müşderi)</span>';
+    function filterCat(cat, btn) {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        displayedProducts = (cat === 'Hemmesi') ? [...allProducts].reverse() : allProducts.filter(h => h.category && h.category.toString().toLowerCase().includes(cat.toLowerCase()));
+        renderProducts(displayedProducts);
     }
 
+    // Comments & Replies
+    function getTag(name) { return name.toLowerCase() === 'admin' ? '<span class="admin-tag">ADMIN</span>' : '<span class="client-tag">(Müşderi)</span>'; }
     function sendComment() {
-        const n = document.getElementById('uName').value.trim();
-        const c = document.getElementById('uComm').value.trim();
+        const n = document.getElementById('uName').value.trim(), c = document.getElementById('uComm').value.trim();
         if(n && c) { db.ref('comments').push({name:n, text:c, date: Date.now()}); document.getElementById('uComm').value=''; }
     }
-
     function replyTo(id, user) {
         const myName = document.getElementById('uName').value.trim();
-        if(!myName) { alert("Ilki 'Adyňyz' ýerine adyňyzy ýazyň!"); return; }
+        if(!myName) { alert("Ilki adyňyzy ýazyň!"); return; }
         const txt = prompt(user + " üçin jogabyňyz:");
         if(txt) db.ref(`comments/${id}/replies`).push({name: myName, text: txt, date: Date.now()});
     }
-
     db.ref('comments').on('value', s => {
         const d = s.val(); if(!d) return;
         document.getElementById('commentsDisplay').innerHTML = Object.entries(d).reverse().map(([key, i]) => {
-            let reps = "";
-            if(i.replies) {
-                reps = Object.values(i.replies).map(r => `
-                    <div style="margin:5px 0 5px 20px; padding:8px; background:${r.name.toLowerCase() === 'admin' ? '#e8f5e9' : '#fff'}; border-left:3px solid var(--yasyl); border-radius:5px; font-size:13px; border: 1px solid #eee;">
-                        <b>${r.name}</b> ${getTag(r.name)}: ${r.text}
-                    </div>`).join('');
-            }
-            return `<div style="background:${i.name.toLowerCase() === 'admin' ? '#f1f8e9' : '#f9f9f9'}; padding:10px; border-radius:8px; margin-bottom:10px; border-left:4px solid var(--yasyl); border: 1px solid #eee;">
+            let reps = i.replies ? Object.values(i.replies).map(r => `<div class="reply-box" style="background:${r.name.toLowerCase()==='admin'?'#e8f5e9':'#fff'}"><b>${r.name}</b> ${getTag(r.name)}: ${r.text}</div>`).join('') : "";
+            return `<div style="background:${i.name.toLowerCase()==='admin'?'#f1f8e9':'#f9f9f9'}; padding:10px; border-radius:8px; margin-bottom:10px; border: 1px solid #eee; border-left:4px solid var(--yasyl);">
                 <b>${i.name}</b> ${getTag(i.name)}: ${i.text}
                 <div style="text-align:right;"><span onclick="replyTo('${key}','${i.name}')" style="color:var(--bag); font-size:11px; cursor:pointer; font-weight:bold;">[ Jogap ýaz ]</span></div>
                 ${reps}
             </div>`;
         }).join('');
     });
-
-    const todayDate = new Date().toISOString().slice(0, 10);
-    db.ref('stats/totalViews').transaction(v => (v || 0) + 1);
-    db.ref('stats/totalViews').on('value', s => document.getElementById('totalViews').innerText = s.val());
-    db.ref(`stats/daily/${todayDate}`).transaction(v => (v || 0) + 1);
-    db.ref(`stats/daily/${todayDate}`).on('value', s => document.getElementById('todayViews').innerText = s.val() || 1);
 
     let si = 0; setInterval(() => {
         const s = document.getElementById('slider');
