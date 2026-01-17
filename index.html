@@ -6,33 +6,31 @@
     <title>🏠 GARAKEL E-DÜKAN</title>
     <style>
         :root { --fon: #0a0a0a; --panel: #161616; --bag: #1b5e20; --altyn: #d4af37; --tekst: #eeeeee; --gyp: #ff5252; }
-        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--fon); color: var(--tekst); padding-bottom: 110px; }
-        
+        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--fon); color: var(--tekst); padding-bottom: 100px; }
         .delivery-note { background: var(--bag); color: white; padding: 7px 0; font-size: 13px; font-weight: bold; text-align: center; overflow: hidden; white-space: nowrap; }
         header { position: sticky; top: 0; width: 100%; background: #000; color: var(--altyn); text-align: center; padding: 15px 0; z-index: 1001; border-bottom: 1px solid #222; }
-
         .container { max-width: 600px; margin: auto; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
         .card { background: var(--panel); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #222; cursor: pointer; }
         .img-box { width: 100%; height: 140px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .card img { max-width: 100%; max-height: 100%; object-fit: contain; }
-
+        
         /* Teswir Dizaýny */
         .comment-section { background: var(--panel); margin: 15px 10px; padding: 15px; border-radius: 15px; border: 1px solid #333; }
-        .comment-box { background: #000; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--bag); text-align: left; }
-        .reply-box { margin-left: 15px; margin-top: 8px; padding: 8px; background: #1a1a1a; border-radius: 8px; border-left: 2px solid var(--altyn); font-size: 12px; color: #aaa; }
+        .comment-box { background: #000; padding: 10px; border-radius: 8px; margin-bottom: 8px; border-left: 3px solid var(--bag); text-align: left; }
+        .reply-box { margin-left: 15px; margin-top: 5px; padding: 8px; background: #1a1a1a; border-radius: 8px; border-left: 2px solid var(--altyn); font-size: 12px; color: #aaa; }
         
+        /* Inputlar */
         .input-group { margin-top: 15px; display: flex; flex-direction: column; gap: 8px; }
         .input-group input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
         .btn-main { background: var(--bag); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
 
         /* Modal */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: none; overflow-y: auto; }
-        .modal-content { background: var(--panel); width: 90%; max-width: 450px; margin: 30px auto; padding: 20px; border-radius: 20px; border: 1px solid #333; text-align: center; }
-
+        .modal-content { background: var(--panel); width: 90%; max-width: 450px; margin: 30px auto; padding: 20px; border-radius: 20px; border: 1px solid #333; }
+        
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; padding: 15px 0; border-top: 1px solid #222; z-index: 1001; }
-        .nav-item { flex: 1; text-align: center; color: #888; font-size: 12px; position: relative; cursor: pointer; }
-        .badge { position: absolute; top: -8px; right: 30%; background: var(--gyp); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+        .nav-item { flex: 1; text-align: center; color: #888; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -41,7 +39,6 @@
 <header><h1>GARAKEL E-DÜKAN</h1></header>
 
 <div class="container" id="homeView">
-    <div style="padding:12px;"><input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="search()" style="width:100%; padding:12px; background:var(--panel); border:1px solid #333; color:white; border-radius:10px; box-sizing:border-box;"></div>
     <div id="productGrid" class="grid"></div>
 
     <div class="comment-section">
@@ -55,44 +52,31 @@
     </div>
 </div>
 
-<div class="container" id="cartView" style="display:none; padding:15px;">
-    <div style="background:var(--panel); padding:20px; border-radius:20px; border:1px solid #333;">
-        <h2 style="color:var(--altyn)">🛒 Sebedim</h2>
-        <div id="cartItemsList"></div>
-        <div style="font-size:22px; margin:20px 0; display:flex; justify-content:space-between; font-weight:bold;">
-            <span>Jemi:</span><span><span id="totalPrice">0</span> TMT</span>
-        </div>
-        <button class="btn-main" style="background:#075E54;" onclick="orderWhatsApp()">WhatsApp Sargyt</button>
-        <button class="btn-main" style="background:#333; margin-top:10px;" onclick="showHome()">← Yza</button>
-    </div>
-</div>
-
 <div id="itemModal" class="modal">
     <div class="modal-content">
-        <img id="m-img" style="width:100%; height:200px; object-fit:contain; border-radius:12px; background:#000;">
+        <img id="m-img" style="width:100%; height:200px; object-fit:contain; background:#000; border-radius:12px;">
         <h2 id="m-name" style="color:var(--altyn); margin:15px 0 5px;"></h2>
         <div id="m-price" style="font-size:20px; font-weight:bold; margin-bottom:10px;"></div>
-        
-        <div id="m-desc" style="font-size:15px; color:#ddd; text-align:left; margin:15px 0; background:#000; padding:10px; border-radius:8px; line-height:1.4;"></div>
+        <div id="m-desc" style="font-size:14px; color:#ddd; text-align:left; margin-bottom:15px; background:#000; padding:10px; border-radius:8px;"></div>
         
         <div id="m-btn-area"></div>
 
-        <div class="comment-section" style="margin:20px 0 0 0; padding:10px 0; border:none; background:none;">
+        <div class="comment-section" style="margin-top:20px; padding:0; background:none; border:none;">
             <h4 style="color:var(--altyn); text-align:left;">Teswirler</h4>
             <div id="itemCommentsArea"></div>
             <div class="input-group">
                 <input type="text" id="iName" placeholder="Adyňyz...">
-                <input type="text" id="iText" placeholder="Teswir..." style="font-size:12px;">
-                <button class="btn-main" id="itemCommentBtn" style="padding:8px;">Ugrat</button>
+                <input type="text" id="iText" placeholder="Teswir ýaz...">
+                <button class="btn-main" id="itemCommentBtn">OK</button>
             </div>
         </div>
-        <button class="btn-main" style="background:#333; margin-top:20px;" onclick="closeModal()">← YZA</button>
+        <button class="btn-main" style="background:#333; margin-top:15px;" onclick="closeModal()">← Yza</button>
     </div>
 </div>
 
 <div class="bottom-nav">
-    <div class="nav-item" onclick="showHome()">🏠<br>Baş sahypa</div>
-    <div class="nav-item" onclick="showCart()">🛒<br>Sebet <span class="badge" id="cartBadge">0</span></div>
+    <div class="nav-item" onclick="location.reload()">🏠<br>Baş sahypa</div>
+    <div class="nav-item">🛒<br>Sebet</div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -103,19 +87,21 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let allProducts = [], cart = JSON.parse(localStorage.getItem('garakel_db')) || [];
+    let allProducts = [];
 
-    // Harytlary okamak we köne teswirleri çekmek
+    // 1. HARYTLARY OKAMAK
     db.ref('products').on('value', snap => {
         const data = snap.val(); if(!data) return;
         allProducts = Object.keys(data).map(k => ({ id: k, ...data[k] })).reverse();
         render(allProducts);
     });
 
-    // Umumy teswirler (baş sahypa)
+    // 2. BAŞ SAHYPA TESWIRLERI (Köne 'comments' papkasyny barlaýar)
     db.ref('main_comments').on('value', snap => {
+        const data = snap.val();
         const area = document.getElementById('mainCommentsArea');
-        area.innerHTML = snap.val() ? Object.values(snap.val()).map(c => `<div class="comment-box"><b>${c.user}:</b><br>${c.text}</div>`).join('') : "Teswir ýok.";
+        if(!data) { area.innerHTML = "Teswir ýok."; return; }
+        area.innerHTML = Object.values(data).map(c => `<div class="comment-box"><b>${c.user}:</b><br>${c.text}</div>`).join('');
     });
 
     function render(list) {
@@ -123,75 +109,45 @@
             <div class="card" onclick="openModal('${h.id}')">
                 <div class="img-box"><img src="${h.img}"></div>
                 <div class="h-name">${h.name}</div>
-                <div style="font-size:10px; color:var(--altyn); margin-bottom:5px;">Maglumat we teswirler</div>
+                <div style="font-size:10px; color:var(--altyn);">Maglumat we teswirler</div>
                 <div class="price">${h.price} TMT</div>
             </div>`).join('');
     }
 
     function openModal(id) {
         const h = allProducts.find(p => p.id === id);
-        const inCart = cart.some(c => c.id === id);
-        
         document.getElementById('m-img').src = h.img;
         document.getElementById('m-name').innerText = h.name;
         document.getElementById('m-price').innerText = h.price + " TMT";
+        // Maglumat (opisanie)
         document.getElementById('m-desc').innerText = h.opisanie || h.desc || h.info || "Maglumat ýok.";
         
-        // KÖNE TESWIRLERI GÖRKEZMEK (Harydyň içindäki 'comments' objesini okaýar)
-        const commArea = document.getElementById('itemCommentsArea');
-        if(h.comments) {
-            commArea.innerHTML = Object.values(h.comments).map(c => `
+        // HARYT TESWIRLERINI GETIRMEK (Aýratyn 'comments/harytID' papkadan)
+        db.ref('comments/' + id).on('value', snap => {
+            const data = snap.val();
+            const area = document.getElementById('itemCommentsArea');
+            if(!data) { area.innerHTML = "Heniz teswir ýok."; return; }
+            area.innerHTML = Object.values(data).map(c => `
                 <div class="comment-box">
                     <b>${c.user}:</b><p style="margin:5px 0;">${c.text}</p>
-                    ${c.reply ? `<div class="reply-box"><b>Jogap:</b> ${c.reply}</div>` : ''}
+                    ${c.reply ? `<div class="reply-box"><b>Admin:</b> ${c.reply}</div>` : ''}
                 </div>`).join('');
-        } else {
-            commArea.innerHTML = "<p style='font-size:11px; color:#555;'>Heniz teswir ýok.</p>";
-        }
+        });
 
-        document.getElementById('m-btn-area').innerHTML = `<button class="btn-main" onclick="toggleCart('${id}'); closeModal();">${inCart?'🛒 SEBEDINDEN AÝYR':'➕ SEBEDE GOŞ'}</button>`;
-        document.getElementById('itemCommentBtn').onclick = () => addHarytComment(id);
+        document.getElementById('m-btn-area').innerHTML = `<button class="btn-main">➕ Sebede goş</button>`;
+        document.getElementById('itemCommentBtn').onclick = () => {
+            const u = document.getElementById('iName').value, t = document.getElementById('iText').value;
+            if(u && t) db.ref('comments/' + id).push({ user: u, text: t });
+        };
         document.getElementById('itemModal').style.display = 'block';
-    }
-
-    function addHarytComment(id) {
-        const u = document.getElementById('iName').value, t = document.getElementById('iText').value;
-        if(u && t) { db.ref('products/' + id + '/comments').push({ user: u, text: t }); document.getElementById('iText').value = ""; }
     }
 
     function addGeneralComment() {
         const u = document.getElementById('mName').value, t = document.getElementById('mText').value;
-        if(u && t) { db.ref('main_comments').push({ user: u, text: t }); document.getElementById('mText').value = ""; }
+        if(u && t) db.ref('main_comments').push({ user: u, text: t });
     }
 
-    function toggleCart(id) {
-        const idx = cart.findIndex(c => c.id === id);
-        if(idx > -1) cart.splice(idx, 1); else cart.push(allProducts.find(p => p.id === id));
-        localStorage.setItem('garakel_db', JSON.stringify(cart));
-        updateBadge();
-    }
-
-    function updateBadge() { document.getElementById('cartBadge').innerText = cart.length; }
     function closeModal() { document.getElementById('itemModal').style.display = 'none'; }
-    function showHome() { document.getElementById('homeView').style.display = 'block'; document.getElementById('cartView').style.display = 'none'; }
-    function showCart() { document.getElementById('homeView').style.display = 'none'; document.getElementById('cartView').style.display = 'block'; renderCart(); }
-    function renderCart() {
-        let total = 0;
-        document.getElementById('cartItemsList').innerHTML = cart.map(item => {
-            total += parseFloat(item.price);
-            return `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #333;"><span>${item.name}</span><b>${item.price} TMT</b></div>`;
-        }).join('') || "Sebet boş...";
-        document.getElementById('totalPrice').innerText = total;
-    }
-    function orderWhatsApp() {
-        const msg = encodeURIComponent("Sargyt:\n" + cart.map(c => "- " + c.name).join("\n") + "\nJemi: " + document.getElementById('totalPrice').innerText + " TMT");
-        window.location.href = "https://wa.me/99371563667?text=" + msg;
-    }
-    function search() {
-        const v = document.getElementById('searchInput').value.toLowerCase();
-        render(allProducts.filter(p => p.name.toLowerCase().includes(v)));
-    }
-    updateBadge();
 </script>
 </body>
 </html>
