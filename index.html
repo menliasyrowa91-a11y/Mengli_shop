@@ -6,53 +6,64 @@
     <title>🏠 GARAKEL E-DÜKAN</title>
     <style>
         :root { --bag: #1b5e20; --arka: #f4f7f1; --yasyl: #2e7d32; --gyp: #d32f2f; }
-        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--arka); padding-bottom: 100px; color: #333; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; background: var(--arka); padding-bottom: 90px; overflow-x: hidden; }
         
         /* Header */
-        header { position: fixed; top: 0; width: 100%; background: linear-gradient(135deg, var(--bag), #2e7d32); color: white; text-align: center; padding: 15px 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        header h1 { margin: 0; font-size: 20px; text-transform: uppercase; }
+        header { position: fixed; top: 0; width: 100%; background: linear-gradient(135deg, var(--bag), #3e2723); color: white; text-align: center; padding: 15px 0; z-index: 1001; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        header h1 { margin: 0; font-size: 18px; letter-spacing: 1px; }
 
-        .container { max-width: 600px; margin: auto; padding-top: 80px; }
-
-        /* Ýol görkeziji instruksiýa */
-        .help-box { background: #fffde7; border: 1px dashed #fbc02d; padding: 10px; margin: 10px; border-radius: 8px; font-size: 13px; text-align: center; }
-
+        .container { max-width: 800px; margin: auto; padding-top: 60px; }
+        
         /* Gözleg bölümi */
-        .search-container { padding: 10px; }
-        #searchInput { width: 100%; padding: 12px 20px; border-radius: 30px; border: 2px solid var(--bag); box-sizing: border-box; font-size: 16px; outline: none; }
+        .search-section { background: white; padding: 10px; border-bottom: 1px solid #ddd; }
+        #searchInput { width: 100%; padding: 12px 15px; border-radius: 25px; border: 1px solid #ccc; outline: none; font-size: 15px; box-sizing: border-box; }
+
+        /* Slider */
+        .slider-container { width: 95%; height: 160px; margin: 10px auto; overflow: hidden; border-radius: 12px; background: #fff; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .slides { display: flex; transition: transform 0.5s ease-in-out; height: 100%; will-change: transform; }
+        .slide { min-width: 100%; display: flex; align-items: center; justify-content: center; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
 
         /* Kategoriýalar */
-        .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; scrollbar-width: none; }
+        .categories { display: flex; overflow-x: auto; gap: 8px; padding: 12px 10px; background: white; sticky; top: 60px; z-index: 1000; scrollbar-width: none; }
         .categories::-webkit-scrollbar { display: none; }
-        .cat-btn { background: white; border: 1px solid #ddd; padding: 10px 18px; border-radius: 25px; font-size: 14px; white-space: nowrap; cursor: pointer; font-weight: bold; }
+        .cat-btn { background: #f1f8e9; border: 1px solid #c8e6c9; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: bold; color: var(--bag); white-space: nowrap; cursor: pointer; }
         .cat-btn.active { background: var(--bag); color: white; border-color: var(--bag); }
 
-        /* Haryt Grid */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-        .card { background: white; border-radius: 12px; padding: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee; }
-        .card img { width: 100%; height: 150px; object-fit: contain; border-radius: 8px; margin-bottom: 10px; }
-        .price { color: var(--yasyl); font-size: 18px; font-weight: bold; margin: 5px 0; }
-        
-        /* Düwmeler */
-        .btn { border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.3s; }
-        .add { background: var(--bag); color: white; }
-        .rem { background: #ffebee; color: var(--gyp); border: 1px solid var(--gyp); }
+        /* Kömekçi hat */
+        .guide-text { background: #fffde7; color: #827717; padding: 10px; text-align: center; font-size: 13px; font-weight: bold; border-bottom: 1px solid #fff59d; }
 
-        /* Sebet Summary */
-        .cart-overlay { background: white; border-top: 3px solid var(--bag); padding: 20px; margin-top: 20px; }
-        .total-price { font-size: 22px; font-weight: bold; color: var(--bag); margin-bottom: 15px; }
+        /* Haryt Grid */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
+        .card { background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); text-align: center; position: relative; border: 1px solid #f0f0f0; }
+        .card img { width: 100%; height: 130px; object-fit: contain; border-radius: 8px; margin-bottom: 8px; }
         
-        /* Sargyt Düwmeleri */
-        .order-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; color: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; font-weight: bold; font-size: 16px; }
-        .wa { background: #25D366; }
-        .imo { background: #00a1ff; }
+        .sticker { position: absolute; top: 8px; left: 8px; color: white; font-size: 9px; padding: 3px 7px; border-radius: 5px; font-weight: bold; z-index: 5; }
+        .s-taze { background: var(--yasyl); }
+        .s-yok { background: var(--gyp); }
+
+        .price { color: var(--yasyl); font-size: 16px; font-weight: bold; margin: 5px 0; }
+
+        .btn { border: none; width: 100%; padding: 11px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.2s; }
+        .add { background: var(--bag); color: white; }
+        .rem { background: #f5f5f5; color: var(--gyp); border: 1px solid #ddd; }
+
+        /* Sebet Paneli */
+        .cart-panel { background: white; padding: 20px; margin: 15px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .total-row { font-size: 20px; font-weight: bold; color: var(--bag); margin: 20px 0; display: flex; justify-content: space-between; }
+        
+        .order-btn { display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; color: white; padding: 15px; border-radius: 10px; margin-bottom: 12px; font-weight: bold; font-size: 15px; }
+        .btn-wa { background: #25D366; }
+        .btn-imo { background: #00a1ff; }
+
+        /* Footer */
+        .footer { text-align: center; padding: 30px 10px; font-size: 12px; color: #999; }
 
         /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; height: 70px; border-top: 1px solid #ddd; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; color: #555; position: relative; }
-        .badge { position: absolute; top: 10px; right: 25%; background: red; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 11px; display: flex; align-items: center; justify-content: center; }
-
-        .footer { text-align: center; padding: 30px; font-size: 12px; color: #777; background: #fff; margin-top: 20px; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #ddd; z-index: 1001; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .nav-item { font-size: 12px; color: #555; text-align: center; cursor: pointer; position: relative; flex: 1; }
+        .badge { position: absolute; top: -8px; right: 20%; background: var(--gyp); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -62,49 +73,52 @@
 </header>
 
 <div class="container">
-    <div class="help-box" id="stepText">
-        🛒 Harytlary sebede goşuň we aşakdaky "Sebedim" düwmesine basyň.
+    <div class="search-section">
+        <input type="text" id="searchInput" placeholder="Haryt ýa-da kategoriýa gözle..." oninput="search()">
     </div>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Haryt gözle (mysal: sabyn...)" oninput="search()">
-    </div>
+    <div id="homeView">
+        <div class="slider-container"><div class="slides" id="slider"></div></div>
+        
+        <div class="guide-text" id="guideMsg">🛒 Harytlary sebede goşuň we sargyt ediň</div>
 
-    <div class="categories" id="catBar">
-        <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
-        <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg</button>
-        <button class="cat-btn" onclick="filterCat('Arassalyk', this)">Arassalyk</button>
-        <button class="cat-btn" onclick="filterCat('Ýuwujy serişdeler', this)">Ýuwujylar</button>
-        <button class="cat-btn" onclick="filterCat('Gözellik', this)">Gözellik</button>
-        <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
-    </div>
+        <div class="categories">
+            <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
+            <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg</button>
+            <button class="cat-btn" onclick="filterCat('Arassalyk', this)">Arassalyk</button>
+            <button class="cat-btn" onclick="filterCat('Ýuwujy serişdeler', this)">Ýuwujylar</button>
+            <button class="cat-btn" onclick="filterCat('Gözellik', this)">Gözellik</button>
+            <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
+        </div>
 
-    <div id="mainView">
         <div id="productGrid" class="grid"></div>
     </div>
 
-    <div id="cartView" style="display:none; padding: 10px;">
-        <h2 style="text-align: center;">Siziň Sebediňiz</h2>
-        <div id="cartItems"></div>
-        <div class="cart-overlay" id="orderSection">
-            <div class="total-price">Jemi: <span id="totalSum">0</span> TMT</div>
-            <p style="font-size: 13px; color: #666;">Sargyt etmek üçin aşakdaky düwmeleriň birine basyň:</p>
-            <a id="waLink" href="#" class="order-btn wa">WhatsApp bilen ugrat</a>
-            <a id="imoLink" href="#" class="order-btn imo">Imo bilen ugrat</a>
-            <button class="btn" style="background:#888; color:#white; margin-top:10px;" onclick="home()">← Haryt goşmaga dowam et</button>
+    <div id="cartView" style="display:none;">
+        <div class="cart-panel">
+            <h2 style="margin-top:0; color:var(--bag);">Sebedim</h2>
+            <div id="cartItemsList"></div>
+            
+            <div class="total-row">
+                <span>Jemi:</span>
+                <span><span id="totalPrice">0</span> TMT</span>
+            </div>
+            
+            <a id="waLink" href="#" class="order-btn btn-wa">WhatsApp bilen Sargyt</a>
+            <a id="imoLink" href="#" class="order-btn btn-imo">Imo bilen Sargyt</a>
+            
+            <button class="btn" style="background:#eee; color:#444; margin-top:10px;" onclick="showHome()">← Haryt goşmaga dowam et</button>
         </div>
     </div>
 
     <div class="footer">
-        <b>GARAKEL E-DÜKAN</b><br>
         Admin: Meňli Aşyrowa<br>
-        Telefon: +993 71 563667<br>
-        <i>2026 Ähli hukuklar goralan</i>
+        © 2026 Ähli hukuklar goralan
     </div>
 </div>
 
 <div class="bottom-nav">
-    <div class="nav-item" onclick="home()">🏠<br>Baş sahypa</div>
+    <div class="nav-item" onclick="showHome()">🏠<br>Baş sahypa</div>
     <div class="nav-item" onclick="showCart()">
         🛒<br>Sebedim 
         <span class="badge" id="cartBadge">0</span>
@@ -115,6 +129,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
+    // Firebase Baglanyşygy
     const firebaseConfig = {
         apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY",
         databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com",
@@ -123,28 +138,36 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let allProducts = [];
-    let cart = JSON.parse(localStorage.getItem('cart_v2')) || [];
-    const myPhone = "99371563667";
+    let allProducts = [], cart = JSON.parse(localStorage.getItem('garakel_cart')) || [];
+    const SECRET_PHONE = "99371563667"; // Nomer ekranda görünmeýär
 
-    // Harytlary Firebase-den al
+    // Maglumatlary al
     db.ref('products').on('value', snap => {
-        const data = snap.val();
-        if(data) {
-            allProducts = Object.keys(data).map(k => ({ id: k, ...data[k] })).reverse();
-            renderProducts(allProducts);
-            updateBadge();
-        }
+        const data = snap.val(); if(!data) return;
+        allProducts = Object.keys(data).map(k => ({ id: k, ...data[k] })).reverse();
+        
+        // Slideri doldur
+        document.getElementById('slider').innerHTML = allProducts.slice(0,5).map(h => `
+            <div class="slide"><img src="${h.img}" alt="Garakel"></div>`).join('');
+        
+        renderProducts(allProducts);
+        updateUI();
     });
 
     function renderProducts(list) {
         const grid = document.getElementById('productGrid');
+        if(list.length === 0) {
+            grid.innerHTML = "<p style='grid-column:1/3; text-align:center; padding:20px;'>Haryt tapylmady...</p>";
+            return;
+        }
         grid.innerHTML = list.map(h => {
             const inCart = cart.some(c => c.id === h.id);
+            const sticker = h.status === 'taze' ? '<span class="sticker s-taze">Täze</span>' : (h.status === 'yok' ? '<span class="sticker s-yok">Yok</span>' : '');
             return `
                 <div class="card">
-                    <img src="${h.img}" alt="${h.name}">
-                    <div style="font-weight:bold; height:35px; overflow:hidden; font-size:14px;">${h.name}</div>
+                    ${sticker}
+                    <img src="${h.img}" loading="lazy">
+                    <div style="font-size:13px; font-weight:bold; height:34px; overflow:hidden;">${h.name}</div>
                     <div class="price">${h.price} TMT</div>
                     <button class="btn ${inCart?'rem':'add'}" onclick="toggleCart('${h.id}')">
                         ${inCart ? '🛒 Aýyr' : '➕ Sebede goş'}
@@ -154,73 +177,75 @@
     }
 
     function toggleCart(id) {
-        const index = cart.findIndex(item => item.id === id);
-        if(index > -1) {
-            cart.splice(index, 1);
+        const idx = cart.findIndex(c => c.id === id);
+        if(idx > -1) {
+            cart.splice(idx, 1);
         } else {
-            const prod = allProducts.find(p => p.id === id);
-            cart.push(prod);
+            const product = allProducts.find(p => p.id === id);
+            if(product) cart.push(product);
         }
-        localStorage.setItem('cart_v2', JSON.stringify(cart));
-        updateBadge();
+        localStorage.setItem('garakel_cart', JSON.stringify(cart));
+        updateUI();
         renderProducts(allProducts);
-        
-        // Ulanyja kömekçi tekst
         if(cart.length > 0) {
-            document.getElementById('stepText').innerHTML = "✅ Haryt goşuldy! Indi aşakdaky <b>'Sebedim'</b> düwmesine basyň.";
-            document.getElementById('stepText').style.background = "#e8f5e9";
+            document.getElementById('guideMsg').innerHTML = "✅ Sebede goşuldy! Indi aşakdan <b>'Sebedim'</b> basyň.";
+            document.getElementById('guideMsg').style.background = "#e8f5e9";
         }
     }
 
-    function updateBadge() {
+    function updateUI() {
         document.getElementById('cartBadge').innerText = cart.length;
     }
 
     function showCart() {
-        document.getElementById('mainView').style.display = 'none';
+        document.getElementById('homeView').style.display = 'none';
         document.getElementById('cartView').style.display = 'block';
-        document.getElementById('stepText').innerHTML = "📝 Sargydyňyzy barlaň we aşakdaky düwmelerden admina ugradyň.";
+        window.scrollTo(0,0);
+
+        let total = 0;
+        const listContainer = document.getElementById('cartItemsList');
         
-        const cartItems = document.getElementById('cartItems');
         if(cart.length === 0) {
-            cartItems.innerHTML = "<p style='text-align:center; padding:30px;'>Sebediňiz boş...</p>";
-            document.getElementById('orderSection').style.display = 'none';
+            listContainer.innerHTML = "<p style='text-align:center; padding:20px;'>Sebediňiz boş...</p>";
+            document.getElementById('totalPrice').innerText = "0";
+            document.getElementById('waLink').style.display = 'none';
+            document.getElementById('imoLink').style.display = 'none';
         } else {
-            document.getElementById('orderSection').style.display = 'block';
-            let total = 0;
-            cartItems.innerHTML = cart.map((h, i) => {
-                total += parseFloat(h.price);
+            document.getElementById('waLink').style.display = 'flex';
+            document.getElementById('imoLink').style.display = 'flex';
+            listContainer.innerHTML = cart.map(item => {
+                total += parseFloat(item.price);
                 return `
-                    <div style="display:flex; align-items:center; background:white; margin-bottom:5px; padding:10px; border-radius:8px;">
-                        <img src="${h.img}" style="width:50px; height:50px; object-fit:contain; margin-right:10px;">
-                        <div style="flex:1; font-size:14px;"><b>${h.name}</b><br>${h.price} TMT</div>
-                        <button onclick="toggleCart('${h.id}'); showCart();" style="border:none; background:none; color:red; font-size:20px;">×</button>
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <b>${item.price} TMT</b>
                     </div>`;
             }).join('');
+            document.getElementById('totalPrice').innerText = total;
+
+            // Sargyt hatyny döretmek
+            const message = "Salam, GARAKEL E-DÜKAN. Men şu harytlary sargyt etmek isleýärin:\n\n" + 
+                            cart.map((c, i) => (i+1) + ". " + c.name + " (" + c.price + " TMT)").join("\n") + 
+                            "\n\nJemi: " + total + " TMT";
             
-            document.getElementById('totalSum').innerText = total;
-            
-            // Sargyt hatyny taýýarla
-            const text = "Salam, GARAKEL E-DÜKAN. Men şu harytlary sargyt etmek isleýärin:\n\n" + 
-                         cart.map((h, i) => (i+1) + ". " + h.name + " (" + h.price + " TMT)").join("\n") + 
-                         "\n\nJemi baha: " + total + " TMT";
-            
-            const encodedText = encodeURIComponent(text);
-            document.getElementById('waLink').href = `https://wa.me/${myPhone}?text=${encodedText}`;
-            document.getElementById('imoLink').href = `imo://chat?phone=${myPhone}&text=${encodedText}`;
+            const encoded = encodeURIComponent(message);
+            document.getElementById('waLink').href = "https://wa.me/" + SECRET_PHONE + "?text=" + encoded;
+            document.getElementById('imoLink').href = "imo://chat?phone=" + SECRET_PHONE + "&text=" + encoded;
         }
     }
 
-    function home() {
-        document.getElementById('mainView').style.display = 'block';
+    function showHome() {
+        document.getElementById('homeView').style.display = 'block';
         document.getElementById('cartView').style.display = 'none';
-        document.getElementById('stepText').innerHTML = "🛒 Harytlary sebede goşuň we aşakdaky 'Sebedim' düwmesine basyň.";
         renderProducts(allProducts);
     }
 
     function search() {
-        const val = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = allProducts.filter(p => p.name.toLowerCase().includes(val) || (p.category && p.category.toLowerCase().includes(val)));
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = allProducts.filter(p => 
+            p.name.toLowerCase().includes(query) || 
+            (p.category && p.category.toLowerCase().includes(query))
+        );
         renderProducts(filtered);
     }
 
@@ -230,6 +255,16 @@
         if(cat === 'Hemmesi') renderProducts(allProducts);
         else renderProducts(allProducts.filter(p => p.category === cat));
     }
+
+    // Slider awtomatik süýşmesi
+    let currentSlide = 0;
+    setInterval(() => {
+        const slides = document.getElementById('slider');
+        if(slides && slides.children.length > 1) {
+            currentSlide = (currentSlide + 1) % slides.children.length;
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+    }, 4500);
 </script>
 
 </body>
