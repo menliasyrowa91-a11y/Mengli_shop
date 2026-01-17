@@ -15,16 +15,18 @@
         .close-btn { position: absolute; top: 10px; right: 15px; font-size: 30px; color: white; cursor: pointer; }
         .welcome-btn { background: var(--bag); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; margin-top: 15px; font-weight: bold; cursor: pointer; }
 
-        header { position: fixed; top: 0; width: 100%; background: #000; color: white; text-align: center; padding: 12px 0; z-index: 1000; border-bottom: 1px solid #333; }
-        .container { max-width: 800px; margin: auto; padding-top: 65px; }
-        .stats-bar { background: #1a1a1a; margin: 10px; padding: 12px; border-radius: 12px; text-align: center; font-size: 14px; border: 1px solid var(--bag); }
+        header { position: fixed; top: 0; width: 100%; height: 60px; background: #000; color: white; text-align: center; z-index: 10000; border-bottom: 1px solid #333; display: flex; align-items: center; justify-content: center; }
+        .container { max-width: 800px; margin: auto; padding-top: 80px; }
+        
+        /* Statistika barasynyň täze dizaýny */
+        .stats-bar { background: #1a1a1a; margin: 10px; padding: 15px; border-radius: 12px; text-align: center; font-size: 16px; font-weight: bold; border: 2px solid var(--bag); color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
         
         .slider-container { width: 95%; height: 180px; margin: 5px auto; overflow: hidden; border-radius: 12px; background: #fff; position: relative; }
         .slides { display: flex; transition: 0.5s; height: 100%; }
         .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
         .slide img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; position: sticky; top: 55px; background: var(--arka); z-index: 999; scrollbar-width: none; }
+        .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; position: sticky; top: 60px; background: var(--arka); z-index: 999; scrollbar-width: none; }
         .cat-btn { background: #333; border: 1px solid #444; padding: 8px 15px; border-radius: 20px; white-space: nowrap; font-size: 13px; font-weight: bold; color: white; }
         .cat-btn.active { background: var(--bag); border-color: var(--bag); }
 
@@ -47,7 +49,7 @@
 <div id="welcomeModal">
     <div class="welcome-box">
         <h2>Mähriban Müşderiler!</h2>
-        <p>⛰️ <b>GARAKEL E-DÜKANYNA</b> hoş geldiňiz! Sargyt etmek harydyñyz hakynda ýa-da başga soraglaryñyz bar bolsa teswir ýazyp bilersiñiz. Bu online dükan Size otyran ýeriñizden harydy seçip-saýlap almaga ýardam eder.<br><br> 🚚 Garakel içine eltip bermek <b>MUGT!</b></p>
+        <p>⛰️ <b>GARAKEL E-DÜKANYNA</b> hoş geldiňiz! <br><br> 🚚 Garakel içine eltip bermek <b>MUGT!</b></p>
         <button class="welcome-btn" onclick="closeWelcome()">Giriş 🛍️</button>
     </div>
 </div>
@@ -62,7 +64,9 @@
 <header><h1>⛰️ GARAKEL E-DÜKAN</h1></header>
 
 <div class="container">
-    <div class="stats-bar">👤 Şu günki girenler: <span id="vCount" style="color:var(--yasyl)">Ýüklenýär...</span></div>
+    <div class="stats-bar">
+        👤 Şu günki girenler: <span id="vCount" style="color:var(--yasyl); font-size: 18px;">...</span>
+    </div>
     
     <div class="slider-container"><div class="slides" id="slider"></div></div>
     
@@ -71,7 +75,6 @@
         <button class="cat-btn" onclick="filterCat('Arassalyk serişdesi', this)">Arassalyk</button>
         <button class="cat-btn" onclick="filterCat('Ideg serişdeleri', this)">Ideg</button>
         <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
-        <button class="cat-btn" onclick="filterCat('Gözellik', this)">Gözellik</button>
     </div>
 
     <div id="productGrid" class="grid"></div>
@@ -88,7 +91,7 @@
 </div>
 
 <div class="bottom-nav">
-    <div onclick="location.reload()">🏠 Baş sahypa</div>
+    <div onclick="location.reload()" style="cursor: pointer;">🏠 Baş sahypa</div>
     <div style="cursor: pointer;">🛒 Sebet <span id="cartCount" style="color:red">0</span></div>
 </div>
 
@@ -96,7 +99,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // Firebase sazlamalary
     const firebaseConfig = { 
         apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", 
         databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", 
@@ -108,7 +110,6 @@
     let allProducts = [], currentReplyId = null;
     const myPhone = "99371563667";
 
-    // Türkmenistan wagty (GMT+5) boýunça sene alýarys
     function getTMDate() {
         const now = new Date();
         const tmTime = new Date(now.getTime() + (5 * 60 * 60 * 1000));
@@ -117,15 +118,14 @@
     const today = getTMDate();
 
     window.onload = () => {
-        // Girenleriň sanyny 'stats' papkasyna ýazýarys (Suratda stats ulanylýar)
         if(localStorage.getItem('last_visit_date') !== today) {
             document.getElementById('welcomeModal').style.display = 'flex';
-            // Her giren adam üçin 'views' sanyny 1 artdyrýar
+            // Firebase suratyňyzdaky 'stats/sene/views' ýoluna ýazýarys
             db.ref('stats/' + today + '/views').transaction(c => (c || 0) + 1);
             localStorage.setItem('last_visit_date', today);
         }
         
-        // Ekranda sanlary görkezmek (Suratdaky stats/sene/views ýolundan okaýar)
+        // Suratyňyzdaky 'stats/sene/views' ýolundan okaýarys
         db.ref('stats/' + today + '/views').on('value', s => {
             document.getElementById('vCount').innerText = s.val() || 0;
         });
@@ -133,7 +133,6 @@
 
     function closeWelcome() { document.getElementById('welcomeModal').style.display = 'none'; }
 
-    // Harytlary bazadan çekmek
     db.ref('products').on('value', snap => {
         const val = snap.val();
         const raw = val ? Object.keys(val).map(k => ({id: k, ...val[k]})) : [];
@@ -169,7 +168,6 @@
 
     function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
 
-    // Teswirler bölümi
     db.ref('comments').on('value', snap => {
         const data = snap.val();
         let html = "";
@@ -210,7 +208,6 @@
         render(c === 'Hemmesi' ? allProducts : allProducts.filter(h => h.category === c));
     }
 
-    // Slider awtomatiki aýlanýar
     let cur = 0; setInterval(() => {
         const s = document.querySelector('.slides');
         if(s && s.children.length > 0) {
@@ -221,3 +218,6 @@
 </script>
 </body>
 </html>
+
+    
+    
