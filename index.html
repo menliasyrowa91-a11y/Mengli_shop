@@ -6,124 +6,105 @@
     <title>🏠 GARAKEL E-DÜKAN</title>
     <style>
         :root { 
-            --fon: #121212; 
-            --panel: #1e1e1e; 
-            --bag: #2e7d32; 
-            --altyn: #d4af37; 
-            --tekst: #e0e0e0; 
-            --gyp: #cf6679; 
+            --fon: #0f0f0f; 
+            --panel: #1a1a1a; 
+            --bag: #1b5e20; 
+            --altyn: #c5a028; 
+            --tekst: #dddddd; 
+            --has-pes: #888888;
+            --gyp: #ff5252; 
         }
         
         body { 
             font-family: -apple-system, system-ui, sans-serif; 
-            margin: 0; 
-            background: var(--fon); 
-            color: var(--tekst); 
-            padding-bottom: 90px; 
+            margin: 0; background: var(--fon); color: var(--tekst); 
+            padding-bottom: 90px; -webkit-tap-highlight-color: transparent;
         }
 
         header { 
             position: fixed; top: 0; width: 100%; 
             background: #000; color: var(--altyn); 
             text-align: center; padding: 15px 0; 
-            z-index: 1001; border-bottom: 1px solid var(--bag);
+            z-index: 1001; border-bottom: 1px solid #333;
         }
-        header h1 { margin: 0; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; }
+        header h1 { margin: 0; font-size: 17px; text-transform: uppercase; letter-spacing: 1.5px; }
 
-        .container { max-width: 600px; margin: auto; padding-top: 60px; }
+        .container { max-width: 600px; margin: auto; padding-top: 55px; }
 
-        /* Gözleg */
-        .search-box { padding: 15px; background: var(--fon); }
+        /* Search */
+        .search-box { padding: 12px; background: var(--fon); }
         #searchInput { 
-            width: 100%; padding: 12px; border-radius: 10px; 
+            width: 100%; padding: 12px 15px; border-radius: 12px; 
             border: 1px solid #333; background: var(--panel); 
             color: white; outline: none; font-size: 15px;
         }
 
-        /* Slider - Suratyň paşşarmazlygy üçin */
+        /* Slider */
         .slider-container { 
-            width: 95%; height: 180px; margin: 5px auto; 
+            width: 94%; height: 180px; margin: 5px auto; 
             overflow: hidden; border-radius: 15px; 
-            background: #000; position: relative; 
+            background: #000; position: relative; border: 1px solid #222;
         }
         .slides { display: flex; transition: transform 0.5s ease-in-out; height: 100%; }
         .slide { min-width: 100%; display: flex; align-items: center; justify-content: center; }
-        .slide img { 
-            max-width: 100%; max-height: 100%; 
-            object-fit: contain; /* Süýndürmezlik üçin */
-        }
+        .slide img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
         /* Kategoriýalar */
-        .categories { 
-            display: flex; overflow-x: auto; gap: 10px; 
-            padding: 15px 10px; scrollbar-width: none; 
-        }
+        .categories { display: flex; overflow-x: auto; gap: 8px; padding: 12px 10px; scrollbar-width: none; }
         .categories::-webkit-scrollbar { display: none; }
         .cat-btn { 
-            background: var(--panel); border: 1px solid #333; 
-            padding: 8px 18px; border-radius: 20px; 
-            color: #bbb; white-space: nowrap; font-weight: bold;
+            background: var(--panel); border: 1px solid #222; 
+            padding: 8px 16px; border-radius: 20px; 
+            color: #aaa; white-space: nowrap; font-size: 13px;
         }
         .cat-btn.active { background: var(--bag); color: white; border-color: var(--bag); }
 
         /* Haryt Grid */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
         .card { 
-            background: var(--panel); border-radius: 15px; 
-            padding: 10px; text-align: center; 
-            position: relative; border: 1px solid #222;
+            background: var(--panel); border-radius: 12px; 
+            padding: 10px; text-align: center; border: 1px solid #252525;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
         .img-box { 
-            width: 100%; height: 140px; 
-            background: #252525; border-radius: 10px; 
-            display: flex; align-items: center; justify-content: center; 
-            overflow: hidden; margin-bottom: 10px;
+            width: 100%; height: 130px; background: #000; 
+            border-radius: 8px; display: flex; align-items: center; 
+            justify-content: center; overflow: hidden; margin-bottom: 8px;
         }
-        .card img { 
-            max-width: 100%; max-height: 100%; 
-            object-fit: contain; /* Paşşarma öňüni alýar */
-        }
+        .card img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .price { color: var(--altyn); font-size: 17px; font-weight: bold; margin: 5px 0; }
-        .h-name { font-size: 13px; color: #ccc; height: 32px; overflow: hidden; line-height: 1.3; }
+        .h-name { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+        /* Maglumat/Opisaniýa bölegi */
+        .h-desc { font-size: 11px; color: var(--has-pes); height: 28px; overflow: hidden; margin-bottom: 8px; line-height: 1.2; }
+        .price { color: var(--altyn); font-size: 16px; font-weight: bold; margin-bottom: 8px; }
 
-        .btn { 
-            border: none; width: 100%; padding: 12px; 
-            border-radius: 8px; cursor: pointer; 
-            font-weight: bold; margin-top: 8px; 
-        }
+        .btn { border: none; width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .add { background: var(--bag); color: white; }
-        .rem { background: #333; color: var(--gyp); border: 1px solid var(--gyp); }
+        .rem { background: #222; color: var(--gyp); border: 1px solid #441111; }
 
-        /* Sebet */
-        .cart-panel { background: var(--panel); padding: 20px; margin: 15px; border-radius: 20px; border: 1px solid #333; }
-        .total-row { font-size: 20px; font-weight: bold; color: var(--altyn); margin: 20px 0; display: flex; justify-content: space-between; }
+        /* Sebet Paneli */
+        #cartView { padding: 15px; }
+        .cart-panel { background: var(--panel); padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        .total-row { font-size: 20px; font-weight: bold; color: var(--altyn); margin: 15px 0; display: flex; justify-content: space-between; }
         
         .order-btn { 
             display: flex; align-items: center; justify-content: center; 
             text-decoration: none; color: white; padding: 15px; 
-            border-radius: 12px; margin-bottom: 10px; font-weight: bold; 
+            border-radius: 10px; margin-bottom: 10px; font-weight: bold; 
         }
-        .btn-wa { background: #128C7E; }
-        .btn-imo { background: #0088cc; }
+        .btn-wa { background: #075E54; }
+        .btn-imo { background: #0077b5; }
 
         .bottom-nav { 
             position: fixed; bottom: 0; width: 100%; 
-            background: #000; display: flex; 
-            padding: 12px 0; border-top: 1px solid #222; 
+            background: #000; display: flex; padding: 10px 0; border-top: 1px solid #222; 
         }
-        .nav-item { flex: 1; text-align: center; color: #888; font-size: 12px; position: relative; }
+        .nav-item { flex: 1; text-align: center; color: #666; font-size: 11px; position: relative; }
         .badge { 
-            position: absolute; top: -5px; right: 25%; 
+            position: absolute; top: -5px; right: 28%; 
             background: var(--gyp); color: white; 
-            border-radius: 50%; width: 18px; height: 18px; 
-            font-size: 11px; display: flex; align-items: center; justify-content: center; 
-        }
-
-        .sticker { 
-            position: absolute; top: 15px; left: 15px; 
-            background: var(--bag); color: white; 
-            font-size: 9px; padding: 3px 8px; border-radius: 5px; 
+            border-radius: 50%; width: 17px; height: 17px; 
+            font-size: 10px; display: flex; align-items: center; justify-content: center; 
         }
     </style>
 </head>
@@ -133,12 +114,8 @@
 
 <div class="container">
     <div id="homeView">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Gözleg..." oninput="search()">
-        </div>
-
+        <div class="search-box"><input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="search()"></div>
         <div class="slider-container"><div class="slides" id="slider"></div></div>
-
         <div class="categories">
             <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
             <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg</button>
@@ -147,18 +124,17 @@
             <button class="cat-btn" onclick="filterCat('Gözellik', this)">Gözellik</button>
             <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
         </div>
-
         <div id="productGrid" class="grid"></div>
     </div>
 
     <div id="cartView" style="display:none;">
         <div class="cart-panel">
-            <h2 style="color:var(--altyn)">Sebedim</h2>
+            <h2 style="color:var(--altyn); margin-top:0;">Sebedim</h2>
             <div id="cartItemsList"></div>
             <div class="total-row"><span>Jemi:</span><span><span id="totalPrice">0</span> TMT</span></div>
             <a id="waLink" href="#" class="order-btn btn-wa">WhatsApp Sargyt</a>
             <a id="imoLink" href="#" class="order-btn btn-imo">Imo Sargyt</a>
-            <button class="btn" style="background:#222; color:#888" onclick="showHome()">← Yza</button>
+            <button class="btn" style="background:#222; color:#777" onclick="showHome()">← Dowam et</button>
         </div>
     </div>
 </div>
@@ -186,10 +162,7 @@
     db.ref('products').on('value', snap => {
         const data = snap.val(); if(!data) return;
         allProducts = Object.keys(data).map(k => ({ id: k, ...data[k] })).reverse();
-        
-        document.getElementById('slider').innerHTML = allProducts.slice(0,5).map(h => `
-            <div class="slide"><img src="${h.img}"></div>`).join('');
-        
+        document.getElementById('slider').innerHTML = allProducts.slice(0,5).map(h => `<div class="slide"><img src="${h.img}"></div>`).join('');
         render(allProducts);
         updateBadge();
     });
@@ -197,11 +170,14 @@
     function render(list) {
         document.getElementById('productGrid').innerHTML = list.map(h => {
             const inCart = cart.some(c => c.id === h.id);
+            // Firebase-de "opisanie" ýa-da "desc" ady bilen ýazylan bolsa şuny görkezer:
+            const description = h.opisanie || h.desc || "Maglumat ýok"; 
+            
             return `
                 <div class="card">
-                    ${h.status==='taze'?'<span class="sticker">TÄZE</span>':''}
                     <div class="img-box"><img src="${h.img}" loading="lazy"></div>
                     <div class="h-name">${h.name}</div>
+                    <div class="h-desc">${description}</div>
                     <div class="price">${h.price} TMT</div>
                     <button class="btn ${inCart?'rem':'add'}" onclick="toggleCart('${h.id}')">
                         ${inCart ? 'AÝYR' : 'SEBEDE GOŞ'}
@@ -228,12 +204,10 @@
         const listHtml = cart.map(item => {
             total += parseFloat(item.price);
             return `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #333;">
-                <span>${item.name}</span><b>${item.price} TMT</b></div>`;
+                <span style="font-size:14px;">${item.name}</span><b>${item.price} TMT</b></div>`;
         }).join('');
-        
         document.getElementById('cartItemsList').innerHTML = cart.length ? listHtml : "Sebet boş...";
         document.getElementById('totalPrice').innerText = total;
-
         const msg = encodeURIComponent("Salam, sargyt:\n" + cart.map(c => "- " + c.name).join("\n") + "\nJemi: " + total + " TMT");
         document.getElementById('waLink').href = "https://wa.me/" + ADMIN_NUM + "?text=" + msg;
         document.getElementById('imoLink').href = "imo://chat?phone=" + ADMIN_NUM + "&text=" + msg;
@@ -261,7 +235,7 @@
             cur = (cur + 1) % s.children.length;
             s.style.transform = `translateX(-${cur * 100}%)`;
         }
-    }, 4000);
+    }, 4500);
 </script>
 </body>
 </html>
