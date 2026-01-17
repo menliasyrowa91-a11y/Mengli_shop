@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏠 GARAKEL E-DÜKAN</title>
     <style>
-        /* Fon gara edildi */
         :root { --bag: #2e7d32; --arka: #121212; --kart: #1e1e1e; --tekst: #ffffff; --yasyl: #4caf50; }
         body { font-family: -apple-system, sans-serif; margin: 0; background: var(--arka); color: var(--tekst); padding-bottom: 100px; }
         
         /* Salamlaşyk */
         #welcomeModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 20000; align-items: center; justify-content: center; }
-        .welcome-box { background: var(--kart); width: 85%; max-width: 400px; padding: 30px; border-radius: 25px; text-align: center; border: 4px solid var(--bag); color: white; }
+        .welcome-box { background: var(--kart); width: 85%; max-width: 400px; padding: 30px; border-radius: 25px; text-align: center; border: 4px solid var(--bag); }
         .welcome-btn { background: var(--bag); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; margin-top: 20px; font-weight: bold; cursor: pointer; }
+
+        /* Haryt Jikme-jikligi (Modal) */
+        #productModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 15000; overflow-y: auto; }
+        .modal-content { padding: 20px; padding-top: 60px; max-width: 600px; margin: auto; }
+        .close-modal { position: fixed; top: 15px; right: 15px; font-size: 30px; color: white; cursor: pointer; z-index: 15001; }
 
         /* Header */
         header { position: fixed; top: 0; width: 100%; background: #000; color: white; text-align: center; padding: 12px 0; z-index: 1000; border-bottom: 1px solid #333; }
@@ -21,33 +25,26 @@
         /* Statistika */
         .stats-bar { background: var(--kart); margin: 10px; padding: 10px; border-radius: 10px; text-align: center; font-size: 14px; border: 1px solid #333; }
 
-        /* Search */
         .search-area { padding: 10px; }
         #searchInput { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #222; color: white; outline: none; box-sizing: border-box; }
 
-        /* Slider */
         .slider-container { width: 95%; height: 160px; margin: 5px auto; overflow: hidden; border-radius: 12px; background: #000; position: relative; }
         .slides { display: flex; transition: 0.5s; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: contain; min-width: 100%; }
 
-        /* Kategoriýa */
         .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; position: sticky; top: 55px; background: var(--arka); z-index: 999; }
         .cat-btn { background: #333; border: 1px solid #444; padding: 8px 15px; border-radius: 20px; white-space: nowrap; font-size: 13px; font-weight: bold; color: white; }
         .cat-btn.active { background: var(--bag); border-color: var(--bag); }
 
-        /* Grid & Card */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-        .card { background: var(--kart); border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #333; }
+        .card { background: var(--kart); border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #333; cursor: pointer; }
         .card img { width: 100%; height: 140px; object-fit: contain; border-radius: 8px; }
-        .prod-desc { font-size: 11px; color: #aaa; height: 30px; overflow: hidden; margin-top: 5px; }
 
-        /* Habarlaşmak düwmeleri */
-        .contact-btns { display: flex; gap: 5px; margin-top: 10px; }
-        .c-btn { flex: 1; padding: 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold; color: white; text-align: center; }
+        .contact-btns { display: flex; gap: 5px; margin-top: 15px; }
+        .c-btn { flex: 1; padding: 12px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: bold; color: white; text-align: center; }
         .wa { background: #25D366; }
         .im { background: #00a1ff; }
 
-        /* Teswirler */
         .comm-box { background: var(--kart); padding: 15px; border-radius: 12px; margin: 15px; border: 1px solid #333; }
         .c-item { border-bottom: 1px solid #333; padding: 10px 0; }
         .reply { margin-left: 20px; background: #222; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 13px; border-left: 3px solid var(--bag); }
@@ -67,16 +64,17 @@
     </div>
 </div>
 
+<div id="productModal">
+    <span class="close-modal" onclick="closeProductModal()">&times;</span>
+    <div class="modal-content" id="modalContent"></div>
+</div>
+
 <header><h1>🏠 GARAKEL E-DÜKAN</h1></header>
 
 <div id="homeView">
     <div class="container">
-        <div class="stats-bar">
-            👤 Şu gün giren adam sany: <span id="vCount" style="color: var(--yasyl);">...</span>
-        </div>
-
+        <div class="stats-bar">👤 Şu gün giren: <span id="vCount" style="color: var(--yasyl);">...</span> adam</div>
         <div class="search-area"><input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="searchProduct()"></div>
-        
         <div class="slider-container"><div class="slides" id="slider"></div></div>
         
         <div class="categories">
@@ -104,7 +102,7 @@
 
 <div class="bottom-nav">
     <div onclick="location.reload()">🏠 Baş sahypa</div>
-    <div>🛒 Sebet <span id="cartCount" style="color:red; font-weight:bold;">0</span></div>
+    <div onclick="alert('Sebet ýakynda!')">🛒 Sebet <span id="cartCount" style="color:red; font-weight:bold;">0</span></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -118,60 +116,63 @@
     let allProducts = [];
     const myPhone = "99371563667";
 
-    // Salamlaşyk barlagy
-    const today = new Date().toISOString().slice(0,10);
-    if(localStorage.getItem('last_v') !== today) {
-        document.getElementById('welcomeModal').style.display = 'flex';
-    }
+    window.onload = () => {
+        const today = new Date().toISOString().slice(0,10);
+        if(localStorage.getItem('last_v') !== today) document.getElementById('welcomeModal').style.display = 'flex';
+        db.ref('visitors/' + today).transaction(c => (c || 0) + 1);
+        db.ref('visitors/' + today).on('value', s => document.getElementById('vCount').innerText = s.val() || 1);
+    };
+
     function closeWelcome() {
-        localStorage.setItem('last_v', today);
+        localStorage.setItem('last_v', new Date().toISOString().slice(0,10));
         document.getElementById('welcomeModal').style.display = 'none';
     }
 
-    // Adam sanyny çekmek
-    db.ref('visitors/' + today).on('value', s => {
-        document.getElementById('vCount').innerText = s.val() || 1;
-    });
-    // Sahypa girildi - sany artdyr
-    db.ref('visitors/' + today).transaction(c => (c || 0) + 1);
-
-    // Harytlar
     db.ref('products').on('value', snap => {
         allProducts = Object.values(snap.val() || {}).reverse();
         render(allProducts);
         document.getElementById('slider').innerHTML = allProducts.slice(0,5).map(h => `<div class="slide"><img src="${h.img}"></div>`).join('');
     });
 
-    // Teswirler (Replies bilen)
     db.ref('comments').on('value', snap => {
         const data = snap.val();
-        const div = document.getElementById('mainComments');
-        if(!data) { div.innerHTML = "Teswir ýok."; return; }
         let html = "";
-        Object.values(data).reverse().forEach(c => {
+        Object.values(data || {}).reverse().forEach(c => {
             html += `<div class="c-item"><b>${c.name}:</b> ${c.text}`;
-            if(c.replies) {
-                Object.values(c.replies).forEach(r => {
-                    html += `<div class="reply"><b>${r.name}:</b> ${r.text}</div>`;
-                });
-            }
+            if(c.replies) Object.values(c.replies).forEach(r => html += `<div class="reply"><b>${r.name}:</b> ${r.text}</div>`);
             html += `</div>`;
         });
-        div.innerHTML = html;
+        document.getElementById('mainComments').innerHTML = html || "Teswir ýok.";
     });
 
     function render(list) {
-        document.getElementById('productGrid').innerHTML = list.map(h => `
-            <div class="card">
+        document.getElementById('productGrid').innerHTML = list.map((h, index) => `
+            <div class="card" onclick="openProductModal(${allProducts.indexOf(h)})">
                 <img src="${h.img}">
                 <div style="font-weight:bold; font-size:14px; margin-top:8px;">${h.name}</div>
-                <div class="prod-desc">${h.desc || ''}</div>
                 <div style="color:var(--yasyl); font-weight:bold; margin-top:5px;">${h.price} TMT</div>
-                <div class="contact-btns">
-                    <a href="https://wa.me/${myPhone}?text=Sargyt: ${h.name}" class="c-btn wa">WhatsApp</a>
-                    <a href="imo://${myPhone}" class="c-btn im">Imo</a>
-                </div>
             </div>`).join('');
+    }
+
+    function openProductModal(index) {
+        const h = allProducts[index];
+        document.getElementById('modalContent').innerHTML = `
+            <img src="${h.img}" style="width:100%; border-radius:15px; background:white;">
+            <h2 style="margin-top:20px;">${h.name}</h2>
+            <h3 style="color:var(--yasyl);">${h.price} TMT</h3>
+            <div style="line-height:1.6; color:#ccc; margin-top:15px;">${h.desc || 'Bu haryt barada maglumat ýok.'}</div>
+            <div class="contact-btns">
+                <a href="https://wa.me/${myPhone}?text=Sargyt: ${h.name}" class="c-btn wa">WhatsApp Sargyt</a>
+                <a href="imo://${myPhone}" class="c-btn im">Imo Sargyt</a>
+            </div>
+        `;
+        document.getElementById('productModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal() {
+        document.getElementById('productModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 
     function filterCat(c, btn) {
@@ -193,7 +194,6 @@
         }
     }
 
-    // Slider
     let cur = 0; setInterval(() => {
         const s = document.querySelector('.slides');
         if(s && s.children.length > 0) {
