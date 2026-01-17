@@ -3,106 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏠 GARAKEL E-DÜKAN</title>
+    <title>🏠 ⛰️ GARAKEL E-DÜKAN</title>
     <style>
         :root { --bag: #2e7d32; --arka: #121212; --kart: #1e1e1e; --tekst: #ffffff; --yasyl: #4caf50; }
         body { font-family: -apple-system, sans-serif; margin: 0; background: var(--arka); color: var(--tekst); padding-bottom: 100px; }
         
-        /* Salamlaşyk */
-        #welcomeModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 20000; align-items: center; justify-content: center; }
+        #welcomeModal, #productModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 20000; align-items: center; justify-content: center; background: rgba(0,0,0,0.9); }
         .welcome-box { background: var(--kart); width: 85%; max-width: 400px; padding: 30px; border-radius: 25px; text-align: center; border: 4px solid var(--bag); }
-        .welcome-btn { background: var(--bag); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; margin-top: 20px; font-weight: bold; cursor: pointer; }
+        .modal-content { background: var(--kart); width: 90%; max-width: 500px; padding: 20px; border-radius: 20px; position: relative; max-height: 85vh; overflow-y: auto; border: 1px solid #333; }
+        
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 30px; color: white; cursor: pointer; }
+        .welcome-btn { background: var(--bag); color: white; border: none; padding: 12px; border-radius: 12px; width: 100%; margin-top: 15px; font-weight: bold; cursor: pointer; }
 
-        /* Haryt Jikme-jikligi (Modal) */
-        #productModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 15000; overflow-y: auto; }
-        .modal-content { padding: 20px; padding-top: 60px; max-width: 600px; margin: auto; }
-        .close-modal { position: fixed; top: 15px; right: 15px; font-size: 30px; color: white; cursor: pointer; z-index: 15001; }
-
-        /* Header */
         header { position: fixed; top: 0; width: 100%; background: #000; color: white; text-align: center; padding: 12px 0; z-index: 1000; border-bottom: 1px solid #333; }
         .container { max-width: 800px; margin: auto; padding-top: 65px; }
+        .stats-bar { background: #1a1a1a; margin: 10px; padding: 12px; border-radius: 12px; text-align: center; font-size: 14px; border: 1px solid var(--bag); }
         
-        /* Statistika */
-        .stats-bar { background: var(--kart); margin: 10px; padding: 10px; border-radius: 10px; text-align: center; font-size: 14px; border: 1px solid #333; }
-
-        .search-area { padding: 10px; }
-        #searchInput { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #222; color: white; outline: none; box-sizing: border-box; }
-
-        .slider-container { width: 95%; height: 160px; margin: 5px auto; overflow: hidden; border-radius: 12px; background: #000; position: relative; }
+        .slider-container { width: 95%; height: 180px; margin: 5px auto; overflow: hidden; border-radius: 12px; background: #fff; position: relative; }
         .slides { display: flex; transition: 0.5s; height: 100%; }
-        .slide img { width: 100%; height: 100%; object-fit: contain; min-width: 100%; }
+        .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .slide img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; position: sticky; top: 55px; background: var(--arka); z-index: 999; }
+        .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; position: sticky; top: 55px; background: var(--arka); z-index: 999; scrollbar-width: none; }
         .cat-btn { background: #333; border: 1px solid #444; padding: 8px 15px; border-radius: 20px; white-space: nowrap; font-size: 13px; font-weight: bold; color: white; }
         .cat-btn.active { background: var(--bag); border-color: var(--bag); }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-        .card { background: var(--kart); border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #333; cursor: pointer; }
-        .card img { width: 100%; height: 140px; object-fit: contain; border-radius: 8px; }
+        .card { background: var(--kart); border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #333; cursor: pointer; position: relative; }
+        .card img { width: 100%; height: 130px; object-fit: contain; border-radius: 8px; }
+        .prod-no { position: absolute; top: 5px; left: 5px; background: rgba(0,0,0,0.7); color: white; font-size: 10px; padding: 2px 6px; border-radius: 5px; }
 
-        .contact-btns { display: flex; gap: 5px; margin-top: 15px; }
-        .c-btn { flex: 1; padding: 12px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: bold; color: white; text-align: center; }
-        .wa { background: #25D366; }
-        .im { background: #00a1ff; }
-
+        /* Teswirler we Jogaplar */
         .comm-box { background: var(--kart); padding: 15px; border-radius: 12px; margin: 15px; border: 1px solid #333; }
         .c-item { border-bottom: 1px solid #333; padding: 10px 0; }
-        .reply { margin-left: 20px; background: #222; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 13px; border-left: 3px solid var(--bag); }
+        .reply { margin-left: 20px; background: #222; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 12px; border-left: 3px solid var(--bag); }
+        .reply-btn { color: var(--yasyl); font-size: 11px; cursor: pointer; margin-left: 10px; font-weight: bold; }
 
-        .footer { text-align: center; padding: 25px; background: #000; border-top: 1px solid #333; font-size: 13px; color: #888; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; z-index: 1000; }
+        .footer { text-align: center; padding: 25px; background: #000; font-size: 12px; color: #888; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #333; z-index: 1000; }
     </style>
 </head>
 <body>
 
 <div id="welcomeModal">
     <div class="welcome-box">
-        <div style="font-size: 40px;">🌸</div>
         <h2>Mähriban Müşderiler!</h2>
-        <p><b>GARAKEL E-DÜKANYNA</b> hoş geldiňiz!<br><br>Siz bu ýerden öýüňiz üçin iň zerur bolan arassalyk we ideg serişdelerini amatly bahadan tapyp bilersiňiz.<br><br><span style="color: var(--yasyl); font-weight: bold;">✨ Garakel içine eltip bermek MUGT!</span></p>
-        <button class="welcome-btn" onclick="closeWelcome()">Dükana gir 🛍️</button>
+        <p>⛰️ <b>GARAKEL E-DÜKANYNA</b> hoş geldiňiz! <br><br> 🚚 Garakel içine eltip bermek <b>MUGT!</b></p>
+        <button class="welcome-btn" onclick="closeWelcome()">Giriş 🛍️</button>
     </div>
 </div>
 
 <div id="productModal">
-    <span class="close-modal" onclick="closeProductModal()">&times;</span>
-    <div class="modal-content" id="modalContent"></div>
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeProductModal()">&times;</span>
+        <div id="modalData"></div>
+    </div>
 </div>
 
-<header><h1>🏠 GARAKEL E-DÜKAN</h1></header>
+<header><h1>⛰️ GARAKEL E-DÜKAN</h1></header>
 
-<div id="homeView">
-    <div class="container">
-        <div class="stats-bar">👤 Şu gün giren: <span id="vCount" style="color: var(--yasyl);">...</span> adam</div>
-        <div class="search-area"><input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="searchProduct()"></div>
-        <div class="slider-container"><div class="slides" id="slider"></div></div>
-        
-        <div class="categories">
-            <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
-            <button class="cat-btn" onclick="filterCat('Arassalyk serişdesi', this)">Arassalyk</button>
-            <button class="cat-btn" onclick="filterCat('Ideg serişdeleri', this)">Ideg</button>
-            <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
-        </div>
-
-        <div id="productGrid" class="grid"></div>
-
-        <div class="comm-box">
-            <h4 style="margin:0;">💬 Müşderi Teswirleri</h4>
-            <div id="mainComments" style="max-height: 300px; overflow-y: auto; margin-top:10px;">Ýüklenýär...</div>
-            <textarea id="uComm" placeholder="Teswir ýazyň..." style="width:100%; height:60px; margin-top:10px; border-radius:8px; padding:8px; background:#222; color:white; border:1px solid #444; box-sizing:border-box;"></textarea>
-            <button onclick="sendComment()" class="welcome-btn" style="padding:10px; margin-top:8px;">Teswir ugrat</button>
-        </div>
-
-        <div class="footer">
-            <b>Admin: Meňli Aşyrowa</b><br>
-            📍 Garakel, Türkmenistan | 📅 2026
-        </div>
+<div class="container">
+    <div class="stats-bar">👤 Şu günki girenler: <span id="vCount" style="color:var(--yasyl)">Ýüklenýär...</span></div>
+    
+    <div class="slider-container"><div class="slides" id="slider"></div></div>
+    
+    <div class="categories">
+        <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
+        <button class="cat-btn" onclick="filterCat('Arassalyk serişdesi', this)">Arassalyk</button>
+        <button class="cat-btn" onclick="filterCat('Ideg serişdeleri', this)">Ideg</button>
+        <button class="cat-btn" onclick="filterCat('Parfum', this)">Parfum</button>
     </div>
+
+    <div id="productGrid" class="grid"></div>
+
+    <div class="comm-box">
+        <h4>💬 Teswirler</h4>
+        <div id="mainComments" style="max-height: 300px; overflow-y: auto;">Ýüklenýär...</div>
+        <div id="replyTo" style="display:none; font-size:12px; color:var(--yasyl); margin-top:10px;"></div>
+        <textarea id="uComm" placeholder="Pikir ýazyň..." style="width:100%; height:50px; margin-top:10px; background:#222; color:white; border:1px solid #444; border-radius:8px; padding:8px; box-sizing:border-box;"></textarea>
+        <button onclick="sendComment()" id="sendBtn" class="welcome-btn">Teswir galdyr</button>
+    </div>
+
+    <div class="footer"><b>Admin: Meňli Aşyrowa</b><br>⛰️ Garakel | 2026</div>
 </div>
 
 <div class="bottom-nav">
     <div onclick="location.reload()">🏠 Baş sahypa</div>
-    <div onclick="alert('Sebet ýakynda!')">🛒 Sebet <span id="cartCount" style="color:red; font-weight:bold;">0</span></div>
+    <div>🛒 Sebet <span id="cartCount" style="color:red">0</span></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -113,66 +100,96 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let allProducts = [];
+    let allProducts = [], currentReplyId = null;
     const myPhone = "99371563667";
 
+    // Türkmenistan wagty (GMT+5) boýunça sene
+    function getTMDate() {
+        const now = new Date();
+        const tmTime = new Date(now.getTime() + (5 * 60 * 60 * 1000));
+        return tmTime.toISOString().slice(0, 10);
+    }
+    const today = getTMDate();
+
     window.onload = () => {
-        const today = new Date().toISOString().slice(0,10);
-        if(localStorage.getItem('last_v') !== today) document.getElementById('welcomeModal').style.display = 'flex';
-        db.ref('visitors/' + today).transaction(c => (c || 0) + 1);
+        // Her 24 sagatdan giren müşderini täze sanamak
+        if(localStorage.getItem('last_visit_date') !== today) {
+            document.getElementById('welcomeModal').style.display = 'flex';
+            db.ref('visitors/' + today).transaction(c => (c || 0) + 1);
+            localStorage.setItem('last_visit_date', today);
+        }
         db.ref('visitors/' + today).on('value', s => document.getElementById('vCount').innerText = s.val() || 1);
     };
 
-    function closeWelcome() {
-        localStorage.setItem('last_v', new Date().toISOString().slice(0,10));
-        document.getElementById('welcomeModal').style.display = 'none';
-    }
+    function closeWelcome() { document.getElementById('welcomeModal').style.display = 'none'; }
 
     db.ref('products').on('value', snap => {
-        allProducts = Object.values(snap.val() || {}).reverse();
+        const val = snap.val();
+        const raw = val ? Object.keys(val).map(k => ({id: k, ...val[k]})) : [];
+        allProducts = raw.map((h, i) => ({...h, no: i + 1})).reverse();
         render(allProducts);
         document.getElementById('slider').innerHTML = allProducts.slice(0,5).map(h => `<div class="slide"><img src="${h.img}"></div>`).join('');
     });
 
+    function render(list) {
+        document.getElementById('productGrid').innerHTML = list.map(h => `
+            <div class="card" onclick="openProductModal('${h.id}')">
+                <span class="prod-no">№${h.no}</span>
+                <img src="${h.img}">
+                <div style="font-weight:bold; font-size:13px; margin-top:8px; height:32px; overflow:hidden;">${h.name}</div>
+                <div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div>
+            </div>`).join('');
+    }
+
+    function openProductModal(id) {
+        const h = allProducts.find(p => p.id === id);
+        document.getElementById('modalData').innerHTML = `
+            <img src="${h.img}" style="width:100%; border-radius:15px; background:white; max-height:280px; object-fit:contain;">
+            <p style="color:#888; font-size:12px; margin-top:10px;">Kody: №${h.no}</p>
+            <h2>${h.name}</h2>
+            <h3 style="color:var(--yasyl);">${h.price} TMT</h3>
+            <div style="white-space:pre-wrap; color:#ccc; font-size:14px;">${h.desc || ''}</div>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <a href="https://wa.me/${myPhone}?text=Sargyt №${h.no}: ${h.name}" class="c-btn wa" style="flex:1; background:#25D366; padding:12px; border-radius:10px; text-decoration:none; color:white; text-align:center;">WhatsApp</a>
+                <a href="imo://${myPhone}" class="c-btn im" style="flex:1; background:#00a1ff; padding:12px; border-radius:10px; text-decoration:none; color:white; text-align:center;">Imo</a>
+            </div>`;
+        document.getElementById('productModal').style.display = 'flex';
+    }
+
+    function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
+
     db.ref('comments').on('value', snap => {
         const data = snap.val();
         let html = "";
-        Object.values(data || {}).reverse().forEach(c => {
-            html += `<div class="c-item"><b>${c.name}:</b> ${c.text}`;
-            if(c.replies) Object.values(c.replies).forEach(r => html += `<div class="reply"><b>${r.name}:</b> ${r.text}</div>`);
+        if(data) Object.keys(data).reverse().forEach(id => {
+            const c = data[id];
+            html += `<div class="c-item"><b>${c.name}:</b> ${c.text} <span class="reply-btn" onclick="prepReply('${id}', '${c.name}')">Jogap ýaz</span>`;
+            if(c.replies) Object.values(c.replies).forEach(r => {
+                html += `<div class="reply"><b>${r.name}:</b> ${r.text}</div>`;
+            });
             html += `</div>`;
         });
         document.getElementById('mainComments').innerHTML = html || "Teswir ýok.";
     });
 
-    function render(list) {
-        document.getElementById('productGrid').innerHTML = list.map((h, index) => `
-            <div class="card" onclick="openProductModal(${allProducts.indexOf(h)})">
-                <img src="${h.img}">
-                <div style="font-weight:bold; font-size:14px; margin-top:8px;">${h.name}</div>
-                <div style="color:var(--yasyl); font-weight:bold; margin-top:5px;">${h.price} TMT</div>
-            </div>`).join('');
+    function prepReply(id, name) {
+        currentReplyId = id;
+        document.getElementById('replyTo').innerText = name + " üçin jogap ýazylýar...";
+        document.getElementById('replyTo').style.display = "block";
+        document.getElementById('uComm').focus();
     }
 
-    function openProductModal(index) {
-        const h = allProducts[index];
-        document.getElementById('modalContent').innerHTML = `
-            <img src="${h.img}" style="width:100%; border-radius:15px; background:white;">
-            <h2 style="margin-top:20px;">${h.name}</h2>
-            <h3 style="color:var(--yasyl);">${h.price} TMT</h3>
-            <div style="line-height:1.6; color:#ccc; margin-top:15px;">${h.desc || 'Bu haryt barada maglumat ýok.'}</div>
-            <div class="contact-btns">
-                <a href="https://wa.me/${myPhone}?text=Sargyt: ${h.name}" class="c-btn wa">WhatsApp Sargyt</a>
-                <a href="imo://${myPhone}" class="c-btn im">Imo Sargyt</a>
-            </div>
-        `;
-        document.getElementById('productModal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeProductModal() {
-        document.getElementById('productModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
+    function sendComment() {
+        const t = document.getElementById('uComm').value;
+        if(!t) return;
+        if(currentReplyId) {
+            db.ref('comments/' + currentReplyId + '/replies').push({ name: "Müşderi", text: t });
+            currentReplyId = null;
+            document.getElementById('replyTo').style.display = "none";
+        } else {
+            db.ref('comments').push({ name: "Müşderi", text: t, time: Date.now() });
+        }
+        document.getElementById('uComm').value = "";
     }
 
     function filterCat(c, btn) {
@@ -181,26 +198,13 @@
         render(c === 'Hemmesi' ? allProducts : allProducts.filter(h => h.category === c));
     }
 
-    function searchProduct() {
-        const k = document.getElementById('searchInput').value.toLowerCase();
-        render(allProducts.filter(h => h.name.toLowerCase().includes(k)));
-    }
-
-    function sendComment() {
-        const t = document.getElementById('uComm').value;
-        if(t) {
-            db.ref('comments').push({ name: "Müşderi", text: t, time: Date.now() });
-            document.getElementById('uComm').value = "";
-        }
-    }
-
     let cur = 0; setInterval(() => {
         const s = document.querySelector('.slides');
         if(s && s.children.length > 0) {
             cur = (cur + 1) % s.children.length;
             s.style.transform = `translateX(-${cur * 100}%)`;
         }
-    }, 4000);
+    }, 4500);
 </script>
 </body>
 </html>
