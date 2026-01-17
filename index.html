@@ -1,47 +1,59 @@
-
-
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏠 GARAKEL E-DÜKAN</title>
     <style>
-        :root { --bag: #1b5e20; --arka: #f4f7f1; --yasyl: #2e7d32; }
-        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--arka); padding-bottom: 90px; }
+        /* Fon gara edildi */
+        :root { --bag: #2e7d32; --arka: #121212; --kart: #1e1e1e; --tekst: #ffffff; --yasyl: #4caf50; }
+        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--arka); color: var(--tekst); padding-bottom: 100px; }
         
         /* Salamlaşyk */
-        #welcomeModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 20000; align-items: center; justify-content: center; }
-        .welcome-box { background: white; width: 85%; max-width: 400px; padding: 30px; border-radius: 25px; text-align: center; border: 4px solid var(--bag); animation: popIn 0.4s ease; }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .welcome-btn { background: var(--bag); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; margin-top: 20px; font-weight: bold; }
+        #welcomeModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 20000; align-items: center; justify-content: center; }
+        .welcome-box { background: var(--kart); width: 85%; max-width: 400px; padding: 30px; border-radius: 25px; text-align: center; border: 4px solid var(--bag); color: white; }
+        .welcome-btn { background: var(--bag); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; margin-top: 20px; font-weight: bold; cursor: pointer; }
 
-        /* Header & Search */
-        header { position: fixed; top: 0; width: 100%; background: linear-gradient(135deg, var(--bag), #3e2723); color: white; text-align: center; padding: 12px 0; z-index: 1000; }
+        /* Header */
+        header { position: fixed; top: 0; width: 100%; background: #000; color: white; text-align: center; padding: 12px 0; z-index: 1000; border-bottom: 1px solid #333; }
         .container { max-width: 800px; margin: auto; padding-top: 65px; }
-        .search-area { padding: 10px; }
-        #searchInput { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; outline: none; box-sizing: border-box; }
+        
+        /* Statistika */
+        .stats-bar { background: var(--kart); margin: 10px; padding: 10px; border-radius: 10px; text-align: center; font-size: 14px; border: 1px solid #333; }
 
-        /* Slider & Kategoriýa */
-        .slider-container { width: 95%; height: 160px; margin: 5px auto; overflow: hidden; border-radius: 12px; background: #fff; position: relative; }
+        /* Search */
+        .search-area { padding: 10px; }
+        #searchInput { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #444; background: #222; color: white; outline: none; box-sizing: border-box; }
+
+        /* Slider */
+        .slider-container { width: 95%; height: 160px; margin: 5px auto; overflow: hidden; border-radius: 12px; background: #000; position: relative; }
         .slides { display: flex; transition: 0.5s; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: contain; min-width: 100%; }
+
+        /* Kategoriýa */
         .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; position: sticky; top: 55px; background: var(--arka); z-index: 999; }
-        .cat-btn { background: #fff; border: 1px solid #ddd; padding: 8px 15px; border-radius: 20px; white-space: nowrap; font-size: 13px; font-weight: bold; }
-        .cat-btn.active { background: var(--bag); color: white; }
+        .cat-btn { background: #333; border: 1px solid #444; padding: 8px 15px; border-radius: 20px; white-space: nowrap; font-size: 13px; font-weight: bold; color: white; }
+        .cat-btn.active { background: var(--bag); border-color: var(--bag); }
 
-        /* Grid */
+        /* Grid & Card */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-        .card { background: white; border-radius: 12px; padding: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .card img { width: 100%; height: 140px; object-fit: contain; }
+        .card { background: var(--kart); border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #333; }
+        .card img { width: 100%; height: 140px; object-fit: contain; border-radius: 8px; }
+        .prod-desc { font-size: 11px; color: #aaa; height: 30px; overflow: hidden; margin-top: 5px; }
 
-        /* Teswirler Dizaýny */
-        .comm-box { background: white; padding: 15px; border-radius: 12px; margin: 15px; border: 1px solid #ddd; }
-        .c-item { border-bottom: 1px solid #eee; padding: 10px 0; }
-        .reply { margin-left: 20px; background: #f9f9f9; padding: 5px 10px; border-radius: 8px; margin-top: 5px; font-size: 13px; border-left: 3px solid var(--bag); }
+        /* Habarlaşmak düwmeleri */
+        .contact-btns { display: flex; gap: 5px; margin-top: 10px; }
+        .c-btn { flex: 1; padding: 8px; border-radius: 6px; text-decoration: none; font-size: 11px; font-weight: bold; color: white; text-align: center; }
+        .wa { background: #25D366; }
+        .im { background: #00a1ff; }
 
-        .footer { text-align: center; padding: 25px; background: #fff; border-top: 1px solid #ddd; font-size: 13px; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #ddd; z-index: 1000; }
+        /* Teswirler */
+        .comm-box { background: var(--kart); padding: 15px; border-radius: 12px; margin: 15px; border: 1px solid #333; }
+        .c-item { border-bottom: 1px solid #333; padding: 10px 0; }
+        .reply { margin-left: 20px; background: #222; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 13px; border-left: 3px solid var(--bag); }
+
+        .footer { text-align: center; padding: 25px; background: #000; border-top: 1px solid #333; font-size: 13px; color: #888; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -51,7 +63,7 @@
         <div style="font-size: 40px;">🌸</div>
         <h2>Mähriban Müşderiler!</h2>
         <p><b>GARAKEL E-DÜKANYNA</b> hoş geldiňiz!<br><br>Siz bu ýerden öýüňiz üçin iň zerur bolan arassalyk we ideg serişdelerini amatly bahadan tapyp bilersiňiz.<br><br><span style="color: var(--yasyl); font-weight: bold;">✨ Garakel içine eltip bermek MUGT!</span></p>
-        <button class="welcome-btn" onclick="closeWelcome()">Harytlary gör 🛍️</button>
+        <button class="welcome-btn" onclick="closeWelcome()">Dükana gir 🛍️</button>
     </div>
 </div>
 
@@ -59,7 +71,12 @@
 
 <div id="homeView">
     <div class="container">
+        <div class="stats-bar">
+            👤 Şu gün giren adam sany: <span id="vCount" style="color: var(--yasyl);">...</span>
+        </div>
+
         <div class="search-area"><input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="searchProduct()"></div>
+        
         <div class="slider-container"><div class="slides" id="slider"></div></div>
         
         <div class="categories">
@@ -72,10 +89,10 @@
         <div id="productGrid" class="grid"></div>
 
         <div class="comm-box">
-            <h4>💬 Müşderi Teswirleri</h4>
-            <div id="mainComments">Ýüklenýär...</div>
-            <textarea id="uComm" placeholder="Pikirleriňizi ýazyň..." style="width:100%; height:60px; margin-top:10px; border-radius:8px; padding:8px; border:1px solid #ddd;"></textarea>
-            <button onclick="sendComment()" class="welcome-btn" style="padding:10px; margin-top:5px;">Ugrat</button>
+            <h4 style="margin:0;">💬 Müşderi Teswirleri</h4>
+            <div id="mainComments" style="max-height: 300px; overflow-y: auto; margin-top:10px;">Ýüklenýär...</div>
+            <textarea id="uComm" placeholder="Teswir ýazyň..." style="width:100%; height:60px; margin-top:10px; border-radius:8px; padding:8px; background:#222; color:white; border:1px solid #444; box-sizing:border-box;"></textarea>
+            <button onclick="sendComment()" class="welcome-btn" style="padding:10px; margin-top:8px;">Teswir ugrat</button>
         </div>
 
         <div class="footer">
@@ -98,32 +115,38 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let allProducts = [], cart = [];
+    let allProducts = [];
+    const myPhone = "99371563667";
 
     // Salamlaşyk barlagy
-    if(localStorage.getItem('last_v') !== new Date().toISOString().slice(0,10)) {
+    const today = new Date().toISOString().slice(0,10);
+    if(localStorage.getItem('last_v') !== today) {
         document.getElementById('welcomeModal').style.display = 'flex';
     }
     function closeWelcome() {
-        localStorage.setItem('last_v', new Date().toISOString().slice(0,10));
+        localStorage.setItem('last_v', today);
         document.getElementById('welcomeModal').style.display = 'none';
     }
 
-    // Harytlary we Slider-i çekmek
+    // Adam sanyny çekmek
+    db.ref('visitors/' + today).on('value', s => {
+        document.getElementById('vCount').innerText = s.val() || 1;
+    });
+    // Sahypa girildi - sany artdyr
+    db.ref('visitors/' + today).transaction(c => (c || 0) + 1);
+
+    // Harytlar
     db.ref('products').on('value', snap => {
-        const data = snap.val();
-        allProducts = Object.values(data || {}).reverse();
+        allProducts = Object.values(snap.val() || {}).reverse();
         render(allProducts);
-        // Slider üçin ilkinji 5 haryt
         document.getElementById('slider').innerHTML = allProducts.slice(0,5).map(h => `<div class="slide"><img src="${h.img}"></div>`).join('');
     });
 
-    // Teswirleri çekmek (Replies - Jogaplar bilen)
+    // Teswirler (Replies bilen)
     db.ref('comments').on('value', snap => {
         const data = snap.val();
         const div = document.getElementById('mainComments');
         if(!data) { div.innerHTML = "Teswir ýok."; return; }
-        
         let html = "";
         Object.values(data).reverse().forEach(c => {
             html += `<div class="c-item"><b>${c.name}:</b> ${c.text}`;
@@ -141,9 +164,13 @@
         document.getElementById('productGrid').innerHTML = list.map(h => `
             <div class="card">
                 <img src="${h.img}">
-                <div style="font-weight:bold; font-size:14px; height:35px; overflow:hidden; margin-top:5px;">${h.name}</div>
-                <div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div>
-                <button class="welcome-btn" style="padding:8px; font-size:12px; margin-top:5px;">+ Sebede</button>
+                <div style="font-weight:bold; font-size:14px; margin-top:8px;">${h.name}</div>
+                <div class="prod-desc">${h.desc || ''}</div>
+                <div style="color:var(--yasyl); font-weight:bold; margin-top:5px;">${h.price} TMT</div>
+                <div class="contact-btns">
+                    <a href="https://wa.me/${myPhone}?text=Sargyt: ${h.name}" class="c-btn wa">WhatsApp</a>
+                    <a href="imo://${myPhone}" class="c-btn im">Imo</a>
+                </div>
             </div>`).join('');
     }
 
@@ -166,7 +193,7 @@
         }
     }
 
-    // Slider awto-aýlaw
+    // Slider
     let cur = 0; setInterval(() => {
         const s = document.querySelector('.slides');
         if(s && s.children.length > 0) {
