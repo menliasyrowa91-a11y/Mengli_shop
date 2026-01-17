@@ -6,58 +6,52 @@
     <title>🏠 GARAKEL E-DÜKAN</title>
     <style>
         :root { --fon: #0a0a0a; --panel: #161616; --bag: #1b5e20; --altyn: #d4af37; --tekst: #eeeeee; --gyp: #ff5252; }
-        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--fon); color: var(--tekst); padding-bottom: 90px; }
+        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--fon); color: var(--tekst); padding-bottom: 100px; }
         
-        .delivery-note { background: var(--bag); color: white; padding: 5px 0; font-size: 13px; font-weight: bold; text-align: center; overflow: hidden; white-space: nowrap; }
+        .delivery-note { background: var(--bag); color: white; padding: 7px 0; font-size: 13px; font-weight: bold; text-align: center; overflow: hidden; white-space: nowrap; }
         header { position: sticky; top: 0; width: 100%; background: #000; color: var(--altyn); text-align: center; padding: 15px 0; z-index: 1001; border-bottom: 1px solid #222; }
 
-        .container { max-width: 600px; margin: auto; }
+        .container { max-width: 600px; margin: auto; padding-bottom: 20px; }
         .search-box { padding: 12px; }
-        #searchInput { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: var(--panel); color: white; outline: none; }
+        #searchInput { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: var(--panel); color: white; outline: none; box-sizing: border-box; }
 
         .categories { display: flex; overflow-x: auto; gap: 8px; padding: 10px; scrollbar-width: none; }
         .cat-btn { background: var(--panel); border: 1px solid #222; padding: 8px 16px; border-radius: 20px; color: #888; white-space: nowrap; font-size: 13px; cursor: pointer; }
         .cat-btn.active { background: var(--bag); color: white; }
 
-        /* Haryt Grid */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
-        .card { background: var(--panel); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #222; }
+        .card { background: var(--panel); border-radius: 12px; padding: 10px; text-align: center; border: 1px solid #222; cursor: pointer; }
         .img-box { width: 100%; height: 140px; background: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .card img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .h-name { font-size: 14px; margin: 8px 0 2px; font-weight: bold; color: #fff; }
-        .price { color: var(--altyn); font-size: 15px; font-weight: bold; }
-
-        /* Teswir Bölümi */
-        .comment-section { background: var(--panel); margin: 15px; padding: 15px; border-radius: 15px; border: 1px solid #222; }
-        .comment-box { background: #0f0f0f; padding: 10px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--bag); }
-        .comment-header { display: flex; justify-content: space-between; font-size: 12px; color: var(--altyn); margin-bottom: 5px; }
-        .reply-item { margin-left: 20px; margin-top: 5px; padding: 5px 8px; background: #1a1a1a; border-radius: 5px; border-left: 2px solid var(--altyn); font-size: 12px; color: #ccc; }
         
-        .reply-input-area { display: none; margin-top: 10px; }
-        .reply-btn-small { font-size: 11px; color: var(--bag); cursor: pointer; text-decoration: underline; margin-top: 5px; display: inline-block; }
-
-        .input-group { margin-top: 15px; }
-        .input-group input { width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 5px; margin-bottom: 5px; box-sizing: border-box; }
-        .main-btn { background: var(--altyn); color: black; border: none; padding: 10px; border-radius: 5px; font-weight: bold; width: 100%; cursor: pointer; }
+        /* Teswir Bölümi (Baş Sahypa) */
+        .main-comment-section { background: var(--panel); margin: 20px 10px; padding: 15px; border-radius: 15px; border: 1px solid #333; }
+        .comment-box { background: #000; padding: 12px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--bag); }
+        .reply-box { margin-left: 15px; margin-top: 8px; padding: 8px; background: #1a1a1a; border-radius: 8px; border-left: 2px solid var(--altyn); font-size: 12px; }
+        
+        .input-group { margin-top: 15px; display: flex; flex-direction: column; gap: 8px; }
+        .input-group input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
+        .main-btn { background: var(--bag); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
 
         /* Modal */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: none; overflow-y: auto; padding-top: 20px; }
-        .modal-content { background: var(--panel); width: 85%; max-width: 450px; margin: auto; padding: 20px; border-radius: 20px; border: 1px solid #333; position: relative; }
+        .modal-content { background: var(--panel); width: 90%; max-width: 450px; margin: 20px auto; padding: 20px; border-radius: 20px; border: 1px solid #333; box-sizing: border-box; }
         
-        .nav-item { flex: 1; text-align: center; color: #666; font-size: 11px; position: relative; cursor: pointer; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; padding: 12px 0; border-top: 1px solid #222; }
-        .badge { position: absolute; top: -5px; right: 28%; background: var(--gyp); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+        /* Bottom Nav Fix */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #000; display: flex; padding: 15px 0; border-top: 1px solid #222; z-index: 1001; }
+        .nav-item { flex: 1; text-align: center; color: #888; font-size: 12px; position: relative; cursor: pointer; }
+        .badge { position: absolute; top: -8px; right: 30%; background: var(--gyp); color: white; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="delivery-note"><marquee>🚚 Garakel içine eltip bermek MUGT • GARAKEL E-DÜKAN</marquee></div>
+<div class="delivery-note"><marquee>🚚 Garakel içine eltip bermek MUGT • GARAKEL E-DÜKAN • Hoş geldiňiz!</marquee></div>
 <header><h1>GARAKEL E-DÜKAN</h1></header>
 
 <div class="container">
     <div id="homeView">
         <div class="search-box"><input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="search()"></div>
-        <div class="categories">
+        <div class="categories" id="catList">
             <button class="cat-btn active" onclick="filterCat('Hemmesi', this)">Hemmesi</button>
             <button class="cat-btn" onclick="filterCat('Ideg', this)">Ideg</button>
             <button class="cat-btn" onclick="filterCat('Arassalyk', this)">Arassalyk</button>
@@ -66,13 +60,14 @@
         
         <div id="productGrid" class="grid"></div>
 
-        <div class="comment-section">
-            <h3 style="color:var(--altyn); margin-top:0;">Dükanyň myhman kitaby</h3>
-            <div id="mainComments"></div>
+        <div class="main-comment-section">
+            <h3 style="color:var(--altyn); margin:0 0 15px 0;">💬 Müşderi teswirleri</h3>
+            <div id="mainCommentsArea">Ýüklenýär...</div>
+            
             <div class="input-group">
-                <input type="text" id="mainName" placeholder="Adyňyz...">
-                <input type="text" id="mainText" placeholder="Pikiriňiz...">
-                <button class="main-btn" onclick="sendMainComment()">Teswir goş</button>
+                <input type="text" id="mName" placeholder="Adyňyz...">
+                <input type="text" id="mText" placeholder="Teswiriňiz...">
+                <button class="main-btn" onclick="addMainComment()">Teswir goş</button>
             </div>
         </div>
     </div>
@@ -81,33 +76,23 @@
         <div style="background:var(--panel); padding:20px; border-radius:20px; border:1px solid #333;">
             <h2 style="color:var(--altyn)">Sebedim</h2>
             <div id="cartItemsList"></div>
-            <div style="font-size:20px; margin:20px 0; display:flex; justify-content:space-between; font-weight:bold;">
+            <div style="font-size:22px; margin:20px 0; display:flex; justify-content:space-between; font-weight:bold;">
                 <span>Jemi:</span><span><span id="totalPrice">0</span> TMT</span>
             </div>
-            <button class="main-btn" style="background:#075E54; color:white;" onclick="orderWhatsApp()">WhatsApp Sargyt</button>
-            <button class="main-btn" style="background:#222; color:#777; margin-top:10px;" onclick="showHome()">← Dowam et</button>
+            <button class="main-btn" style="background:#075E54;" onclick="orderWhatsApp()">WhatsApp arkaly sargyt</button>
+            <button class="main-btn" style="background:#222; margin-top:10px;" onclick="showHome()">← Dowam et</button>
         </div>
     </div>
 </div>
 
 <div id="itemModal" class="modal">
     <div class="modal-content">
-        <img id="m-img" style="width:100%; height:200px; object-fit:contain; background:#000; border-radius:10px;">
+        <img id="m-img" style="width:100%; height:200px; object-fit:contain; background:#000; border-radius:12px;">
         <h3 id="m-name" style="color:var(--altyn); margin:15px 0 5px;"></h3>
-        <div id="m-price" style="font-weight:bold; margin-bottom:10px;"></div>
-        <div id="m-desc" style="font-size:14px; color:#bbb; margin-bottom:15px; text-align:left;"></div>
-        <div id="modal-btn-area"></div>
-        
-        <div class="comment-section" style="margin:20px 0 0 0; padding:10px 0; border-left:none;">
-            <h4 style="color:var(--altyn);">Haryt barada teswirler</h4>
-            <div id="itemComments"></div>
-            <div class="input-group">
-                <input type="text" id="itemName" placeholder="Adyňyz...">
-                <input type="text" id="itemText" placeholder="Teswiriňiz...">
-                <button class="main-btn" onclick="sendItemComment()">Haryda teswir ýaz</button>
-            </div>
-        </div>
-        <button class="main-btn" style="background:#222; color:white; margin-top:15px;" onclick="closeModal()">← Yza</button>
+        <div id="m-price" style="font-size:18px; font-weight:bold; margin-bottom:10px;"></div>
+        <p id="m-desc" style="font-size:14px; color:#ccc; text-align:left;"></p>
+        <div id="m-btn-area"></div>
+        <button class="main-btn" style="background:#222; margin-top:15px;" onclick="closeModal()">← Yza</button>
     </div>
 </div>
 
@@ -124,21 +109,32 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let allProducts = [], cart = JSON.parse(localStorage.getItem('garakel_db')) || [], activeId = null;
+    let allProducts = [], cart = JSON.parse(localStorage.getItem('garakel_db')) || [];
 
-    // Harytlary ýükle
+    // Harytlary okamak
     db.ref('products').on('value', snap => {
         const data = snap.val(); if(!data) return;
         allProducts = Object.keys(data).map(k => ({ id: k, ...data[k] })).reverse();
         render(allProducts);
     });
 
-    // Baş sahypa teswirlerini ýükle
+    // Baş sahypa teswirlerini okamak
     db.ref('main_comments').on('value', snap => {
         const data = snap.val();
-        const container = document.getElementById('mainComments');
-        if(!data) { container.innerHTML = "Teswir ýok."; return; }
-        container.innerHTML = Object.keys(data).map(key => renderCommentRow(key, data[key], 'main_comments')).join('');
+        const area = document.getElementById('mainCommentsArea');
+        if(!data) { area.innerHTML = "Ilkinji teswiri siz ýazyň!"; return; }
+        area.innerHTML = Object.keys(data).map(key => {
+            const c = data[key];
+            let reps = "";
+            if(c.replies) {
+                reps = Object.values(c.replies).map(r => `<div class="reply-box"><b>Jogap:</b> ${r.text}</div>`).join('');
+            }
+            return `<div class="comment-box">
+                <b style="color:var(--altyn); font-size:13px;">${c.user}</b>
+                <p style="margin:5px 0; font-size:14px;">${c.text}</p>
+                ${reps}
+            </div>`;
+        }).join('');
     });
 
     function render(list) {
@@ -146,97 +142,57 @@
             <div class="card" onclick="openModal('${h.id}')">
                 <div class="img-box"><img src="${h.img}"></div>
                 <div class="h-name">${h.name}</div>
-                <div style="font-size:10px; color:var(--altyn);">Doly maglumat we teswirler</div>
+                <div style="font-size:10px; color:var(--altyn); margin-bottom:5px;">Doly maglumat üçin basyň</div>
                 <div class="price">${h.price} TMT</div>
             </div>`).join('');
     }
 
     function openModal(id) {
-        activeId = id;
         const h = allProducts.find(p => p.id === id);
+        const inCart = cart.some(c => c.id === id);
         document.getElementById('m-img').src = h.img;
         document.getElementById('m-name').innerText = h.name;
         document.getElementById('m-desc').innerText = h.opisanie || "Maglumat ýok.";
         document.getElementById('m-price').innerText = h.price + " TMT";
-        
-        const inCart = cart.some(c => c.id === id);
-        document.getElementById('modal-btn-area').innerHTML = `<button class="main-btn" style="background:${inCart?'#333':''}" onclick="toggleCart('${id}')">${inCart?'Aýyr':'Sebede goş'}</button>`;
-        
-        db.ref('comments/' + id).on('value', snap => {
-            const data = snap.val();
-            document.getElementById('itemComments').innerHTML = data ? Object.keys(data).map(key => renderCommentRow(key, data[key], 'comments/' + id)).join('') : "Teswir ýok.";
-        });
+        document.getElementById('m-btn-area').innerHTML = `<button class="main-btn" onclick="toggleCart('${id}'); closeModal();">${inCart?'Sebedinden aýyr':'Sebede goş'}</button>`;
         document.getElementById('itemModal').style.display = 'block';
     }
 
-    function renderCommentRow(key, c, path) {
-        let replies = "";
-        if(c.replies) {
-            replies = Object.values(c.replies).map(r => `<div class="reply-item"><b>${r.user}:</b> ${r.text}</div>`).join('');
-        }
-        return `
-            <div class="comment-box">
-                <div class="comment-header"><b>${c.user}</b></div>
-                <div style="font-size:13px;">${c.text}</div>
-                ${replies}
-                <span class="reply-btn-small" onclick="toggleReply('${key}')">Jogap ýaz</span>
-                <div id="reply-area-${key}" class="reply-input-area">
-                    <input type="text" id="repName-${key}" placeholder="Adyňyz..." style="font-size:11px; padding:5px; margin-top:5px; width:80%;">
-                    <input type="text" id="repText-${key}" placeholder="Jogabyňyz..." style="font-size:11px; padding:5px; width:80%;">
-                    <button class="main-btn" style="width:50px; font-size:10px; padding:5px;" onclick="sendReply('${path}', '${key}')">OK</button>
-                </div>
-            </div>`;
-    }
-
-    function toggleReply(key) { 
-        const el = document.getElementById('reply-area-' + key);
-        el.style.display = el.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function sendReply(path, key) {
-        const u = document.getElementById('repName-' + key).value;
-        const t = document.getElementById('repText-' + key).value;
-        if(u && t) {
-            db.ref(path + '/' + key + '/replies').push({ user: u, text: t });
-            document.getElementById('reply-area-' + key).style.display = 'none';
-        }
-    }
-
-    function sendMainComment() {
-        const u = document.getElementById('mainName').value, t = document.getElementById('mainText').value;
-        if(u && t) { db.ref('main_comments').push({ user: u, text: t }); document.getElementById('mainText').value = ""; }
-    }
-
-    function sendItemComment() {
-        const u = document.getElementById('itemName').value, t = document.getElementById('itemText').value;
-        if(u && t && activeId) { db.ref('comments/' + activeId).push({ user: u, text: t }); document.getElementById('itemText').value = ""; }
+    function addMainComment() {
+        const u = document.getElementById('mName').value, t = document.getElementById('mText').value;
+        if(u && t) { db.ref('main_comments').push({ user: u, text: t }); document.getElementById('mText').value = ""; }
     }
 
     function toggleCart(id) {
         const idx = cart.findIndex(c => c.id === id);
         if(idx > -1) cart.splice(idx, 1); else cart.push(allProducts.find(p => p.id === id));
         localStorage.setItem('garakel_db', JSON.stringify(cart));
-        updateBadge(); if(activeId) openModal(activeId);
+        updateBadge();
     }
 
     function updateBadge() { document.getElementById('cartBadge').innerText = cart.length; }
     function closeModal() { document.getElementById('itemModal').style.display = 'none'; }
-    function showCart() { document.getElementById('homeView').style.display = 'none'; document.getElementById('cartView').style.display = 'block'; renderCart(); }
+    function showCart() { document.getElementById('homeView').style.display = 'none'; document.getElementById('cartView').style.display = 'block'; renderCart(); window.scrollTo(0,0); }
+    
     function renderCart() {
         let total = 0;
         document.getElementById('cartItemsList').innerHTML = cart.map(item => {
             total += parseFloat(item.price);
-            return `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #333;"><span>${item.name}</span><b>${item.price} TMT</b></div>`;
+            return `<div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #333;"><span>${item.name}</span><b>${item.price} TMT</b></div>`;
         }).join('') || "Sebet boş...";
         document.getElementById('totalPrice').innerText = total;
     }
+
     function orderWhatsApp() {
-        const msg = encodeURIComponent("Sargyt:\n" + cart.map(c => "- " + c.name).join("\n") + "\nJemi: " + document.getElementById('totalPrice').innerText + " TMT");
+        const msg = encodeURIComponent("Salam, GARAKEL E-DÜKAN. Sargyt:\n" + cart.map(c => "- " + c.name + " ("+c.price+" TMT)").join("\n") + "\nJemi: " + document.getElementById('totalPrice').innerText + " TMT");
         window.location.href = "https://wa.me/99371563667?text=" + msg;
     }
+
     function showHome() { document.getElementById('homeView').style.display = 'block'; document.getElementById('cartView').style.display = 'none'; }
     function search() { const v = document.getElementById('searchInput').value.toLowerCase(); render(allProducts.filter(p => p.name.toLowerCase().includes(v))); }
     function filterCat(c, b) { document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); render(c === 'Hemmesi' ? allProducts : allProducts.filter(p => p.category === c)); }
+    
+    updateBadge();
 </script>
 </body>
 </html>
