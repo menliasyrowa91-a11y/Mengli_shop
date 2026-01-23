@@ -185,37 +185,46 @@ let allProducts = [], cart = [], currentReplyId = null;
         document.getElementById('slider').innerHTML = sliderContent;
     });
 
-    function render(list) {
-        const grid = document.getElementById('productGrid');
-        const totalItems = allProducts.length;
+   function render(list) {
+    const grid = document.getElementById('productGrid');
+    const totalItems = allProducts.length;
 
-        grid.innerHTML = list.map((h, index) => {
-            // Nomerleme hasaby: Jemi sandan häzirki ýerini aýyrýarys
-            const displayNumber = totalItems - index;
-            
-            return `
-                <div class="card" style="position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center;">
-                    <div style="position: absolute; top: 0; left: 0; background: var(--bag); color: white; 
-                                font-size: 11px; padding: 3px 8px; border-bottom-right-radius: 12px; 
-                                font-weight: bold; z-index: 50; box-shadow: 1px 1px 5px rgba(0,0,0,0.5);">
-                        #${displayNumber}
-                    </div>
-                    
-                    <div style="width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 8px; overflow: hidden;">
-                        <img src="${h.img}" onclick="openProductModal('${h.id}')" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                    </div>
+    grid.innerHTML = list.map((h, index) => {
+        const displayNumber = totalItems - index;
+        
+        // Status bar bolsa ony görkezmek, ýok bolsa boş goýmak
+        const statusLabel = h.status ? `
+            <div style="position: absolute; top: 0; right: 0; background: var(--sary); color: #000; 
+                        font-size: 10px; padding: 3px 8px; border-bottom-left-radius: 12px; 
+                        font-weight: bold; z-index: 50; box-shadow: -1px 1px 5px rgba(0,0,0,0.3);">
+                ${h.status}
+            </div>` : '';
 
-                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <div style="font-weight:bold; font-size:13px; margin-top:8px; height:35px; overflow:hidden; width: 100%;">
-                        ${h.name}
-                    </div>
-                    <div style="color:var(--yasyl); font-weight:bold; margin: 5px 0;">${h.price} TMT</div>
-                    <button onclick="addToCart('${h.id}')" class="btn-green" style="padding:8px; font-size:11px; width: 100%;">
-                        Sebede goş
-                    </button>
-                </div>`;
-        }).join('');
-    }
+        return `
+            <div class="card" style="position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center;">
+                <div style="position: absolute; top: 0; left: 0; background: var(--bag); color: white; 
+                            font-size: 11px; padding: 3px 8px; border-bottom-right-radius: 12px; 
+                            font-weight: bold; z-index: 50;">
+                    #${displayNumber}
+                </div>
+
+                ${statusLabel}
+                
+                <div style="width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 8px; overflow: hidden;">
+                    <img src="${h.img}" onclick="openProductModal('${h.id}')" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                </div>
+
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <div style="font-weight:bold; font-size:13px; margin-top:8px; height:35px; overflow:hidden; width: 100%;">
+                    ${h.name}
+                </div>
+                <div style="color:var(--yasyl); font-weight:bold; margin: 5px 0;">${h.price} TMT</div>
+                <button onclick="addToCart('${h.id}')" class="btn-green" style="padding:8px; font-size:11px; width: 100%;">
+                    Sebede goş
+                </button>
+            </div>`;
+    }).join('');
+}
 
     function render(list) {
         document.getElementById('productGrid').innerHTML = list.map(h => `
