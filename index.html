@@ -184,54 +184,62 @@ let allProducts = [], cart = [], currentReplyId = null;
 
     // 2. Harytlary ekrana çykarmak
     function render(list) {
-        const grid = document.getElementById('productGrid');
-        const totalItems = allProducts.length;
+    const grid = document.getElementById('productGrid');
+    const total = allProducts.length;
 
-        grid.innerHTML = list.map((h, index) => {
-            // Nomeri hasaplamak
-            const displayNumber = totalItems - index;
-            
-            // Status bar bolsa görkezmek
-            const statusLabel = h.status ? `
-                <div style="position: absolute; top: 0; right: 0; background: #ffc107; color: #000; 
-                            font-size: 10px; padding: 4px 8px; border-bottom-left-radius: 10px; 
-                            font-weight: bold; z-index: 20; box-shadow: -1px 1px 4px rgba(0,0,0,0.2);">
-                    ${h.status}
-                </div>` : '';
+    grid.innerHTML = list.map((h, index) => {
+        // Harydyň nomerini hasaplaýarys
+        const num = total - index;
+        
+        // Status bar bolsa görkezýäris
+        const statusTag = h.status ? `
+            <div style="position: absolute !important; top: 5px !important; right: 5px !important; 
+                        background: #ffc107 !important; color: black !important; padding: 2px 8px !important; 
+                        font-size: 10px !important; font-weight: bold !important; border-radius: 5px !important; 
+                        z-index: 100 !important; display: block !important; box-shadow: 1px 1px 3px rgba(0,0,0,0.3);">
+                ${h.status}
+            </div>` : '';
 
-            return `
-                <div class="card" style="position: relative; overflow: hidden; display: flex; flex-direction: column; background: #fff; border-radius: 12px; padding: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                    
-                    <div style="position: absolute; top: 0; left: 0; background: #28a745; color: white; 
-                                font-size: 11px; padding: 4px 10px; border-bottom-right-radius: 12px; 
-                                font-weight: bold; z-index: 20;">
-                        #${displayNumber}
+        return `
+            <div class="card" style="position: relative !important; overflow: hidden !important; 
+                        background: white !important; border-radius: 12px !important; 
+                        padding: 10px !important; display: flex !important; flex-direction: column !important; 
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important; border: 1px solid #eee !important;">
+                
+                <div style="position: absolute !important; top: 0 !important; left: 0 !important; 
+                            background: #28a745 !important; color: white !important; padding: 3px 10px !important; 
+                            font-size: 11px !important; font-weight: bold !important; border-bottom-right-radius: 10px !important; 
+                            z-index: 100 !important; display: block !important;">
+                    #${num}
+                </div>
+
+                ${statusTag}
+
+                <div style="width: 100% !important; height: 130px !important; display: flex !important; 
+                            align-items: center !important; justify-content: center !important; margin-top: 10px !important;">
+                    <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}" 
+                         style="max-width: 100% !important; max-height: 100% !important; object-fit: contain !important;">
+                </div>
+
+                <div style="text-align: center !important; margin-top: 10px !important; flex-grow: 1 !important;">
+                    <div style="font-weight: bold !important; font-size: 13px !important; color: #333 !important;
+                                height: 34px !important; overflow: hidden !important; margin-bottom: 5px !important;">
+                        ${h.name}
                     </div>
-
-                    ${statusLabel}
-                    
-                    <div style="width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; margin-top: 15px; margin-bottom: 10px;">
-                        <img src="${h.img}" onclick="openProductModal('${h.id}')" 
-                             style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: pointer;">
+                    <div style="color: #28a745 !important; font-weight: bold !important; font-size: 15px !important;">
+                        ${h.price} TMT
                     </div>
+                </div>
 
-                    <div style="text-align: center; flex-grow: 1;">
-                        <div class="stars" style="font-size: 12px; color: #ffc107;">⭐⭐⭐⭐⭐</div>
-                        <div style="font-weight: bold; font-size: 13px; margin: 5px 0; height: 34px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                            ${h.name}
-                        </div>
-                        <div style="color: #28a745; font-weight: bold; font-size: 15px; margin-bottom: 8px;">
-                            ${h.price} TMT
-                        </div>
-                    </div>
-
-                    <button onclick="addToCart('${h.id}')" class="btn-green" 
-                            style="width: 100%; padding: 8px; border-radius: 8px; border: none; background: #28a745; color: white; cursor: pointer; font-size: 12px;">
-                        Sebede goş
-                    </button>
-                </div>`;
-        }).join('');
-    }
+                <button onclick="addToCart('${h.id}')" class="btn-green" 
+                        style="width: 100% !important; margin-top: 10px !important; padding: 8px !important;
+                               background: #28a745 !important; color: white !important; border: none !important;
+                               border-radius: 6px !important; cursor: pointer !important;">
+                    Sebede goş
+                </button>
+            </div>`;
+    }).join('');
+}
 
     function render(list) {
         document.getElementById('productGrid').innerHTML = list.map(h => `
