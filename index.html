@@ -163,59 +163,52 @@
     const firebaseConfig = { apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", projectId: "garakel-dukan" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    let allProducts = [], cart = [], currentReplyId = null;
+   let allProducts = [], cart = [], currentReplyId = null;
     const myPhone = "99371563667";
     const today = new Date().toISOString().split('T')[0];
 
-    // Tema üýtgetmek
-    function toggleTheme() {
-        document.body.classList.toggle('light-mode');
-        localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-    }
-    if(localStorage.getItem('theme') === 'light') document.body.classList.add('light-mode');
-
-    window.onload = () => {
-        // Günde 1 gezek salamlaşygy görkezmek
-        const lastVisit = localStorage.getItem('last_welcome_date');
-        if (lastVisit !== today) {
-            document.getElementById('welcomeModal').style.display = 'flex';
-        }
-        
-        db.ref('stats/'+today+'/views').transaction(c => (c || 0) + 1);
-        db.ref('stats/'+today+'/views').on('value', s => document.getElementById('vCount').innerText = s.val() || 0);
-        showFakeSale();
-    };
-
-    function closeWelcome() {
-        localStorage.setItem('last_welcome_date', today);
-        document.getElementById('welcomeModal').style.display = 'none';
-    }
-
-    // Sargyt edildi toast
-    function showFakeSale() {
-        let count = 0;
-        const customers = ["Maksat G.", "Aýlar S.", "Merdan B.", "Gülşat R.", "Selbi N."];
-        const display = () => {
-            if (count >= 2 || allProducts.length === 0) return;
-            const h = allProducts[Math.floor(Math.random() * allProducts.length)];
-            const u = customers[Math.floor(Math.random() * customers.length)];
-            document.getElementById('saleUser').innerText = u;
-            document.getElementById('saleItem').innerText = h.name;
-            document.getElementById('saleImg').src = h.img;
-            document.getElementById('saleNotify').style.display = 'flex';
-            setTimeout(() => { document.getElementById('saleNotify').style.display = 'none'; }, 6000);
-            count++;
-        };
-        setTimeout(display, 5000); 
-        setTimeout(display, 20000);
-    }
-
+    // --- TÄZE SORTIROWKA WE BELGILEME BÖLEGI ---
     db.ref('products').on('value', snap => {
         const val = snap.val();
+        // Harytlary Firebase-den alyp massiwa öwürýäris
         allProducts = val ? Object.keys(val).map(k => ({id: k, ...val[k]})) : [];
-        render(allProducts);
-        document.getElementById('slider').innerHTML = allProducts.slice(0,5).map(h => `<div class="slide"><img src="${h.img}"></div>`).join('');
+        
+        // Täze goşulan haryt iň başda durar ýaly tersine öwürýäris
+        const sortedProducts = [...allProducts].reverse();
+        
+        render(sortedProducts);
+        
+        // Slider üçin täze goşulan ilkinji 5 haryt
+        document.getElementById('slider').innerHTML = sortedProducts.slice(0,5).map(h => 
+            `<div class="slide"><img src="${h.img}"></div>`
+        ).join('');
     });
+
+    function render(list) {
+        document.getElementById('productGrid').innerHTML = list.map((h) => {
+            // Harydyň asyl tertip sanyny tapýarys (Köne haryt #1-den başlar)
+            const originalIndex = allProducts.findIndex(p => p.id === h.id) + 1;
+            
+            return `
+                <div class="card" style="position: relative;">
+                    <div style="position: absolute; top: 5px; left: 5px; background: var(--bag); color: white; 
+                                font-size: 10px; padding: 2px 6px; border-radius: 5px; font-weight: bold; z-index: 10; opacity: 0.9;">
+                        #${originalIndex}
+                    </div>
+                    
+                    <img src="${h.img}" onclick="openProductModal('${h.id}')">
+                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                    <div style="font-weight:bold; font-size:13px; margin-top:8px; height:35px; overflow:hidden;">
+                        ${h.name}
+                    </div>
+                    <div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div>
+                    <button onclick="addToCart('${h.id}')" class="btn-green" style="padding:8px; font-size:11px;">
+                        Sebede goş
+                    </button>
+                </div>`;
+        }).join('');
+    }
+    // --- TÄZE BÖLEK ŞU ÝERDE GUTARÝAR ---
 
     function render(list) {
         document.getElementById('productGrid').innerHTML = list.map(h => `
