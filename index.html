@@ -163,51 +163,54 @@
     const firebaseConfig = { apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", projectId: "garakel-dukan" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
- let allProducts = [], cart = [], currentReplyId = null;
+let allProducts = [], cart = [], currentReplyId = null;
     const myPhone = "99371563667";
     const today = new Date().toISOString().split('T')[0];
 
-    // --- SORTIROWKA WE NOMERLEME DÜZEDILDI ---
+    // --- SORTIROWKA WE NOMERLEME (DÜZEDILDI) ---
     db.ref('products').on('value', snap => {
         const val = snap.val();
-        // Harytlary Firebase-den alýarys
+        // Firebase-den gelýän harytlary ilki massiwa öwürýäris
         allProducts = val ? Object.keys(val).map(k => ({id: k, ...val[k]})) : [];
         
-        // Täze haryt iň başda durar ýaly tersine öwürýäris
+        // Täze haryt iň başda durar ýaly massiwyň nusgasyny tersine öwürýäris
         const sortedProducts = [...allProducts].reverse();
         
         render(sortedProducts);
         
         // Slider üçin täze goşulan ilkinji 5 haryt
-        document.getElementById('slider').innerHTML = sortedProducts.slice(0,5).map(h => 
+        const sliderContent = sortedProducts.slice(0,5).map(h => 
             `<div class="slide"><img src="${h.img}"></div>`
         ).join('');
+        document.getElementById('slider').innerHTML = sliderContent;
     });
 
     function render(list) {
-        // Jemi haryt sany
+        const grid = document.getElementById('productGrid');
         const totalItems = allProducts.length;
 
-        document.getElementById('productGrid').innerHTML = list.map((h, index) => {
-            // Nomerleme: Iň täze haryt iň uly sany alýar (Meselem #46)
-            // Iň aşakdaky ilkinji goşulan harydyňyz #1 bolup galar.
-            const displayIndex = totalItems - index;
+        grid.innerHTML = list.map((h, index) => {
+            // Nomerleme hasaby: Jemi sandan häzirki ýerini aýyrýarys
+            const displayNumber = totalItems - index;
             
             return `
-                <div class="card" style="position: relative; overflow: hidden;">
+                <div class="card" style="position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center;">
                     <div style="position: absolute; top: 0; left: 0; background: var(--bag); color: white; 
-                                font-size: 11px; padding: 4px 8px; border-bottom-right-radius: 10px; 
-                                font-weight: bold; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
-                        #${displayIndex}
+                                font-size: 11px; padding: 3px 8px; border-bottom-right-radius: 12px; 
+                                font-weight: bold; z-index: 50; box-shadow: 1px 1px 5px rgba(0,0,0,0.5);">
+                        #${displayNumber}
                     </div>
                     
-                    <img src="${h.img}" onclick="openProductModal('${h.id}')" style="display: block; width: 100%;">
+                    <div style="width: 100%; height: 120px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 8px; overflow: hidden;">
+                        <img src="${h.img}" onclick="openProductModal('${h.id}')" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                    </div>
+
                     <div class="stars">⭐⭐⭐⭐⭐</div>
-                    <div style="font-weight:bold; font-size:13px; margin-top:8px; height:35px; overflow:hidden;">
+                    <div style="font-weight:bold; font-size:13px; margin-top:8px; height:35px; overflow:hidden; width: 100%;">
                         ${h.name}
                     </div>
-                    <div style="color:var(--yasyl); font-weight:bold;">${h.price} TMT</div>
-                    <button onclick="addToCart('${h.id}')" class="btn-green" style="padding:8px; font-size:11px;">
+                    <div style="color:var(--yasyl); font-weight:bold; margin: 5px 0;">${h.price} TMT</div>
+                    <button onclick="addToCart('${h.id}')" class="btn-green" style="padding:8px; font-size:11px; width: 100%;">
                         Sebede goş
                     </button>
                 </div>`;
