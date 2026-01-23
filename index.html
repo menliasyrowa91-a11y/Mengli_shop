@@ -163,17 +163,17 @@
     const firebaseConfig = { apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", projectId: "garakel-dukan" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-   let allProducts = [], cart = [], currentReplyId = null;
+ let allProducts = [], cart = [], currentReplyId = null;
     const myPhone = "99371563667";
     const today = new Date().toISOString().split('T')[0];
 
-    // --- TÄZE SORTIROWKA WE BELGILEME BÖLEGI ---
+    // --- SORTIROWKA WE NOMERLEME DÜZEDILDI ---
     db.ref('products').on('value', snap => {
         const val = snap.val();
-        // Harytlary Firebase-den alyp massiwa öwürýäris
+        // Harytlary Firebase-den alýarys
         allProducts = val ? Object.keys(val).map(k => ({id: k, ...val[k]})) : [];
         
-        // Täze goşulan haryt iň başda durar ýaly tersine öwürýäris
+        // Täze haryt iň başda durar ýaly tersine öwürýäris
         const sortedProducts = [...allProducts].reverse();
         
         render(sortedProducts);
@@ -185,18 +185,23 @@
     });
 
     function render(list) {
-        document.getElementById('productGrid').innerHTML = list.map((h) => {
-            // Harydyň asyl tertip sanyny tapýarys (Köne haryt #1-den başlar)
-            const originalIndex = allProducts.findIndex(p => p.id === h.id) + 1;
+        // Jemi haryt sany
+        const totalItems = allProducts.length;
+
+        document.getElementById('productGrid').innerHTML = list.map((h, index) => {
+            // Nomerleme: Iň täze haryt iň uly sany alýar (Meselem #46)
+            // Iň aşakdaky ilkinji goşulan harydyňyz #1 bolup galar.
+            const displayIndex = totalItems - index;
             
             return `
-                <div class="card" style="position: relative;">
-                    <div style="position: absolute; top: 5px; left: 5px; background: var(--bag); color: white; 
-                                font-size: 10px; padding: 2px 6px; border-radius: 5px; font-weight: bold; z-index: 10; opacity: 0.9;">
-                        #${originalIndex}
+                <div class="card" style="position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; background: var(--bag); color: white; 
+                                font-size: 11px; padding: 4px 8px; border-bottom-right-radius: 10px; 
+                                font-weight: bold; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
+                        #${displayIndex}
                     </div>
                     
-                    <img src="${h.img}" onclick="openProductModal('${h.id}')">
+                    <img src="${h.img}" onclick="openProductModal('${h.id}')" style="display: block; width: 100%;">
                     <div class="stars">⭐⭐⭐⭐⭐</div>
                     <div style="font-weight:bold; font-size:13px; margin-top:8px; height:35px; overflow:hidden;">
                         ${h.name}
@@ -208,7 +213,6 @@
                 </div>`;
         }).join('');
     }
-    // --- TÄZE BÖLEK ŞU ÝERDE GUTARÝAR ---
 
     function render(list) {
         document.getElementById('productGrid').innerHTML = list.map(h => `
