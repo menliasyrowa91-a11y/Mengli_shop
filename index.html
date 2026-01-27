@@ -88,9 +88,10 @@
     </div>
 
     <div class="footer-area">
-        <div class="stat-text">🕒 24 Sagatda girenler: <span id="dayViews">0</span></div>
+        <div class="stat-text">🕒 Şu günki girenler: <span id="dayViews">0</span></div>
         <div class="stat-text">📊 Jemi açylma sany: <span id="allViews">0</span></div>
-        <div class="copy">Admin Meňli Aşyrowa. © 2026ý Ähli hukuklar goralan.</div>
+        <div class="copy">Admin Meňli Aşyrowa. </div>
+         <div class="copy"> © 2026ý Ähli hukuklar goralan.</div>
     </div>
 </div>
 
@@ -143,7 +144,7 @@
         const pObj = data.products || {};
         allProducts = Object.keys(pObj).map((k, index) => ({ id: k, nomer: index + 1, ...pObj[k] })).reverse();
         renderProducts();
-        renderComments(data.comments_general || {});
+        renderComments(data.main_comments || {});
     });
 
     function renderProducts() {
