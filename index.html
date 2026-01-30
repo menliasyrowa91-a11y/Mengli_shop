@@ -10,16 +10,20 @@
 
     <style>
         :root { 
-            --arka: #0b0b0b; --kart: #161616; --tekst: #ffffff; 
-            --yasyl: #4caf50; --sary: #ffcc00; --gypyl: #ff4444;
+            --arka: #0a140f; 
+            --kart: #14211a; 
+            --tekst: #ffffff; 
+            --yasyl: #4caf50; 
+            --sary: #ffcc00; 
+            --gypyl: #ff4444;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--arka); color: var(--tekst); padding-bottom: 100px; }
 
         header { 
-            position: fixed; top: 0; width: 100%; height: 135px; background: rgba(0,0,0,0.95); z-index: 5000; 
-            border-bottom: 2px solid #222; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-bottom: 12px;
+            position: fixed; top: 0; width: 100%; height: 135px; background: rgba(10, 20, 15, 0.95); z-index: 5000; 
+            border-bottom: 2px solid var(--sary); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-bottom: 12px;
         }
         .delivery-bar { width: 100%; background: var(--sary); color: #000; font-size: 13px; font-weight: 900; text-align: center; padding: 8px 0; }
         .logo-area { font-size: 26px; font-weight: 900; color: #fff; margin-top: 15px; }
@@ -27,34 +31,45 @@
 
         .container { max-width: 850px; margin: auto; padding-top: 145px; }
 
-        /* SLIDER DÜZETMELERI - Haryt kartlaryna laýyk ölçeg */
-        .slider { width: 94%; aspect-ratio: 1/1; max-height: 350px; margin: 10px auto; overflow: hidden; border-radius: 20px; border: 1px solid #333; position: relative; background: #fff; }
+        .search-box { width: 94%; margin: 15px auto 10px; }
+        .search-box input { width: 100%; background: #1a2a22; border: 1px solid #33443a; color: #fff; padding: 14px 18px; border-radius: 15px; outline: none; font-size: 16px; border-left: 4px solid var(--sary); }
+
+        .cat-list { display: flex; gap: 10px; overflow-x: auto; padding: 5px 3% 15px; scrollbar-width: none; }
+        .cat-list::-webkit-scrollbar { display: none; }
+        .cat-btn { background: #1a2a22; color: #aaa; padding: 10px 18px; border-radius: 20px; border: 1px solid #33443a; white-space: nowrap; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .cat-btn.active { background: var(--sary); color: #000; border-color: var(--sary); transform: scale(1.05); }
+
+        .slider { width: 94%; aspect-ratio: 1/1; max-height: 350px; margin: 10px auto; overflow: hidden; border-radius: 20px; border: 2px solid #2d4438; position: relative; background: #fff; }
         .track { display: flex; height: 100%; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide { min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
         .slide img { max-width: 95%; max-height: 95%; object-fit: contain; }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
-        .card { background: var(--kart); border-radius: 20px; padding: 12px; text-align: center; border: 1px solid #222; position: relative; }
+        .card { background: var(--kart); border-radius: 20px; padding: 12px; text-align: center; border: 1px solid #25362d; position: relative; }
+        
         .p-no { position: absolute; top: 8px; left: 8px; background: var(--sary); color: #000; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; z-index: 10; }
+        .discount-tag { position: absolute; top: 40px; left: 8px; background: var(--gypyl); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 4px; z-index: 10; }
         .p-views { position: absolute; top: 8px; right: 8px; font-size: 11px; color: #aaa; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 5px; }
+        
         .img-w { width: 100%; aspect-ratio: 1/1; background: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 10px; }
         .img-w img { max-width: 90%; max-height: 90%; object-fit: contain; }
-        .price { color: var(--yasyl); font-size: 19px; font-weight: 900; }
+        
+        .price-container { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 5px; }
+        .old-price { color: #888; text-decoration: line-through; font-size: 13px; }
+        .price { color: var(--yasyl); font-size: 18px; font-weight: 900; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; align-items: center; justify-content: center; background: rgba(0,0,0,0.98); }
-        .m-box { background: var(--kart); width: 92%; max-width: 420px; border-radius: 30px; padding: 25px; position: relative; text-align: center; max-height: 90vh; overflow-y: auto; border: 1px solid #333; }
-        .m-desc { font-size: 14px; color: #ccc; margin: 15px 0; line-height: 1.4; text-align: left; background: #000; padding: 10px; border-radius: 10px; }
-
+        .m-box { background: var(--kart); width: 92%; max-width: 420px; border-radius: 30px; padding: 25px; position: relative; text-align: center; max-height: 90vh; overflow-y: auto; border: 1px solid #33443a; }
         .m-actions { display: flex; gap: 10px; margin-top: 20px; }
         .btn-wa { background: var(--yasyl); color: #000; border: none; padding: 15px; border-radius: 15px; font-weight: bold; flex: 1; cursor: pointer; font-size: 16px; }
-        .btn-icon { background: #222; color: #555; border: 1px solid #333; padding: 12px; border-radius: 15px; cursor: pointer; font-size: 24px; width: 75px; transition: 0.2s; }
+        .btn-icon { background: #1a2a22; color: #555; border: 1px solid #33443a; padding: 12px; border-radius: 15px; cursor: pointer; font-size: 24px; width: 75px; transition: 0.2s; }
         .btn-icon.active-cart { color: var(--yasyl); border-color: var(--yasyl); }
         .btn-icon.active-heart { color: var(--gypyl); border-color: var(--gypyl); }
 
-        .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--yasyl); color: #000; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); z-index: 6000; cursor: pointer; border: 3px solid #000; }
+        .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--yasyl); color: #000; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); z-index: 6000; cursor: pointer; border: 3px solid var(--arka); }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--gypyl); color: #fff; font-size: 13px; font-weight: bold; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; }
 
-        .footer-area { padding: 40px 20px; text-align: center; border-top: 1px solid #222; margin-top: 30px; background: #080808; }
+        .footer-area { padding: 40px 20px; text-align: center; border-top: 1px solid #25362d; margin-top: 30px; background: #08110c; }
         .stat-text { color: var(--yasyl); font-size: 14px; margin-bottom: 6px; font-weight: bold; }
         .copy { color: var(--sary); font-size: 15px; font-weight: 900; margin-top: 25px; }
     </style>
@@ -71,18 +86,28 @@
         <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg"></div>
         <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/46.jpg"></div>
         <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/51.jpg"></div>
-        <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/47.jpg"></div>
-        <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/5.jpg"></div>
     </div></div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="filterAll()">
+    </div>
+
+    <div class="cat-list">
+        <div class="cat-btn active" onclick="setCat('Hemmesi', this)">Hemmesi</div>
+        <div class="cat-btn" onclick="setCat('Ideg serişdeleri', this)">Ideg serişdeleri</div>
+        <div class="cat-btn" onclick="setCat('Ýuwujy serişdeleri', this)">Ýuwujy serişdeleri</div>
+        <div class="cat-btn" onclick="setCat('Gözellik', this)">Gözellik</div>
+        <div class="cat-btn" onclick="setCat('Parfum', this)">Parfum</div>
+    </div>
 
     <div id="pGrid" class="grid"></div>
 
-    <div style="margin:20px 10px; padding:25px; background:var(--kart); border-radius:25px; border:1px solid #222;">
+    <div style="margin:20px 10px; padding:25px; background:var(--kart); border-radius:25px; border:1px solid #25362d;">
         <h3 style="color:var(--sary); margin-bottom:15px;">💬 Müşderi Teswirleri</h3>
         <div id="cList"></div>
         <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-            <input type="text" id="uName" style="background:#000; border:1px solid #333; color:#fff; padding:13px; border-radius:12px;" placeholder="Adyňyz">
-            <textarea id="uMsg" style="background:#000; border:1px solid #333; color:#fff; padding:13px; border-radius:12px;" rows="2" placeholder="Pikiriňiz..."></textarea>
+            <input type="text" id="uName" style="background:#08110c; border:1px solid #33443a; color:#fff; padding:13px; border-radius:12px;" placeholder="Adyňyz">
+            <textarea id="uMsg" style="background:#08110c; border:1px solid #33443a; color:#fff; padding:13px; border-radius:12px;" rows="2" placeholder="Pikiriňiz..."></textarea>
             <button onclick="sendMsg()" style="background:var(--yasyl); color:#000; border:none; padding:13px; border-radius:12px; font-weight:bold; cursor:pointer;">Ugrat</button>
         </div>
     </div>
@@ -90,7 +115,8 @@
     <div class="footer-area">
         <div class="stat-text">🕒 24 Sagatda girenler: <span id="dayViews">0</span></div>
         <div class="stat-text">📊 Jemi açylma sany: <span id="allViews">0</span></div>
-        <div class="copy">Admin Meňli Aşyrowa. © 2026ý Ähli hukuklar goralan.</div>
+        <div class="copy">Admin © Meňli Aşyrowa </div>
+		<div class="copy">2026ý Ähli hukuklar goralan</div>
     </div>
 </div>
 
@@ -103,8 +129,8 @@
         <span style="position:absolute; top:15px; left:15px; color:var(--sary); cursor:pointer; font-weight:bold;" onclick="closeModal('hModal')">⬅ YZA</span>
         <div style="background:#fff; border-radius:15px; padding:15px; margin: 25px 0;"><img id="mImg" src="" style="width:100%; aspect-ratio:1/1; object-fit:contain;"></div>
         <h2 id="mName" style="color:var(--sary); font-size:24px;"></h2>
-        <div id="mDesc" class="m-desc"></div>
-        <div id="mPrice" class="price" style="font-size:28px; margin: 15px 0;"></div>
+        <div id="mDesc" style="font-size:14px; color:#ccc; margin:15px 0; text-align:left; background:#08110c; padding:10px; border-radius:10px;"></div>
+        <div id="mPriceArea" class="price-container" style="margin: 15px 0;"></div>
         <div class="m-actions">
             <button id="waBtn" class="btn-wa">🛒 SARGYT ET</button>
             <button id="cartBtn" class="btn-icon">🛒</button>
@@ -118,7 +144,7 @@
         <span style="position:absolute; top:15px; left:15px; color:var(--sary); cursor:pointer; font-weight:bold;" onclick="closeModal('cartModal')">⬅ ÝAP</span>
         <h2 style="color:var(--sary); margin-bottom:20px;">Sebediňiz</h2>
         <div id="cartItemsList"></div>
-        <div id="totalCartPrice" style="font-size:22px; font-weight:bold; color:var(--yasyl); margin-top:20px; border-top:1px solid #333; padding-top:15px;">Jemi: 0 TMT</div>
+        <div id="totalCartPrice" style="font-size:22px; font-weight:bold; color:var(--yasyl); margin-top:20px; border-top:1px solid #33443a; padding-top:15px;">Jemi: 0 TMT</div>
         <button onclick="orderAll()" style="width:100%; background:var(--yasyl); color:#000; border:none; padding:16px; border-radius:15px; font-weight:bold; margin-top:15px; cursor:pointer;">HEMMESINI SARGYT ET</button>
     </div>
 </div>
@@ -127,8 +153,9 @@
     const firebaseConfig = { apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", projectId: "garakel-dukan" };
     firebase.initializeApp(firebaseConfig); const db = firebase.database();
 
-    let allProducts = [], cart = [], hearts = [];
-    const today = new Date().toISOString().slice(0, 10);
+    let allProducts = [], cart = [], hearts = [], selectedCat = 'Hemmesi';
+    const tmDate = new Date(new Date().getTime() + (5 * 60 * 60 * 1000));
+    const today = tmDate.toISOString().slice(0, 10);
 
     db.ref('stats/total_visits').transaction(v => (v || 0) + 1);
     db.ref('stats/daily/' + today).transaction(v => (v || 0) + 1);
@@ -142,48 +169,81 @@
         const data = snap.val() || {};
         const pObj = data.products || {};
         allProducts = Object.keys(pObj).map((k, index) => ({ id: k, nomer: index + 1, ...pObj[k] })).reverse();
-        renderProducts();
+        filterAll();
         renderComments(data.comments_general || {});
     });
 
-    function renderProducts() {
-        document.getElementById('pGrid').innerHTML = allProducts.map(h => `
-            <div class="card" onclick="openProductModal('${h.id}')">
-                <div class="p-no">№${h.nomer}</div>
-                <div class="p-views">👁️ ${h.view_count || 0}</div>
-                <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
-                <div style="font-size:14px; font-weight:bold; height:35px; overflow:hidden;">${h.name}</div>
-                <div class="price">${h.price} TMT</div>
-            </div>`).join('');
+    function setCat(cat, btn) {
+        selectedCat = cat;
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterAll();
+    }
+
+    function filterAll() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = allProducts.filter(h => {
+            const matchesCat = (selectedCat === 'Hemmesi' || h.category === selectedCat);
+            const matchesSearch = h.name.toLowerCase().includes(query);
+            return matchesCat && matchesSearch;
+        });
+        renderProducts(filtered);
+    }
+
+    function renderProducts(list) {
+        document.getElementById('pGrid').innerHTML = list.map(h => {
+            const statusColor = "var(--sary)";
+            const oldPriceHTML = h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : '';
+            const discountTag = h.old_price ? `<div class="discount-tag">SKIDKA</div>` : '';
+
+            return `
+                <div class="card" onclick="openProductModal('${h.id}')">
+                    <div class="p-no">№${h.nomer}</div>
+                    ${discountTag}
+                    <div class="p-views">👁️ ${h.view_count || 0}</div>
+                    <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
+                    <div style="font-size:14px; font-weight:bold; height:35px; overflow:hidden;">${h.name}</div>
+                    <div style="color:${statusColor}; font-size:11px; font-weight:bold; margin-top:5px;">${h.status || ''}</div>
+                    <div class="price-container">
+                        ${oldPriceHTML}
+                        <div class="price">${h.price} TMT</div>
+                    </div>
+                </div>`;
+        }).join('');
     }
 
     function openProductModal(id) {
         const h = allProducts.find(p => p.id === id);
         db.ref(`products/${id}/view_count`).transaction(v => (v || 0) + 1);
         document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
-        document.getElementById('mName').innerText = h.name;
+        const statusHTML = `<br><span style="font-size:14px; color:var(--sary)">${h.status || ''}</span>`;
+        document.getElementById('mName').innerHTML = h.name + statusHTML;
         document.getElementById('mDesc').innerText = h.desc || "Maglumat ýok.";
-        document.getElementById('mPrice').innerText = h.price + " TMT";
+        const oldP = h.old_price ? `<span class="old-price" style="font-size:18px;">${h.old_price} TMT</span>` : '';
+        document.getElementById('mPriceArea').innerHTML = `${oldP} <div class="price" style="font-size:28px;">${h.price} TMT</div>`;
         
+        const waBtn = document.getElementById('waBtn');
+        // BU ÝERDE DIŇE SARGYT ET BOLAR ÝALY DÜZEDILDI:
+        waBtn.innerText = "🛒 SARGYT ET";
+        waBtn.style.background = "var(--yasyl)";
+        waBtn.onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${h.nomer} - ${h.name}`);
+
         const cb = document.getElementById('cartBtn'), hb = document.getElementById('heartBtn');
         cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         hb.className = hearts.includes(id) ? 'btn-icon active-heart' : 'btn-icon';
 
         cb.onclick = () => { if(cart.some(x => x.id === id)) cart = cart.filter(x => x.id !== id); else cart.push(h); updateCartCount(); cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon'; };
         hb.onclick = () => { if(hearts.includes(id)) hearts = hearts.filter(x => x !== id); else hearts.push(id); hb.className = hearts.includes(id) ? 'btn-icon active-heart' : 'btn-icon'; };
-        
-        document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${h.nomer} - ${h.name}`);
         document.getElementById('hModal').style.display = 'flex';
     }
 
     function updateCartCount() { document.getElementById('cartCount').innerText = cart.length; }
-
     function openCartModal() {
         const list = document.getElementById('cartItemsList');
         let total = 0;
         list.innerHTML = cart.map(h => {
             total += Number(h.price);
-            return `<div style="display:flex; align-items:center; gap:10px; background:#000; padding:10px; border-radius:15px; margin-bottom:10px; border:1px solid #222;">
+            return `<div style="display:flex; align-items:center; gap:10px; background:#08110c; padding:10px; border-radius:15px; margin-bottom:10px; border:1px solid #33443a;">
                 <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}" style="width:50px; height:50px; border-radius:10px; background:#fff;">
                 <div style="flex:1;"><b>${h.name}</b><br><span style="color:var(--yasyl)">${h.price} TMT</span></div>
                 <span onclick="removeFromCart('${h.id}')" style="color:var(--gypyl); font-size:24px; cursor:pointer;">✖</span>
@@ -203,7 +263,7 @@
             const c = comm[id];
             let reps = "";
             if(c.replies) Object.values(c.replies).forEach(r => reps += `<div style="margin-left:20px; border-left:2px solid var(--yasyl); padding-left:12px; margin-top:8px; font-size:12px;"><b>Admin:</b> ${r.text}</div>`);
-            html += `<div style="background:#000; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #333;">
+            html += `<div style="background:#08110c; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #33443a;">
                 <b style="color:var(--sary)">${c.name}:</b> ${c.text} ${reps}
                 <div onclick="replyAdmin('${id}')" style="font-size:11px; color:var(--sary); cursor:pointer; margin-top:10px; font-weight:bold; opacity:0.8;">↳ Jogap ber</div>
             </div>`;
@@ -222,7 +282,7 @@
     setInterval(() => { 
         const track = document.getElementById('sliderTrack');
         if(track) {
-            sIdx = (sIdx + 1) % 5; 
+            sIdx = (sIdx + 1) % 3; 
             track.style.transform = `translateX(-${sIdx * 100}%)`; 
         }
     }, 5000);
