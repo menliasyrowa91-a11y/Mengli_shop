@@ -116,8 +116,8 @@
     </div>
 
     <div class="footer-area">
-        <div class="stat-text">🕒 Şu günki girenler: <span id="dayViews">0</span></div>
-        <div class="stat-text">📊 Jemi açylan sany: <span id="allViews">0</span></div>
+        <div class="stat-text">👤 Täze gelenler: <span id="dayUniques">0</span></div>
+        <div class="stat-text">👁️ Şu günki görüliş: <span id="dayViews">0</span></div>
         <div class="copy">Admin © Meňli Aşyrowa </div>
         <div class="copy">2026ý Ähli hukuklar goralan</div>
     </div>
@@ -153,7 +153,7 @@
 </div>
 
 <script>
-    // Firebase Config
+    // 1. Firebase Config
     const firebaseConfig = { 
         apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", 
         databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", 
@@ -162,31 +162,38 @@
     firebase.initializeApp(firebaseConfig); 
     const db = firebase.database();
 
-    // 1. TAKYK WAGT WE STATISTIKA
+    // 2. Takyk wagt we Statistika (Suratdaky gurluşa görä)
     function getTMDate() {
         const now = new Date();
         const tmTime = new Date(now.getTime() + (5 * 60 + now.getTimezoneOffset()) * 60000);
         return tmTime.toISOString().split('T')[0];
     }
     const today = getTMDate();
+    let startTime = Date.now();
 
-    // Jemi açylma sany (Statistika)
-    db.ref('stats/total_visits').transaction(v => (v || 0) + 1);
-
-    // Günüň adam sany
+    // Täze ulanyjy hasaby (Unique)
     if (!localStorage.getItem('v_' + today)) {
-        db.ref('stats/daily/' + today).transaction(v => (v || 0) + 1);
+        db.ref(`stats/${today}/unique`).transaction(v => (v || 0) + 1);
         localStorage.setItem('v_' + today, '1');
     }
 
-    // Statistika diňleýji
-    db.ref('stats').on('value', s => {
-        const d = s.val() || {};
-        document.getElementById('allViews').innerText = d.total_visits || 0;
-        document.getElementById('dayViews').innerText = (d.daily && d.daily[today]) ? d.daily[today] : 0;
+    // Sahypa açylma sany (Views)
+    db.ref(`stats/${today}/views`).transaction(v => (v || 0) + 1);
+
+    // Sahypadan çykanda wagty saklamak (totalTime)
+    window.addEventListener('beforeunload', () => {
+        const duration = Math.floor((Date.now() - startTime) / 1000);
+        db.ref(`stats/${today}/totalTime`).transaction(v => (v || 0) + duration);
     });
 
-    // 2. HARYT WE SEBET LOGIKASY
+    // Statistika diňleýji (Live update)
+    db.ref(`stats/${today}`).on('value', s => {
+        const d = s.val() || {};
+        document.getElementById('dayViews').innerText = d.views || 0;
+        document.getElementById('dayUniques').innerText = d.unique || 0;
+    });
+
+    // 3. Haryt we Sebet Logikasy
     let allProducts = [], cart = [], hearts = [], selectedCat = 'Hemmesi';
 
     db.ref('products').on('value', snap => {
@@ -197,7 +204,6 @@
         filterAll();
     });
 
-    // Teswirler diňleýji
     db.ref('comments_general').on('value', snap => renderComments(snap.val() || {}));
 
     function setCat(cat, btn) {
@@ -210,7 +216,8 @@
     function filterAll() {
         const q = document.getElementById('searchInput').value.toLowerCase();
         const filtered = allProducts.filter(h => {
-            return (selectedCat === 'Hemmesi' || h.category === selectedCat) && h.name.toLowerCase().includes(q);
+            return (selectedCat === 'Hemmesi' || h.category === selectedCat) && 
+                   (h.name && h.name.toLowerCase().includes(q));
         });
         renderProducts(filtered);
     }
@@ -231,7 +238,7 @@
                 </div>`;
         }).join('');
 
-        // JANLY GÖRÜLMELER (Real-time Views)
+        // Haryt görüş sanyny live diňlemek
         list.forEach(h => {
             db.ref(`products/${h.id}/view_count`).on('value', s => {
                 const span = document.getElementById(`v-${h.id}`);
@@ -253,18 +260,19 @@
         
         document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${h.nomer} - ${h.name}`);
         
-        // Sebet we Halanyp goýlanlary barlamak
         const cb = document.getElementById('cartBtn'), hb = document.getElementById('heartBtn');
         cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         hb.className = hearts.includes(id) ? 'btn-icon active-heart' : 'btn-icon';
 
-        cb.onclick = () => { 
+        cb.onclick = (e) => { 
+            e.stopPropagation();
             if(cart.some(x => x.id === id)) cart = cart.filter(x => x.id !== id); 
             else cart.push(h); 
             updateCartCount(); 
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon'; 
         };
-        hb.onclick = () => { 
+        hb.onclick = (e) => { 
+            e.stopPropagation();
             if(hearts.includes(id)) hearts = hearts.filter(x => x !== id); 
             else hearts.push(id); 
             hb.className = hearts.includes(id) ? 'btn-icon active-heart' : 'btn-icon'; 
@@ -298,7 +306,7 @@
         window.open(`https://wa.me/99371563667?text=${txt}`); 
     }
 
-    // 3. TESWIRLER WE SLIDER
+    // 4. Teswirler we Slider
     function renderComments(comm) {
         let html = "";
         Object.keys(comm || {}).reverse().forEach(id => {
