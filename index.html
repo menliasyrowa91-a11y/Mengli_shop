@@ -45,7 +45,7 @@
         .slide img { max-width: 95%; max-height: 95%; object-fit: contain; }
 
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px; }
-        .card { background: var(--kart); border-radius: 20px; padding: 12px; text-align: center; border: 1px solid #25362d; position: relative; transition: 0.3s; }
+        .card { background: var(--kart); border-radius: 20px; padding: 12px; text-align: center; border: 1px solid #25362d; position: relative; transition: 0.3s; cursor: pointer; }
         .card:active { transform: scale(0.96); }
         
         .p-no { position: absolute; top: 8px; left: 8px; background: var(--sary); color: #000; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; z-index: 10; }
@@ -56,7 +56,7 @@
         .img-w img { max-width: 90%; max-height: 90%; object-fit: contain; }
         
         .price-container { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 5px; }
-        .old-price { color: #888; text-decoration: line-through; font-size: 13px; }
+        .old-price { color: #888; text-decoration: line-through; font-size: 12px; }
         .price { color: var(--yasyl); font-size: 18px; font-weight: 900; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; align-items: center; justify-content: center; background: rgba(0,0,0,0.98); }
@@ -73,6 +73,8 @@
         .footer-area { padding: 40px 20px; text-align: center; border-top: 1px solid #25362d; margin-top: 30px; background: #08110c; }
         .stat-text { color: var(--yasyl); font-size: 14px; margin-bottom: 6px; font-weight: bold; }
         .copy { color: var(--sary); font-size: 15px; font-weight: 900; margin-top: 25px; }
+        
+        .cart-item { display: flex; align-items: center; gap: 10px; background: #08110c; padding: 10px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #33443a; text-align: left; }
     </style>
 </head>
 <body>
@@ -151,41 +153,52 @@
 </div>
 
 <script>
-    const firebaseConfig = { apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", projectId: "garakel-dukan" };
-    firebase.initializeApp(firebaseConfig); const db = firebase.database();
+    // Firebase Config
+    const firebaseConfig = { 
+        apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", 
+        databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", 
+        projectId: "garakel-dukan" 
+    };
+    firebase.initializeApp(firebaseConfig); 
+    const db = firebase.database();
 
-    // --- 1. TÜRKMENISTAN WAGTYNA GÖRÄ STATISTIKA ---
+    // 1. TAKYK WAGT WE STATISTIKA
     function getTMDate() {
         const now = new Date();
-        const tmOffset = 5 * 60; 
-        const localOffset = now.getTimezoneOffset(); 
-        const tmTime = new Date(now.getTime() + (tmOffset + localOffset) * 60000);
+        const tmTime = new Date(now.getTime() + (5 * 60 + now.getTimezoneOffset()) * 60000);
         return tmTime.toISOString().split('T')[0];
     }
     const today = getTMDate();
 
+    // Jemi açylma sany (Statistika)
     db.ref('stats/total_visits').transaction(v => (v || 0) + 1);
-    if (!localStorage.getItem('visited_today_' + today)) {
+
+    // Günüň adam sany
+    if (!localStorage.getItem('v_' + today)) {
         db.ref('stats/daily/' + today).transaction(v => (v || 0) + 1);
-        localStorage.setItem('visited_today_' + today, 'true');
+        localStorage.setItem('v_' + today, '1');
     }
 
+    // Statistika diňleýji
     db.ref('stats').on('value', s => {
         const d = s.val() || {};
         document.getElementById('allViews').innerText = d.total_visits || 0;
         document.getElementById('dayViews').innerText = (d.daily && d.daily[today]) ? d.daily[today] : 0;
     });
 
-    // --- 2. HARYTLAR WE JANLY GÖRÜLMELER ---
+    // 2. HARYT WE SEBET LOGIKASY
     let allProducts = [], cart = [], hearts = [], selectedCat = 'Hemmesi';
 
-    db.ref().on('value', snap => {
-        const data = snap.val() || {};
-        const pObj = data.products || {};
-        allProducts = Object.keys(pObj).map((k, index) => ({ id: k, nomer: index + 1, ...pObj[k] })).reverse();
+    db.ref('products').on('value', snap => {
+        const pObj = snap.val() || {};
+        allProducts = Object.keys(pObj).map((k, index) => ({ 
+            id: k, nomer: index + 1, ...pObj[k] 
+        })).reverse();
         filterAll();
-        renderComments(data.comments_general || {});
     });
+
+    // Teswirler diňleýji
+    db.ref('comments_general').on('value', snap => renderComments(snap.val() || {}));
 
     function setCat(cat, btn) {
         selectedCat = cat;
@@ -195,10 +208,9 @@
     }
 
     function filterAll() {
-        const query = document.getElementById('searchInput').value.toLowerCase();
+        const q = document.getElementById('searchInput').value.toLowerCase();
         const filtered = allProducts.filter(h => {
-            const matchesCat = (selectedCat === 'Hemmesi' || h.category === selectedCat);
-            return matchesCat && h.name.toLowerCase().includes(query);
+            return (selectedCat === 'Hemmesi' || h.category === selectedCat) && h.name.toLowerCase().includes(q);
         });
         renderProducts(filtered);
     }
@@ -206,24 +218,24 @@
     function renderProducts(list) {
         const grid = document.getElementById('pGrid');
         grid.innerHTML = list.map(h => {
-            const oldPriceHTML = h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : '';
+            const oldP = h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : '';
             return `
                 <div class="card" onclick="openProductModal('${h.id}')">
                     <div class="p-no">№${h.nomer}</div>
                     ${h.old_price ? '<div class="discount-tag">SKIDKA</div>' : ''}
-                    <div class="p-views">👁️ <span id="view-span-${h.id}">${h.view_count || 0}</span></div>
+                    <div class="p-views">👁️ <span id="v-${h.id}">${h.view_count || 0}</span></div>
                     <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
                     <div style="font-size:14px; font-weight:bold; height:35px; overflow:hidden;">${h.name}</div>
                     <div style="color:var(--sary); font-size:11px; font-weight:bold; margin-top:5px;">${h.status || ''}</div>
-                    <div class="price-container">${oldPriceHTML}<div class="price">${h.price} TMT</div></div>
+                    <div class="price-container">${oldP}<div class="price">${h.price} TMT</div></div>
                 </div>`;
         }).join('');
 
-        // Harydyň görülen sanyny Firebase-den janly diňleýäris (HÄZIR IŞLEÝÄR!)
+        // JANLY GÖRÜLMELER (Real-time Views)
         list.forEach(h => {
             db.ref(`products/${h.id}/view_count`).on('value', s => {
-                const el = document.getElementById(`view-span-${h.id}`);
-                if(el) el.innerText = s.val() || 0;
+                const span = document.getElementById(`v-${h.id}`);
+                if(span) span.innerText = s.val() || 0;
             });
         });
     }
@@ -231,14 +243,17 @@
     function openProductModal(id) {
         const h = allProducts.find(p => p.id === id);
         db.ref(`products/${id}/view_count`).transaction(v => (v || 0) + 1);
+
         document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
         document.getElementById('mName').innerHTML = `${h.name} <br><span style="font-size:14px; color:var(--sary)">${h.status || ''}</span>`;
-        document.getElementById('mDesc').innerText = h.desc || "Maglumat ýok.";
+        document.getElementById('mDesc').innerText = h.desc || "Haryt barada maglumat ýok.";
+        
         const oldP = h.old_price ? `<span class="old-price" style="font-size:18px;">${h.old_price} TMT</span>` : '';
         document.getElementById('mPriceArea').innerHTML = `${oldP} <div class="price" style="font-size:28px;">${h.price} TMT</div>`;
         
         document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${h.nomer} - ${h.name}`);
         
+        // Sebet we Halanyp goýlanlary barlamak
         const cb = document.getElementById('cartBtn'), hb = document.getElementById('heartBtn');
         cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         hb.className = hearts.includes(id) ? 'btn-icon active-heart' : 'btn-icon';
@@ -258,45 +273,52 @@
     }
 
     function updateCartCount() { document.getElementById('cartCount').innerText = cart.length; }
+
     function openCartModal() {
         const list = document.getElementById('cartItemsList');
         let total = 0;
         list.innerHTML = cart.map(h => {
-            total += Number(h.price);
-            return `<div style="display:flex; align-items:center; gap:10px; background:#08110c; padding:10px; border-radius:15px; margin-bottom:10px; border:1px solid #33443a;">
-                <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}" style="width:50px; height:50px; border-radius:10px; background:#fff;">
+            total += parseFloat(h.price);
+            return `<div class="cart-item">
+                <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}" style="width:50px; height:50px; border-radius:10px; background:#fff; object-fit:contain;">
                 <div style="flex:1;"><b>${h.name}</b><br><span style="color:var(--yasyl)">${h.price} TMT</span></div>
                 <span onclick="removeFromCart('${h.id}')" style="color:var(--gypyl); font-size:24px; cursor:pointer;">✖</span>
             </div>`;
         }).join('') || "Sebediňiz boş.";
-        document.getElementById('totalCartPrice').innerText = `Jemi: ${total} TMT`;
+        document.getElementById('totalCartPrice').innerText = `Jemi: ${total.toFixed(2)} TMT`;
         document.getElementById('cartModal').style.display = 'flex';
     }
 
     function removeFromCart(id) { cart = cart.filter(x => x.id !== id); updateCartCount(); openCartModal(); }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function orderAll() { if(!cart.length) return; window.open(`https://wa.me/99371563667?text=Täze Sargytlar: ${cart.map(h => h.name).join(', ')}`); }
+    
+    function orderAll() { 
+        if(!cart.length) return; 
+        const txt = encodeURIComponent(`Täze Sargyt:\n${cart.map(h => `- ${h.name} (${h.price} TMT)`).join('\n')}\n\nJemi: ${document.getElementById('totalCartPrice').innerText}`);
+        window.open(`https://wa.me/99371563667?text=${txt}`); 
+    }
 
+    // 3. TESWIRLER WE SLIDER
     function renderComments(comm) {
         let html = "";
         Object.keys(comm || {}).reverse().forEach(id => {
             const c = comm[id];
             let reps = "";
             if(c.replies) Object.values(c.replies).forEach(r => reps += `<div style="margin-left:20px; border-left:2px solid var(--yasyl); padding-left:12px; margin-top:8px; font-size:12px;"><b>Admin:</b> ${r.text}</div>`);
-            html += `<div style="background:#08110c; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #33443a;">
+            html += `<div style="background:#08110c; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #33443a; text-align:left;">
                 <b style="color:var(--sary)">${c.name}:</b> ${c.text} ${reps}
                 <div onclick="replyAdmin('${id}')" style="font-size:11px; color:var(--sary); cursor:pointer; margin-top:10px; font-weight:bold; opacity:0.8;">↳ Jogap ber</div>
             </div>`;
         });
-        document.getElementById('cList').innerHTML = html || "Teswir ýok.";
+        document.getElementById('cList').innerHTML = html || "Ilkinji teswiri ýazyň...";
     }
 
     function sendMsg() {
         const n = document.getElementById('uName').value || "Müşderi", m = document.getElementById('uMsg').value;
-        if(m) { db.ref('comments_general').push({ name:n, text:m }); document.getElementById('uMsg').value=""; }
+        if(m.trim()) { db.ref('comments_general').push({ name:n, text:m }); document.getElementById('uMsg').value=""; }
     }
 
-    function replyAdmin(id) { const t = prompt("Admin jogaby:"); if(t) db.ref(`comments_general/${id}/replies`).push({ text: t }); }
+    function replyAdmin(id) { const t = prompt("Jogap ýazyň:"); if(t) db.ref(`comments_general/${id}/replies`).push({ text: t }); }
 
     let sIdx = 0; 
     setInterval(() => { 
