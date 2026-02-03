@@ -116,10 +116,9 @@
     </div>
 
     <div class="footer-area">
-        <div class="stat-text">👤 Şu günki girenler: <span id="dayUniques">0</span></div>
-        <div class="stat-text">👁️ Şu günki jemi açylyş: <span id="dayViews">0</span></div>
-        <div class="copy">Admin © Meňli Aşyrowa </div>
-        <div class="copy">2026ý Ähli hukuklar goralan</div>
+        <div class="stat-text">👤 Müşderi sany: <span id="dayUniques">0</span></div>
+        <div class="stat-text">👁️ Umumy görüliş: <span id="dayViews">0</span></div>
+        <div class="copy">Admin © Meňli Aşyrowa | 2026ý</div>
     </div>
 </div>
 
@@ -162,44 +161,40 @@
     firebase.initializeApp(firebaseConfig); 
     const db = firebase.database();
 
-    // 2. Takyk wagt we Statistika (Suratdaky gurluşa görä)
+    // 2. Date & Stats Logic (Based on your Firebase structure)
     function getTMDate() {
         const now = new Date();
         const tmTime = new Date(now.getTime() + (5 * 60 + now.getTimezoneOffset()) * 60000);
         return tmTime.toISOString().split('T')[0];
     }
     const today = getTMDate();
-    let startTime = Date.now();
 
-    // Täze ulanyjy hasaby (Unique)
+    // Daily Unique Visitor Tracking
     if (!localStorage.getItem('v_' + today)) {
         db.ref(`stats/${today}/unique`).transaction(v => (v || 0) + 1);
         localStorage.setItem('v_' + today, '1');
     }
 
-    // Sahypa açylma sany (Views)
+    // Daily Page Views Tracking
     db.ref(`stats/${today}/views`).transaction(v => (v || 0) + 1);
 
-    // Sahypadan çykanda wagty saklamak (totalTime)
-    window.addEventListener('beforeunload', () => {
-        const duration = Math.floor((Date.now() - startTime) / 1000);
-        db.ref(`stats/${today}/totalTime`).transaction(v => (v || 0) + duration);
-    });
-
-    // Statistika diňleýji (Live update)
+    // Live Stats Updates for Footer
     db.ref(`stats/${today}`).on('value', s => {
         const d = s.val() || {};
-        document.getElementById('dayViews').innerText = d.views || 0;
-        document.getElementById('dayUniques').innerText = d.unique || 0;
+        const uEl = document.getElementById('dayUniques'), vEl = document.getElementById('dayViews');
+        if(uEl) uEl.innerText = d.unique || 0;
+        if(vEl) vEl.innerText = d.views || 0;
     });
 
-    // 3. Haryt we Sebet Logikasy
+    // 3. Products & Cart Logic
     let allProducts = [], cart = [], hearts = [], selectedCat = 'Hemmesi';
 
     db.ref('products').on('value', snap => {
         const pObj = snap.val() || {};
-        allProducts = Object.keys(pObj).map((k, index) => ({ 
-            id: k, nomer: index + 1, ...pObj[k] 
+        // Mapping Firebase keys (0, 1, 2...)
+        allProducts = Object.keys(pObj).map(key => ({ 
+            id: key, 
+            ...pObj[key] 
         })).reverse();
         filterAll();
     });
@@ -228,7 +223,7 @@
             const oldP = h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : '';
             return `
                 <div class="card" onclick="openProductModal('${h.id}')">
-                    <div class="p-no">№${h.nomer}</div>
+                    <div class="p-no">№${parseInt(h.id) + 1}</div>
                     ${h.old_price ? '<div class="discount-tag">SKIDKA</div>' : ''}
                     <div class="p-views">👁️ <span id="v-${h.id}">${h.view_count || 0}</span></div>
                     <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
@@ -238,7 +233,7 @@
                 </div>`;
         }).join('');
 
-        // Haryt görüş sanyny live diňlemek
+        // Real-time View Count Monitoring
         list.forEach(h => {
             db.ref(`products/${h.id}/view_count`).on('value', s => {
                 const span = document.getElementById(`v-${h.id}`);
@@ -249,6 +244,9 @@
 
     function openProductModal(id) {
         const h = allProducts.find(p => p.id === id);
+        if(!h) return;
+
+        // Correct transaction path for view_count
         db.ref(`products/${id}/view_count`).transaction(v => (v || 0) + 1);
 
         document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
@@ -258,7 +256,7 @@
         const oldP = h.old_price ? `<span class="old-price" style="font-size:18px;">${h.old_price} TMT</span>` : '';
         document.getElementById('mPriceArea').innerHTML = `${oldP} <div class="price" style="font-size:28px;">${h.price} TMT</div>`;
         
-        document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${h.nomer} - ${h.name}`);
+        document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${parseInt(h.id)+1} - ${h.name}`);
         
         const cb = document.getElementById('cartBtn'), hb = document.getElementById('heartBtn');
         cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
@@ -306,7 +304,7 @@
         window.open(`https://wa.me/99371563667?text=${txt}`); 
     }
 
-    // 4. Teswirler we Slider
+    // 4. Comments & Slider
     function renderComments(comm) {
         let html = "";
         Object.keys(comm || {}).reverse().forEach(id => {
