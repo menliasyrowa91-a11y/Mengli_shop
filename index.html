@@ -49,32 +49,28 @@
         .card:active { transform: scale(0.96); }
         
         .p-no { position: absolute; top: 8px; left: 8px; background: var(--sary); color: #000; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; z-index: 10; }
-        .discount-tag { position: absolute; top: 40px; left: 8px; background: var(--gypyl); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 4px; z-index: 10; }
         .p-views { position: absolute; top: 8px; right: 8px; font-size: 11px; color: #aaa; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 5px; }
         
         .img-w { width: 100%; aspect-ratio: 1/1; background: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 10px; }
         .img-w img { max-width: 90%; max-height: 90%; object-fit: contain; }
         
-        .price-container { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 5px; }
-        .old-price { color: #888; text-decoration: line-through; font-size: 12px; }
         .price { color: var(--yasyl); font-size: 18px; font-weight: 900; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; align-items: center; justify-content: center; background: rgba(0,0,0,0.98); }
-        .m-box { background: var(--kart); width: 92%; max-width: 420px; border-radius: 30px; padding: 25px; position: relative; text-align: center; max-height: 90vh; overflow-y: auto; border: 1px solid #33443a; }
-        .m-actions { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-wa { background: var(--yasyl); color: #000; border: none; padding: 15px; border-radius: 15px; font-weight: bold; flex: 1; cursor: pointer; font-size: 16px; }
-        .btn-icon { background: #1a2a22; color: #555; border: 1px solid #33443a; padding: 12px; border-radius: 15px; cursor: pointer; font-size: 24px; width: 75px; transition: 0.2s; }
-        .btn-icon.active-cart { color: var(--yasyl); border-color: var(--yasyl); }
-        .btn-icon.active-heart { color: var(--gypyl); border-color: var(--gypyl); }
+        /* Admin Styles */
+        .admin-add-btn { display: none; background: var(--yasyl); color: #000; padding: 15px; border-radius: 15px; font-weight: 900; margin: 10px 3%; text-align: center; cursor: pointer; }
+        .admin-controls { display: flex; gap: 5px; margin-top: 10px; justify-content: center; }
+        .btn-edit { background: var(--sary); color: #000; border: none; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; }
+        .btn-del { background: var(--gypyl); color: #fff; border: none; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; }
 
-        .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--yasyl); color: #000; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); z-index: 6000; cursor: pointer; border: 3px solid var(--arka); }
-        .cart-count { position: absolute; top: -5px; right: -5px; background: var(--gypyl); color: #fff; font-size: 13px; font-weight: bold; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; }
-
-        .footer-area { padding: 40px 20px; text-align: center; border-top: 1px solid #25362d; margin-top: 30px; background: #08110c; }
-        .stat-text { color: var(--yasyl); font-size: 14px; margin-bottom: 6px; font-weight: bold; }
-        .copy { color: var(--sary); font-size: 15px; font-weight: 900; margin-top: 25px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; align-items: center; justify-content: center; background: rgba(0,0,0,0.95); }
+        .m-box { background: var(--kart); width: 92%; max-width: 420px; border-radius: 30px; padding: 25px; position: relative; text-align: center; border: 1px solid #33443a; }
         
-        .cart-item { display: flex; align-items: center; gap: 10px; background: #08110c; padding: 10px; border-radius: 15px; margin-bottom: 10px; border: 1px solid #33443a; text-align: left; }
+        .admin-input { width: 100%; background: #08110c; border: 1px solid #33443a; color: #fff; padding: 12px; border-radius: 12px; margin-bottom: 10px; outline: none; }
+
+        .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--yasyl); color: #000; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 6000; border: 3px solid var(--arka); }
+        .cart-count { position: absolute; top: -5px; right: -5px; background: var(--gypyl); color: #fff; font-size: 13px; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; }
+
+        .footer-area { padding: 40px 20px; text-align: center; background: #08110c; }
     </style>
 </head>
 <body>
@@ -85,6 +81,8 @@
 </header>
 
 <div class="container">
+    <div id="adminAddBtn" class="admin-add-btn" onclick="openForm()">➕ TÄZE HARYT GOŞ</div>
+
     <div class="slider"><div class="track" id="sliderTrack">
         <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg"></div>
         <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/46.jpg"></div>
@@ -109,16 +107,17 @@
         <h3 style="color:var(--sary); margin-bottom:15px;">💬 Müşderi Teswirleri</h3>
         <div id="cList"></div>
         <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-            <input type="text" id="uName" style="background:#08110c; border:1px solid #33443a; color:#fff; padding:13px; border-radius:12px;" placeholder="Adyňyz">
-            <textarea id="uMsg" style="background:#08110c; border:1px solid #33443a; color:#fff; padding:13px; border-radius:12px;" rows="2" placeholder="Pikiriňiz..."></textarea>
+            <input type="text" id="uName" class="admin-input" placeholder="Adyňyz">
+            <textarea id="uMsg" class="admin-input" rows="2" placeholder="Pikiriňiz..."></textarea>
             <button onclick="sendMsg()" style="background:var(--yasyl); color:#000; border:none; padding:13px; border-radius:12px; font-weight:bold; cursor:pointer;">Ugrat</button>
         </div>
     </div>
 
     <div class="footer-area">
-        <div class="stat-text">👤 Müşderi sany: <span id="dayUniques">0</span></div>
-        <div class="stat-text">👁️ Umumy görüliş: <span id="dayViews">0</span></div>
-        <div class="copy">Admin © Meňli Aşyrowa | 2026ý</div>
+        <div style="color:var(--yasyl); font-size:14px;">👤 Müşderi: <span id="dayUniques">0</span> | 👁️ Görüliş: <span id="dayViews">0</span></div>
+        <div style="color:var(--sary); margin-top:20px; font-weight:900;">Admin © Meňli Aşyrowa | 2026ý</div>
+        <button onclick="openLogin()" style="background:none; border:none; color:#333; font-size:10px; margin-top:15px; cursor:pointer;">🔐 Admin Paneli</button>
+        <button id="logoutBtn" onclick="logout()" style="display:none; background:var(--gypyl); border:none; padding:5px 10px; border-radius:5px; margin-top:10px; cursor:pointer; color:#fff;">Çykyş</button>
     </div>
 </div>
 
@@ -126,80 +125,110 @@
     🛒 <div class="cart-count" id="cartCount">0</div>
 </div>
 
+<div id="loginModal" class="modal">
+    <div class="m-box" style="max-width:300px;">
+        <h3 style="color:var(--sary); margin-bottom:15px;">Giriş</h3>
+        <input type="password" id="adminPass" class="admin-input" placeholder="Parol">
+        <button onclick="checkLogin()" style="width:100%; background:var(--yasyl); padding:12px; border-radius:12px; border:none; font-weight:bold;">GIR</button>
+        <p onclick="closeModal('loginModal')" style="margin-top:15px; cursor:pointer; opacity:0.6;">Ýap</p>
+    </div>
+</div>
+
+<div id="formModal" class="modal">
+    <div class="m-box">
+        <h3 id="formTitle" style="color:var(--sary); margin-bottom:20px;">Haryt Maglumatlary</h3>
+        <input type="hidden" id="editId">
+        <input type="text" id="pName" class="admin-input" placeholder="Haryt ady">
+        <input type="text" id="pPrice" class="admin-input" placeholder="Bahasy (TMT)">
+        <input type="text" id="pImg" class="admin-input" placeholder="Surat (mysal: 59.jpg)">
+        <select id="pCat" class="admin-input">
+            <option>Ideg serişdeleri</option>
+            <option>Ýuwujy serişdeleri</option>
+            <option>Gözellik</option>
+            <option>Parfum</option>
+        </select>
+        <button onclick="saveProduct()" style="width:100%; background:var(--yasyl); padding:15px; border-radius:12px; border:none; font-weight:bold;">SAKLA</button>
+        <p onclick="closeModal('formModal')" style="margin-top:15px; cursor:pointer; opacity:0.6;">Yza</p>
+    </div>
+</div>
+
 <div id="hModal" class="modal">
     <div class="m-box">
         <span style="position:absolute; top:15px; left:15px; color:var(--sary); cursor:pointer; font-weight:bold;" onclick="closeModal('hModal')">⬅ YZA</span>
         <div style="background:#fff; border-radius:15px; padding:15px; margin: 25px 0;"><img id="mImg" src="" style="width:100%; aspect-ratio:1/1; object-fit:contain;"></div>
         <h2 id="mName" style="color:var(--sary); font-size:24px;"></h2>
-        <div id="mDesc" style="font-size:14px; color:#ccc; margin:15px 0; text-align:left; background:#08110c; padding:10px; border-radius:10px;"></div>
-        <div id="mPriceArea" class="price-container" style="margin: 15px 0;"></div>
-        <div class="m-actions">
-            <button id="waBtn" class="btn-wa">🛒 SARGYT ET</button>
-            <button id="cartBtn" class="btn-icon">🛒</button>
-            <button id="heartBtn" class="btn-icon">❤️</button>
-        </div>
-    </div>
-</div>
-
-<div id="cartModal" class="modal">
-    <div class="m-box">
-        <span style="position:absolute; top:15px; left:15px; color:var(--sary); cursor:pointer; font-weight:bold;" onclick="closeModal('cartModal')">⬅ ÝAP</span>
-        <h2 style="color:var(--sary); margin-bottom:20px;">Sebediňiz</h2>
-        <div id="cartItemsList"></div>
-        <div id="totalCartPrice" style="font-size:22px; font-weight:bold; color:var(--yasyl); margin-top:20px; border-top:1px solid #33443a; padding-top:15px;">Jemi: 0 TMT</div>
-        <button onclick="orderAll()" style="width:100%; background:var(--yasyl); color:#000; border:none; padding:16px; border-radius:15px; font-weight:bold; margin-top:15px; cursor:pointer;">HEMMESINI SARGYT ET</button>
+        <div id="mPriceArea" style="margin: 15px 0; font-size:28px; color:var(--yasyl); font-weight:bold;"></div>
+        <button id="waBtn" style="width:100%; background:var(--yasyl); color:#000; border:none; padding:15px; border-radius:15px; font-weight:bold; font-size:16px;">🛒 SARGYT ET</button>
     </div>
 </div>
 
 <script>
-    // 1. Firebase Config
-    const firebaseConfig = { 
-        apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", 
-        databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", 
-        projectId: "garakel-dukan" 
-    };
-    firebase.initializeApp(firebaseConfig); 
+    // 1. Firebase Initialize
+    const firebaseConfig = { apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", projectId: "garakel-dukan" };
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. Date & Stats Logic (Based on your Firebase structure)
-    function getTMDate() {
-        const now = new Date();
-        const tmTime = new Date(now.getTime() + (5 * 60 + now.getTimezoneOffset()) * 60000);
-        return tmTime.toISOString().split('T')[0];
+    // 2. Admin Logic
+    const ADMIN_PASS = "ylhamlypero91";
+    let isAdmin = localStorage.getItem('isGarakelAdmin') === 'true';
+
+    function openLogin() { document.getElementById('loginModal').style.display='flex'; }
+    function checkLogin() {
+        if(document.getElementById('adminPass').value === ADMIN_PASS) {
+            localStorage.setItem('isGarakelAdmin', 'true');
+            location.reload();
+        } else { alert("Parol ýalňyş!"); }
     }
-    const today = getTMDate();
+    function logout() { localStorage.removeItem('isGarakelAdmin'); location.reload(); }
 
-    // Daily Unique Visitor Tracking
-    if (!localStorage.getItem('v_' + today)) {
-        db.ref(`stats/${today}/unique`).transaction(v => (v || 0) + 1);
-        localStorage.setItem('v_' + today, '1');
+    if(isAdmin) {
+        document.getElementById('adminAddBtn').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
     }
 
-    // Daily Page Views Tracking
-    db.ref(`stats/${today}/views`).transaction(v => (v || 0) + 1);
-
-    // Live Stats Updates for Footer
+    // 3. Stats Logic
+    const today = new Date().toISOString().split('T')[0];
+    if(!localStorage.getItem('v_'+today)) { db.ref(`stats/${today}/unique`).transaction(v => (v||0)+1); localStorage.setItem('v_'+today,'1'); }
+    db.ref(`stats/${today}/views`).transaction(v => (v||0)+1);
     db.ref(`stats/${today}`).on('value', s => {
         const d = s.val() || {};
-        const uEl = document.getElementById('dayUniques'), vEl = document.getElementById('dayViews');
-        if(uEl) uEl.innerText = d.unique || 0;
-        if(vEl) vEl.innerText = d.views || 0;
+        document.getElementById('dayUniques').innerText = d.unique || 0;
+        document.getElementById('dayViews').innerText = d.views || 0;
     });
 
-    // 3. Products & Cart Logic
-    let allProducts = [], cart = [], hearts = [], selectedCat = 'Hemmesi';
+    // 4. Products Logic
+    let allProducts = [], selectedCat = 'Hemmesi';
 
     db.ref('products').on('value', snap => {
         const pObj = snap.val() || {};
-        // Mapping Firebase keys (0, 1, 2...)
-        allProducts = Object.keys(pObj).map(key => ({ 
-            id: key, 
-            ...pObj[key] 
-        })).reverse();
+        allProducts = Object.keys(pObj).map(key => ({ id: key, ...pObj[key] }));
         filterAll();
     });
 
-    db.ref('comments_general').on('value', snap => renderComments(snap.val() || {}));
+    function renderProducts(list) {
+        const grid = document.getElementById('pGrid');
+        grid.innerHTML = list.map(h => `
+            <div class="card" onclick="openProductModal('${h.id}')">
+                <div class="p-no">№${parseInt(h.id)+1}</div>
+                <div class="p-views">👁️ ${h.view_count || 0}</div>
+                <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
+                <div style="font-weight:bold; height:35px; overflow:hidden; font-size:14px;">${h.name}</div>
+                <div class="price">${h.price} TMT</div>
+                ${isAdmin ? `
+                    <div class="admin-controls" onclick="event.stopPropagation()">
+                        <button class="btn-edit" onclick="editProduct('${h.id}')">Üýtget</button>
+                        <button class="btn-del" onclick="deleteProduct('${h.id}')">Poz</button>
+                    </div>
+                ` : ''}
+            </div>
+        `).join('');
+    }
+
+    function filterAll() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = allProducts.filter(h => (selectedCat === 'Hemmesi' || h.category === selectedCat) && h.name.toLowerCase().includes(q));
+        renderProducts(filtered.reverse());
+    }
 
     function setCat(cat, btn) {
         selectedCat = cat;
@@ -208,129 +237,80 @@
         filterAll();
     }
 
-    function filterAll() {
-        const q = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = allProducts.filter(h => {
-            return (selectedCat === 'Hemmesi' || h.category === selectedCat) && 
-                   (h.name && h.name.toLowerCase().includes(q));
-        });
-        renderProducts(filtered);
-    }
-
-    function renderProducts(list) {
-        const grid = document.getElementById('pGrid');
-        grid.innerHTML = list.map(h => {
-            const oldP = h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : '';
-            return `
-                <div class="card" onclick="openProductModal('${h.id}')">
-                    <div class="p-no">№${parseInt(h.id) + 1}</div>
-                    ${h.old_price ? '<div class="discount-tag">SKIDKA</div>' : ''}
-                    <div class="p-views">👁️ <span id="v-${h.id}">${h.view_count || 0}</span></div>
-                    <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
-                    <div style="font-size:14px; font-weight:bold; height:35px; overflow:hidden;">${h.name}</div>
-                    <div style="color:var(--sary); font-size:11px; font-weight:bold; margin-top:5px;">${h.status || ''}</div>
-                    <div class="price-container">${oldP}<div class="price">${h.price} TMT</div></div>
-                </div>`;
-        }).join('');
-
-        // Real-time View Count Monitoring
-        list.forEach(h => {
-            db.ref(`products/${h.id}/view_count`).on('value', s => {
-                const span = document.getElementById(`v-${h.id}`);
-                if(span) span.innerText = s.val() || 0;
-            });
-        });
-    }
-
+    // 5. Product Modal
     function openProductModal(id) {
         const h = allProducts.find(p => p.id === id);
-        if(!h) return;
-
-        // Correct transaction path for view_count
-        db.ref(`products/${id}/view_count`).transaction(v => (v || 0) + 1);
-
+        db.ref(`products/${id}/view_count`).transaction(v => (v||0)+1);
         document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
-        document.getElementById('mName').innerHTML = `${h.name} <br><span style="font-size:14px; color:var(--sary)">${h.status || ''}</span>`;
-        document.getElementById('mDesc').innerText = h.desc || "Haryt barada maglumat ýok.";
-        
-        const oldP = h.old_price ? `<span class="old-price" style="font-size:18px;">${h.old_price} TMT</span>` : '';
-        document.getElementById('mPriceArea').innerHTML = `${oldP} <div class="price" style="font-size:28px;">${h.price} TMT</div>`;
-        
+        document.getElementById('mName').innerText = h.name;
+        document.getElementById('mPriceArea').innerText = h.price + " TMT";
         document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${parseInt(h.id)+1} - ${h.name}`);
-        
-        const cb = document.getElementById('cartBtn'), hb = document.getElementById('heartBtn');
-        cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
-        hb.className = hearts.includes(id) ? 'btn-icon active-heart' : 'btn-icon';
-
-        cb.onclick = (e) => { 
-            e.stopPropagation();
-            if(cart.some(x => x.id === id)) cart = cart.filter(x => x.id !== id); 
-            else cart.push(h); 
-            updateCartCount(); 
-            cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon'; 
-        };
-        hb.onclick = (e) => { 
-            e.stopPropagation();
-            if(hearts.includes(id)) hearts = hearts.filter(x => x !== id); 
-            else hearts.push(id); 
-            hb.className = hearts.includes(id) ? 'btn-icon active-heart' : 'btn-icon'; 
-        };
         document.getElementById('hModal').style.display = 'flex';
     }
 
-    function updateCartCount() { document.getElementById('cartCount').innerText = cart.length; }
-
-    function openCartModal() {
-        const list = document.getElementById('cartItemsList');
-        let total = 0;
-        list.innerHTML = cart.map(h => {
-            total += parseFloat(h.price);
-            return `<div class="cart-item">
-                <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}" style="width:50px; height:50px; border-radius:10px; background:#fff; object-fit:contain;">
-                <div style="flex:1;"><b>${h.name}</b><br><span style="color:var(--yasyl)">${h.price} TMT</span></div>
-                <span onclick="removeFromCart('${h.id}')" style="color:var(--gypyl); font-size:24px; cursor:pointer;">✖</span>
-            </div>`;
-        }).join('') || "Sebediňiz boş.";
-        document.getElementById('totalCartPrice').innerText = `Jemi: ${total.toFixed(2)} TMT`;
-        document.getElementById('cartModal').style.display = 'flex';
+    // 6. Admin Actions
+    function openForm() {
+        document.getElementById('editId').value = "";
+        document.getElementById('formTitle').innerText = "Täze Haryt Goş";
+        document.getElementById('pName').value = "";
+        document.getElementById('pPrice').value = "";
+        document.getElementById('pImg').value = "";
+        document.getElementById('formModal').style.display = 'flex';
     }
 
-    function removeFromCart(id) { cart = cart.filter(x => x.id !== id); updateCartCount(); openCartModal(); }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    
-    function orderAll() { 
-        if(!cart.length) return; 
-        const txt = encodeURIComponent(`Täze Sargyt:\n${cart.map(h => `- ${h.name} (${h.price} TMT)`).join('\n')}\n\nJemi: ${document.getElementById('totalCartPrice').innerText}`);
-        window.open(`https://wa.me/99371563667?text=${txt}`); 
+    function editProduct(id) {
+        const h = allProducts.find(p => p.id === id);
+        document.getElementById('editId').value = id;
+        document.getElementById('formTitle').innerText = "Harydy Üýtget";
+        document.getElementById('pName').value = h.name;
+        document.getElementById('pPrice').value = h.price;
+        document.getElementById('pImg').value = h.img;
+        document.getElementById('pCat').value = h.category || "Ideg serişdeleri";
+        document.getElementById('formModal').style.display = 'flex';
     }
 
-    // 4. Comments & Slider
-    function renderComments(comm) {
-        let html = "";
-        Object.keys(comm || {}).reverse().forEach(id => {
-            const c = comm[id];
-            let reps = "";
-            if(c.replies) Object.values(c.replies).forEach(r => reps += `<div style="margin-left:20px; border-left:2px solid var(--yasyl); padding-left:12px; margin-top:8px; font-size:12px;"><b>Admin:</b> ${r.text}</div>`);
-            html += `<div style="background:#08110c; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #33443a; text-align:left;">
-                <b style="color:var(--sary)">${c.name}:</b> ${c.text} ${reps}
-                <div onclick="replyAdmin('${id}')" style="font-size:11px; color:var(--sary); cursor:pointer; margin-top:10px; font-weight:bold; opacity:0.8;">↳ Jogap ber</div>
-            </div>`;
-        });
-        document.getElementById('cList').innerHTML = html || "Ilkinji teswiri ýazyň...";
+    function saveProduct() {
+        const id = document.getElementById('editId').value;
+        const newP = {
+            name: document.getElementById('pName').value,
+            price: document.getElementById('pPrice').value,
+            img: document.getElementById('pImg').value,
+            category: document.getElementById('pCat').value,
+            view_count: id ? allProducts.find(p => p.id === id).view_count : 0
+        };
+        
+        if(id) {
+            db.ref('products/' + id).update(newP);
+        } else {
+            const nextIdx = allProducts.length > 0 ? Math.max(...allProducts.map(p => parseInt(p.id))) + 1 : 0;
+            db.ref('products/' + nextIdx).set(newP);
+        }
+        closeModal('formModal');
     }
+
+    function deleteProduct(id) {
+        if(confirm("Harydy pozmalymy?")) { db.ref('products/' + id).remove(); }
+    }
+
+    // 7. Comments
+    db.ref('comments_general').on('value', snap => {
+        const comm = snap.val() || {};
+        document.getElementById('cList').innerHTML = Object.keys(comm).reverse().map(id => `
+            <div style="background:#08110c; padding:10px; border-radius:12px; margin-bottom:8px; border:1px solid #33443a;">
+                <b style="color:var(--sary)">${comm[id].name}:</b> ${comm[id].text}
+            </div>
+        `).join('') || "Teswir ýok.";
+    });
 
     function sendMsg() {
         const n = document.getElementById('uName').value || "Müşderi", m = document.getElementById('uMsg').value;
         if(m.trim()) { db.ref('comments_general').push({ name:n, text:m }); document.getElementById('uMsg').value=""; }
     }
 
-    function replyAdmin(id) { const t = prompt("Jogap ýazyň:"); if(t) db.ref(`comments_general/${id}/replies`).push({ text: t }); }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    let sIdx = 0; 
-    setInterval(() => { 
-        const track = document.getElementById('sliderTrack');
-        if(track) { sIdx = (sIdx + 1) % 3; track.style.transform = `translateX(-${sIdx * 100}%)`; }
-    }, 5000);
+    // Slider Auto
+    let sIdx = 0; setInterval(() => { sIdx = (sIdx + 1) % 3; document.getElementById('sliderTrack').style.transform = `translateX(-${sIdx * 100}%)`; }, 5000);
 </script>
 </body>
 </html>
