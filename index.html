@@ -247,19 +247,31 @@
         filterAll();
     });
 
-    function renderProducts(list) {
-        const grid = document.getElementById('pGrid');
-        grid.innerHTML = list.map(h => `
+   function renderProducts(list) {
+    const grid = document.getElementById('pGrid');
+    grid.innerHTML = list.map(h => {
+        // Firebase-den gelýän statusy alýarys (mysal: "Sargasaňyz getirýäs")
+        const itemStatus = h.status ? h.status : "";
+        
+        return `
             <div class="card" onclick="openProductModal('${h.id}')">
                 <div class="p-no">№${parseInt(h.id)+1}</div>
-                ${h.old_price ? '<div class="discount-tag">SKIDKA</div>' : ''}
+                
+                ${itemStatus ? `<div class="discount-tag" style="background: var(--yasyl); color: #000;">${itemStatus}</div>` : ''}
+                
                 <div class="p-views">👁️ ${h.view_count || 0}</div>
-                <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
+                
+                <div class="img-w">
+                    <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}">
+                </div>
+                
                 <div style="font-weight:bold; height:35px; overflow:hidden; font-size:14px;">${h.name}</div>
+                
                 <div class="price-container">
                     ${h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : ''}
                     <div class="price">${h.price} TMT</div>
                 </div>
+
                 ${isAdmin ? `
                     <div class="admin-controls" onclick="event.stopPropagation()">
                         <button style="background:var(--sary)" onclick="editProduct('${h.id}')">✏️</button>
@@ -267,8 +279,9 @@
                     </div>
                 ` : ''}
             </div>
-        `).join('');
-    }
+        `;
+    }).join('');
+}
 
     function openProductModal(id) {
         const h = allProducts.find(p => p.id === id);
