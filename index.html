@@ -57,6 +57,7 @@
         .old-price { color: #888; text-decoration: line-through; font-size: 12px; }
         .price { color: var(--yasyl); font-size: 18px; font-weight: 900; }
 
+        /* Modallar */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; align-items: center; justify-content: center; background: rgba(0,0,0,0.98); }
         .m-box { background: var(--kart); width: 92%; max-width: 420px; border-radius: 30px; padding: 25px; position: relative; text-align: center; max-height: 90vh; overflow-y: auto; border: 1px solid #33443a; }
         
@@ -70,6 +71,7 @@
 
         .admin-add-btn { display: none; background: var(--yasyl); color: #000; padding: 15px; border-radius: 15px; font-weight: 900; margin: 10px 3%; text-align: center; cursor: pointer; }
         .admin-controls { display: flex; gap: 5px; margin-top: 10px; justify-content: center; }
+        .admin-controls button { padding: 5px 10px; border-radius: 5px; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -92,7 +94,7 @@
         <input type="text" id="searchInput" placeholder="Haryt gözle..." oninput="filterAll()">
     </div>
 
-    <div class="cat-list" id="catList">
+    <div class="cat-list">
         <div class="cat-btn active" onclick="setCat('Hemmesi', this)">Hemmesi</div>
         <div class="cat-btn" onclick="setCat('Ideg serişdeleri', this)">Ideg serişdeleri</div>
         <div class="cat-btn" onclick="setCat('Ýuwujy serişdeleri', this)">Ýuwujy serişdeleri</div>
@@ -112,10 +114,10 @@
         </div>
     </div>
 
-    <div class="footer-area" style="text-align:center; padding:40px;">
-        <div style="color:var(--yasyl)">👤 Müşderi: <span id="dayUniques">0</span> | 👁️ Görüliş: <span id="dayViews">0</span></div>
+    <div class="footer-area" style="text-align:center; padding:40px; background:#08110c; border-top:1px solid #25362d;">
+        <div style="color:var(--yasyl); font-size:14px;">👤 Müşderi: <span id="dayUniques">0</span> | 👁️ Görüliş: <span id="dayViews">0</span></div>
         <div style="color:var(--sary); margin-top:15px; font-weight:900;">Admin © Meňli Aşyrowa | 2026ý</div>
-        <button onclick="openLogin()" style="background:none; border:none; color:#333; font-size:10px; margin-top:10px; cursor:pointer;">🔐 Admin</button>
+        <button onclick="openLogin()" style="background:none; border:none; color:#1a2a22; font-size:10px; margin-top:20px; cursor:pointer;">🔐 Admin Giriş</button>
     </div>
 </div>
 
@@ -144,28 +146,30 @@
         <h2 style="color:var(--sary); margin-bottom:20px;">Sebediňiz</h2>
         <div id="cartItemsList"></div>
         <div id="totalCartPrice" style="font-size:22px; font-weight:bold; color:var(--yasyl); margin-top:15px; border-top:1px solid #333; padding-top:10px;">Jemi: 0 TMT</div>
-        <button onclick="orderAll()" style="width:100%; background:var(--yasyl); padding:15px; border-radius:15px; font-weight:bold; margin-top:15px; border:none;">HEMMESINI SARGYT ET</button>
+        <button onclick="orderAll()" style="width:100%; background:var(--yasyl); padding:15px; border-radius:15px; font-weight:bold; margin-top:15px; border:none; cursor:pointer;">HEMMESINI SARGYT ET</button>
     </div>
 </div>
 
 <div id="adminFormModal" class="modal">
     <div class="m-box">
-        <h3 id="formTitle" style="color:var(--sary); margin-bottom:15px;">Haryt Goş</h3>
+        <h3 id="formTitle" style="color:var(--sary); margin-bottom:15px;">Haryt Amallary</h3>
         <input type="hidden" id="editId">
-        <input type="text" id="pName" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Ady">
-        <input type="text" id="pPrice" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Bahasy">
-        <input type="text" id="pOldPrice" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Köne bahasy (skidka üçin)">
-        <input type="text" id="pImg" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Surat (m: 1.jpg)">
-        <textarea id="pDesc" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Düşündiriş"></textarea>
-        <button onclick="saveProduct()" style="width:100%; background:var(--yasyl); padding:15px; border-radius:10px; border:none;">SAKLA</button>
-        <p onclick="closeModal('adminFormModal')" style="margin-top:10px; cursor:pointer;">Yza</p>
+        <input type="text" id="pName" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px;" placeholder="Haryt ady">
+        <input type="text" id="pPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px;" placeholder="Bahasy (mysal: 150)">
+        <input type="text" id="pOldPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px;" placeholder="Köne bahasy (skidka üçin)">
+        <input type="text" id="pImg" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px;" placeholder="Surat ady (mysal: 1.jpg)">
+        <textarea id="pDesc" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px;" placeholder="Düşündiriş"></textarea>
+        <button onclick="saveProduct()" style="width:100%; background:var(--yasyl); padding:15px; border-radius:10px; border:none; font-weight:bold;">SAKLA / GOŞ</button>
+        <p onclick="closeModal('adminFormModal')" style="margin-top:15px; cursor:pointer; color:var(--gypyl);">Ýap</p>
     </div>
 </div>
 
 <div id="loginModal" class="modal">
     <div class="m-box" style="max-width:300px;">
-        <input type="password" id="adminPass" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Parol">
-        <button onclick="checkLogin()" style="width:100%; background:var(--yasyl); padding:10px; border:none;">GIR</button>
+        <h3 style="margin-bottom:15px;">Admin Giriş</h3>
+        <input type="password" id="adminPass" style="width:100%; padding:10px; margin-bottom:10px; border-radius:5px;" placeholder="Parol">
+        <button onclick="checkLogin()" style="width:100%; background:var(--yasyl); padding:10px; border:none; border-radius:5px; font-weight:bold;">GIR</button>
+        <p onclick="closeModal('loginModal')" style="margin-top:10px; cursor:pointer; font-size:12px;">Yza</p>
     </div>
 </div>
 
@@ -175,7 +179,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // 2. Admin & Stats
+    // 2. Admin Login & Stats Logic
     const ADMIN_PASS = "ylhamlypero91";
     let isAdmin = localStorage.getItem('isGarakelAdmin') === 'true';
     if(isAdmin) document.getElementById('adminAddBtn').style.display='block';
@@ -185,7 +189,7 @@
         if(document.getElementById('adminPass').value === ADMIN_PASS) {
             localStorage.setItem('isGarakelAdmin', 'true');
             location.reload();
-        }
+        } else { alert("Parol ýalňyş!"); }
     }
 
     const today = new Date().toISOString().split('T')[0];
@@ -196,7 +200,7 @@
         document.getElementById('dayViews').innerText = d.views || 0;
     });
 
-    // 3. Main Logic
+    // 3. Products & Cart Logic
     let allProducts = [], cart = [], hearts = [], selectedCat = 'Hemmesi';
 
     db.ref('products').on('value', snap => {
@@ -213,15 +217,15 @@
                 ${h.old_price ? '<div class="discount-tag">SKIDKA</div>' : ''}
                 <div class="p-views">👁️ ${h.view_count || 0}</div>
                 <div class="img-w"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}"></div>
-                <div style="font-weight:bold; height:35px; overflow:hidden;">${h.name}</div>
+                <div style="font-weight:bold; height:35px; overflow:hidden; font-size:14px;">${h.name}</div>
                 <div class="price-container">
                     ${h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : ''}
                     <div class="price">${h.price} TMT</div>
                 </div>
                 ${isAdmin ? `
                     <div class="admin-controls" onclick="event.stopPropagation()">
-                        <button onclick="editProduct('${h.id}')">✏️</button>
-                        <button onclick="deleteProduct('${h.id}')">❌</button>
+                        <button style="background:var(--sary)" onclick="editProduct('${h.id}')">✏️</button>
+                        <button style="background:var(--gypyl); color:white" onclick="deleteProduct('${h.id}')">❌</button>
                     </div>
                 ` : ''}
             </div>
@@ -241,6 +245,7 @@
         document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${parseInt(h.id)+1} - ${h.name}`);
         
         const cb = document.getElementById('cartBtn');
+        cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         cb.onclick = (e) => {
             if(cart.some(x => x.id === id)) cart = cart.filter(x => x.id !== id);
             else cart.push(h);
@@ -250,7 +255,6 @@
         document.getElementById('hModal').style.display = 'flex';
     }
 
-    // Sebete degişli funksiýalar
     function openCartModal() {
         const list = document.getElementById('cartItemsList');
         let total = 0;
@@ -265,25 +269,47 @@
     }
 
     function orderAll() {
+        if(!cart.length) return;
         const txt = encodeURIComponent("Sargytlarym:\n" + cart.map(h => "- " + h.name).join("\n"));
         window.open(`https://wa.me/99371563667?text=${txt}`);
     }
 
-    // Admin amallary
-    function openAdminForm() { document.getElementById('adminFormModal').style.display='flex'; }
+    // 4. Admin Functions
+    function openAdminForm() { 
+        document.getElementById('editId').value = "";
+        document.getElementById('pName').value = "";
+        document.getElementById('adminFormModal').style.display='flex'; 
+    }
+
+    function editProduct(id) {
+        const h = allProducts.find(p => p.id === id);
+        document.getElementById('editId').value = id;
+        document.getElementById('pName').value = h.name;
+        document.getElementById('pPrice').value = h.price;
+        document.getElementById('pOldPrice').value = h.old_price || "";
+        document.getElementById('pImg').value = h.img;
+        document.getElementById('pDesc').value = h.desc || "";
+        document.getElementById('adminFormModal').style.display='flex';
+    }
+
+    function deleteProduct(id) {
+        if(confirm("Bu harydy öçürmek isleýärsiňizmi?")) db.ref('products/'+id).remove();
+    }
+
     function saveProduct() {
-        const id = document.getElementById('editId').value;
+        const id = document.getElementById('editId').value || Date.now().toString();
         const newP = {
             name: document.getElementById('pName').value,
             price: document.getElementById('pPrice').value,
             old_price: document.getElementById('pOldPrice').value,
             img: document.getElementById('pImg').value,
             desc: document.getElementById('pDesc').value,
-            view_count: 0
+            category: "Hemmesi" // Default kategoriýa
         };
-        if(id) db.ref('products/'+id).update(newP);
-        else db.ref('products/'+allProducts.length).set(newP);
-        location.reload();
+        db.ref('products/'+id).update(newP).then(() => {
+            closeModal('adminFormModal');
+            alert("Haryt saklandy!");
+        });
     }
 
     function filterAll() {
@@ -300,17 +326,44 @@
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function sendMsg() {
-        const n = document.getElementById('uName').value, m = document.getElementById('uMsg').value;
-        if(m) db.ref('comments_general').push({ name:n, text:m });
+
+    // 5. TESWIRLER LOGIKASY (ASYL KODYŇYZDAKY ÝALY)
+    db.ref('comments_general').on('value', snap => renderComments(snap.val() || {}));
+
+    function renderComments(comm) {
+        let html = "";
+        Object.keys(comm || {}).reverse().forEach(id => {
+            const c = comm[id];
+            let reps = "";
+            if(c.replies) Object.values(c.replies).forEach(r => reps += `<div style="margin-left:20px; border-left:2px solid var(--yasyl); padding-left:12px; margin-top:8px; font-size:12px;"><b>Admin:</b> ${r.text}</div>`);
+            html += `<div style="background:#08110c; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #33443a; text-align:left;">
+                <b style="color:var(--sary)">${c.name}:</b> ${c.text} ${reps}
+                <div onclick="replyAdmin('${id}')" style="font-size:11px; color:var(--sary); cursor:pointer; margin-top:10px; font-weight:bold; opacity:0.8;">↳ Jogap ber</div>
+            </div>`;
+        });
+        document.getElementById('cList').innerHTML = html || "Ilkinji teswiri ýazyň...";
     }
 
-    db.ref('comments_general').on('value', snap => {
-        const c = snap.val() || {};
-        document.getElementById('cList').innerHTML = Object.values(c).map(x => `<p><b>${x.name}:</b> ${x.text}</p>`).join('');
-    });
+    function sendMsg() {
+        const n = document.getElementById('uName').value || "Müşderi", m = document.getElementById('uMsg').value;
+        if(m.trim()) { 
+            db.ref('comments_general').push({ name:n, text:m }); 
+            document.getElementById('uMsg').value=""; 
+        }
+    }
 
-    let sIdx = 0; setInterval(() => { sIdx = (sIdx + 1) % 3; document.getElementById('sliderTrack').style.transform = `translateX(-${sIdx * 100}%)`; }, 5000);
+    function replyAdmin(id) { 
+        const t = prompt("Jogap ýazyň:"); 
+        if(t) db.ref(`comments_general/${id}/replies`).push({ text: t }); 
+    }
+
+    let sIdx = 0; setInterval(() => { 
+        const track = document.getElementById('sliderTrack');
+        if(track) {
+            sIdx = (sIdx + 1) % 3; 
+            track.style.transform = `translateX(-${sIdx * 100}%)`; 
+        }
+    }, 5000);
 </script>
 </body>
 </html>
