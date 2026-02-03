@@ -114,7 +114,7 @@
     </div>
 
     <div class="footer-area" style="text-align:center; padding:40px 20px;">
-        <div style="color:var(--yasyl); font-size:14px; font-weight:bold;">👁️ Görüliş: <span id="dayViews">0</span></div>
+        <div id="dayViews" style="color:var(--yasyl); font-size:14px; font-weight:bold;">👁️ Görüliş: 0 | 👤 Adam: 0</div>
         <div style="color:var(--sary); font-size:15px; font-weight:900; margin-top:20px;">Admin © Meňli Aşyrowa | 2026ý</div>
         <button onclick="openLoginModal()" style="background:none; border:none; color:#1a2a22; font-size:10px; margin-top:15px; cursor:pointer;">🔐 Admin Panel</button>
     </div>
@@ -153,9 +153,9 @@
         <h3 style="color:var(--sary); margin-bottom:15px;">Haryt Amallary</h3>
         <input type="hidden" id="editId">
         <input type="text" id="pName" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Haryt ady">
-        <input type="text" id="pPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Bahasy (mysal: 150)">
-        <input type="text" id="pOldPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Köne bahasy (skidka üçin)">
-        <input type="text" id="pImg" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Surat ady (mysal: 1.jpg)">
+        <input type="text" id="pPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Bahasy">
+        <input type="text" id="pOldPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Köne bahasy">
+        <input type="text" id="pImg" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Surat ady">
         <select id="pCat" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;">
             <option value="Ideg serişdeleri">Ideg serişdeleri</option>
             <option value="Ýuwujy serişdeleri">Ýuwujy serişdeleri</option>
@@ -191,7 +191,37 @@
     let isAdmin = false;
     let allProducts = [], cart = [], selectedCat = 'Hemmesi';
 
-    // Auth State
+    // --- TKM STATISTIKA LOGIKASY ---
+    function getTKMDate() {
+        const d = new Date();
+        const tkm = new Date(d.getTime() + (5 * 60 * 60 * 1000));
+        return tkm.toISOString().split('T')[0];
+    }
+
+    const todayDate = getTKMDate();
+    const statsRef = db.ref(`stats/${todayDate}`);
+
+    // 1. Görüliş
+    statsRef.child('views').transaction(v => (v || 0) + 1);
+
+    // 2. Unique Visitors
+    if (!localStorage.getItem('visited_' + todayDate)) {
+        statsRef.child('unique').transaction(v => (v || 0) + 1);
+        localStorage.setItem('visited_' + todayDate, 'true');
+    }
+
+    // 3. Live Update
+    statsRef.on('value', snap => {
+        const data = snap.val() || {};
+        const vCount = data.views || 0;
+        const uCount = data.unique || 0;
+        const viewEl = document.getElementById('dayViews');
+        if(viewEl) {
+            viewEl.innerHTML = `👁️ Görüliş: ${vCount} | 👤 Adam: ${uCount}`;
+        }
+    });
+    // --- STATISTIKA SOŇY ---
+
     auth.onAuthStateChanged(user => {
         isAdmin = !!user;
         document.getElementById('adminAddBtn').style.display = isAdmin ? 'block' : 'none';
@@ -205,18 +235,12 @@
             try {
                 await auth.signInWithEmailAndPassword(email, pass);
                 closeModal('loginModal');
-                alert("Giriş üstünlikli!");
-            } catch (error) {
-                alert("Gata: " + error.message);
-            }
-        } else {
-            alert("Email we Paroly dolduryň!");
+            } catch (error) { alert("Gata: " + error.message); }
         }
     }
 
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
 
-    // Database Logic
     db.ref('products').on('value', snap => {
         const pObj = snap.val() || {};
         allProducts = Object.keys(pObj).map(key => ({ id: key, ...pObj[key] }));
@@ -269,7 +293,6 @@
         document.getElementById('hModal').style.display = 'flex';
     }
 
-    // Admin Functions
     function openAdminForm() { 
         document.getElementById('editId').value = "";
         document.getElementById('pName').value = "";
@@ -307,7 +330,6 @@
         db.ref('products/'+id).update(newP).then(() => closeModal('adminFormModal'));
     }
 
-    // Teswirler
     db.ref('comments_general').on('value', snap => {
         const comm = snap.val() || {};
         let html = "";
@@ -331,7 +353,6 @@
 
     function replyAdmin(id) { const t = prompt("Jogap ýazyň:"); if(t) db.ref(`comments_general/${id}/replies`).push({ text: t }); }
 
-    // Helpers
     function setCat(cat, btn) {
         selectedCat = cat;
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -367,11 +388,6 @@
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    // Stats
-    const today = new Date().toISOString().split('T')[0];
-    db.ref(`stats/${today}/views`).transaction(v => (v||0)+1);
-    db.ref(`stats/${today}/views`).on('value', s => document.getElementById('dayViews').innerText = s.val() || 0);
 
     let sIdx = 0; setInterval(() => { 
         const track = document.getElementById('sliderTrack');
