@@ -64,7 +64,6 @@
         .btn-wa { background: var(--yasyl); color: #000; border: none; padding: 15px; border-radius: 15px; font-weight: bold; flex: 1; cursor: pointer; font-size: 16px; }
         .btn-icon { background: #1a2a22; color: #555; border: 1px solid #33443a; padding: 12px; border-radius: 15px; cursor: pointer; font-size: 24px; width: 75px; }
         .btn-icon.active-cart { color: var(--yasyl); border-color: var(--yasyl); }
-        .btn-icon.active-heart { color: var(--gypyl); border-color: var(--gypyl); }
 
         .cart-float { position: fixed; bottom: 20px; right: 20px; background: var(--yasyl); color: #000; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 6000; cursor: pointer; border: 3px solid var(--arka); }
         .cart-count { position: absolute; top: -5px; right: -5px; background: var(--gypyl); color: #fff; font-size: 13px; font-weight: bold; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #000; }
@@ -115,7 +114,7 @@
     </div>
 
     <div class="footer-area" style="text-align:center; padding:40px 20px;">
-        <div style="color:var(--yasyl); font-size:14px; font-weight:bold;">👤 Müşderi: <span id="dayUniques">0</span> | 👁️ Görüliş: <span id="dayViews">0</span></div>
+        <div style="color:var(--yasyl); font-size:14px; font-weight:bold;">👁️ Görüliş: <span id="dayViews">0</span></div>
         <div style="color:var(--sary); font-size:15px; font-weight:900; margin-top:20px;">Admin © Meňli Aşyrowa | 2026ý</div>
         <button onclick="openLoginModal()" style="background:none; border:none; color:#1a2a22; font-size:10px; margin-top:15px; cursor:pointer;">🔐 Admin Panel</button>
     </div>
@@ -135,7 +134,6 @@
         <div style="display:flex; gap:10px; margin-top:20px;">
             <button id="waBtn" class="btn-wa">🛒 SARGYT ET</button>
             <button id="cartBtn" class="btn-icon">🛒</button>
-            <button id="heartBtn" class="btn-icon">❤️</button>
         </div>
     </div>
 </div>
@@ -143,6 +141,7 @@
 <div id="loginModal" class="modal">
     <div class="m-box" style="max-width:320px;">
         <h3 style="margin-bottom:15px; color:var(--sary);">Admin Giriş</h3>
+        <input type="email" id="adminEmail" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #33443a; background:#08110c; color:#fff;" placeholder="Admin Email">
         <input type="password" id="adminPass" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #33443a; background:#08110c; color:#fff;" placeholder="Parol">
         <button onclick="checkLogin()" style="width:100%; background:var(--yasyl); padding:12px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">GIR</button>
         <p onclick="closeModal('loginModal')" style="margin-top:15px; cursor:pointer; font-size:12px; color:#666;">Yza</p>
@@ -153,17 +152,17 @@
     <div class="m-box">
         <h3 style="color:var(--sary); margin-bottom:15px;">Haryt Amallary</h3>
         <input type="hidden" id="editId">
-        <input type="text" id="pName" class="u-input" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Haryt ady">
-        <input type="text" id="pPrice" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Bahasy (mysal: 150)">
-        <input type="text" id="pOldPrice" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Köne bahasy">
-        <input type="text" id="pImg" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Surat ady (mysal: 1.jpg)">
-        <select id="pCat" style="width:100%; padding:10px; margin-bottom:10px;">
+        <input type="text" id="pName" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Haryt ady">
+        <input type="text" id="pPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Bahasy (mysal: 150)">
+        <input type="text" id="pOldPrice" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Köne bahasy (skidka üçin)">
+        <input type="text" id="pImg" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Surat ady (mysal: 1.jpg)">
+        <select id="pCat" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;">
             <option value="Ideg serişdeleri">Ideg serişdeleri</option>
             <option value="Ýuwujy serişdeleri">Ýuwujy serişdeleri</option>
             <option value="Gözellik">Gözellik</option>
             <option value="Parfum">Parfum</option>
         </select>
-        <textarea id="pDesc" style="width:100%; padding:10px; margin-bottom:10px;" placeholder="Düşündiriş"></textarea>
+        <textarea id="pDesc" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;" placeholder="Düşündiriş"></textarea>
         <button onclick="saveProduct()" style="width:100%; background:var(--yasyl); padding:15px; border-radius:10px; border:none; font-weight:bold; cursor:pointer;">SAKLA</button>
         <button onclick="closeModal('adminFormModal')" style="width:100%; background:none; color:var(--gypyl); border:none; margin-top:10px; cursor:pointer;">ÝAP</button>
     </div>
@@ -180,7 +179,6 @@
 </div>
 
 <script>
-    // 1. Firebase Config
     const firebaseConfig = { 
         apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", 
         databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", 
@@ -191,38 +189,34 @@
     const auth = firebase.auth();
 
     let isAdmin = false;
-    let allProducts = [], cart = [], hearts = [], selectedCat = 'Hemmesi';
+    let allProducts = [], cart = [], selectedCat = 'Hemmesi';
 
-    // 2. Auth State Monitoring
+    // Auth State
     auth.onAuthStateChanged(user => {
-        if (user) {
-            isAdmin = true;
-            document.getElementById('adminAddBtn').style.display = 'block';
-        } else {
-            isAdmin = false;
-            document.getElementById('adminAddBtn').style.display = 'none';
-        }
+        isAdmin = !!user;
+        document.getElementById('adminAddBtn').style.display = isAdmin ? 'block' : 'none';
         filterAll(); 
     });
 
-    // 3. Admin Login
     async function checkLogin() {
-        const email = prompt("Admin Email adresiňiz:");
+        const email = document.getElementById('adminEmail').value;
         const pass = document.getElementById('adminPass').value;
         if(email && pass) {
             try {
                 await auth.signInWithEmailAndPassword(email, pass);
                 closeModal('loginModal');
-                alert("Hoş geldiňiz!");
+                alert("Giriş üstünlikli!");
             } catch (error) {
                 alert("Gata: " + error.message);
             }
+        } else {
+            alert("Email we Paroly dolduryň!");
         }
     }
 
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
 
-    // 4. Products & Database Logic
+    // Database Logic
     db.ref('products').on('value', snap => {
         const pObj = snap.val() || {};
         allProducts = Object.keys(pObj).map(key => ({ id: key, ...pObj[key] }));
@@ -275,7 +269,7 @@
         document.getElementById('hModal').style.display = 'flex';
     }
 
-    // 5. Admin CRUD
+    // Admin Functions
     function openAdminForm() { 
         document.getElementById('editId').value = "";
         document.getElementById('pName').value = "";
@@ -298,9 +292,7 @@
         document.getElementById('adminFormModal').style.display='flex';
     }
 
-    function deleteProduct(id) {
-        if(confirm("Pozmalymy?")) db.ref('products/'+id).remove();
-    }
+    function deleteProduct(id) { if(confirm("Pozmalymy?")) db.ref('products/'+id).remove(); }
 
     function saveProduct() {
         const id = document.getElementById('editId').value || Date.now().toString();
@@ -315,23 +307,22 @@
         db.ref('products/'+id).update(newP).then(() => closeModal('adminFormModal'));
     }
 
-    // 6. Teswirler Bölümi (Original Stil)
-    db.ref('comments_general').on('value', snap => renderComments(snap.val() || {}));
-
-    function renderComments(comm) {
+    // Teswirler
+    db.ref('comments_general').on('value', snap => {
+        const comm = snap.val() || {};
         let html = "";
-        Object.keys(comm || {}).reverse().forEach(id => {
+        Object.keys(comm).reverse().forEach(id => {
             const c = comm[id];
             let reps = "";
             if(c.replies) Object.values(c.replies).forEach(r => reps += `<div style="margin-left:20px; border-left:2px solid var(--yasyl); padding-left:12px; margin-top:8px; font-size:12px;"><b>Admin:</b> ${r.text}</div>`);
             html += `<div style="background:#08110c; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #33443a; text-align:left;">
                 <b style="color:var(--sary)">${c.name}:</b> ${c.text} ${reps}
-                <div onclick="replyAdmin('${id}')" style="font-size:11px; color:var(--sary); cursor:pointer; margin-top:10px; font-weight:bold; opacity:0.8;">↳ Jogap ber</div>
+                <div onclick="replyAdmin('${id}')" style="font-size:11px; color:var(--sary); cursor:pointer; margin-top:10px; font-weight:bold;">↳ Jogap ber</div>
                 ${isAdmin ? `<span onclick="db.ref('comments_general/${id}').remove()" style="color:red; cursor:pointer; font-size:10px; margin-left:10px;">[POZ]</span>` : ''}
             </div>`;
         });
         document.getElementById('cList').innerHTML = html || "Ilkinji teswiri ýazyň...";
-    }
+    });
 
     function sendMsg() {
         const n = document.getElementById('uName').value || "Müşderi", m = document.getElementById('uMsg').value;
@@ -340,7 +331,7 @@
 
     function replyAdmin(id) { const t = prompt("Jogap ýazyň:"); if(t) db.ref(`comments_general/${id}/replies`).push({ text: t }); }
 
-    // 7. Beýleki Funksiýalar
+    // Helpers
     function setCat(cat, btn) {
         selectedCat = cat;
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -380,11 +371,7 @@
     // Stats
     const today = new Date().toISOString().split('T')[0];
     db.ref(`stats/${today}/views`).transaction(v => (v||0)+1);
-    db.ref(`stats/${today}`).on('value', s => {
-        const d = s.val() || {};
-        document.getElementById('dayUniques').innerText = d.unique || 0;
-        document.getElementById('dayViews').innerText = d.views || 0;
-    });
+    db.ref(`stats/${today}/views`).on('value', s => document.getElementById('dayViews').innerText = s.val() || 0);
 
     let sIdx = 0; setInterval(() => { 
         const track = document.getElementById('sliderTrack');
