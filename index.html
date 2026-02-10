@@ -26,14 +26,16 @@
         body { font-family: 'Segoe UI', sans-serif; background: var(--arka); color: var(--tekst); padding-bottom: 100px; }
 
         header { 
-            position: fixed; top: 0; width: 100%; height: 135px; background: rgba(10, 20, 15, 0.95); z-index: 5000; 
+            position: fixed; top: 0; width: 100%; height: 165px; background: rgba(10, 20, 15, 0.98); z-index: 5000; 
             border-bottom: 2px solid var(--sary); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-bottom: 12px;
         }
-        .delivery-bar { width: 100%; background: var(--sary); color: #000; font-size: 13px; font-weight: 900; text-align: center; padding: 8px 0; }
-        .logo-area { font-size: 26px; font-weight: 900; color: #fff; margin-top: 15px; }
+        .delivery-bar { width: 100%; background: var(--sary); color: #000; font-size: 13px; font-weight: 900; text-align: center; padding: 5px 0; }
+        .header-msg { width: 100%; background: #1a2a22; color: var(--sary); font-size: 12px; text-align: center; padding: 5px; border-bottom: 1px solid #33443a; }
+        .header-msg a { color: #fff; text-decoration: none; font-weight: bold; }
+        .logo-area { font-size: 26px; font-weight: 900; color: #fff; margin-top: 5px; }
         .logo-area span { color: var(--sary); }
 
-        .container { max-width: 850px; margin: auto; padding-top: 145px; }
+        .container { max-width: 850px; margin: auto; padding-top: 175px; }
 
         .search-box { width: 94%; margin: 15px auto 10px; }
         .search-box input { width: 100%; background: #1a2a22; border: 1px solid #33443a; color: #fff; padding: 14px 18px; border-radius: 15px; outline: none; font-size: 16px; border-left: 4px solid var(--sary); }
@@ -65,6 +67,11 @@
         .m-box { background: var(--kart); width: 92%; max-width: 420px; border-radius: 30px; padding: 25px; position: relative; text-align: center; max-height: 90vh; overflow-y: auto; border: 1px solid #33443a; }
         
         .btn-wa { background: var(--yasyl); color: #000; border: none; padding: 15px; border-radius: 15px; font-weight: bold; flex: 1; cursor: pointer; font-size: 16px; }
+        
+        /* TÄZE: Paýlaşmak düwme stilleri */
+        .share-container { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-share { background: #33443a; color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; flex: 1; cursor: pointer; font-size: 14px; }
+        
         .btn-icon { background: #1a2a22; color: #555; border: 1px solid #33443a; padding: 12px; border-radius: 15px; cursor: pointer; font-size: 24px; width: 75px; }
         .btn-icon.active-cart { color: var(--yasyl); border-color: var(--yasyl); }
 
@@ -80,6 +87,7 @@
 
 <header>
     <div class="delivery-bar">🚚 Garakel içine eltip bermek mugt</div>
+    <div class="header-msg">📢 Täzelikler: <a href="https://wa.me/99371563667?text=Salam%20Garake%20E-Shop!" target="_blank">Watsapda biz bilen gürleşiň!</a></div>
     <div class="logo-area">⛰️ GARAKEL <span>E-SHOP</span></div>
 </header>
 
@@ -138,6 +146,10 @@
         <div style="display:flex; gap:10px; margin-top:20px;">
             <button id="waBtn" class="btn-wa">🛒 SARGYT ET</button>
             <button id="cartBtn" class="btn-icon">🛒</button>
+        </div>
+        <div class="share-container">
+            <button id="shareWa" class="btn-share" style="background:#25D366; color:white;">🟢 WhatsApp</button>
+            <button id="shareImo" class="btn-share" style="background:#0094F9; color:white;">🔵 IMO</button>
         </div>
     </div>
 </div>
@@ -254,7 +266,6 @@
    function renderProducts(list) {
     const grid = document.getElementById('pGrid');
     grid.innerHTML = list.map(h => {
-        // Firebase-den gelýän statusy alýarys (mysal: "Sargasaňyz getirýäs")
         const itemStatus = h.status ? h.status : "";
         
         return `
@@ -297,6 +308,8 @@
             ${h.old_price ? `<span class="old-price" style="font-size:18px;">${h.old_price} TMT</span>` : ''}
             <div class="price" style="font-size:28px;">${h.price} TMT</div>
         `;
+        
+        // Sargyt etmek (WhatsApp)
         document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${parseInt(h.id)+1} - ${h.name}`);
         
         const cb = document.getElementById('cartBtn');
@@ -307,6 +320,22 @@
             document.getElementById('cartCount').innerText = cart.length;
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
+
+        // --- PAÝLAŞMAK LOGIKASY ---
+        const shareText = `⛰️ GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n\nSargyt etmek üçin:\nhttps://wa.me/99371563667`;
+        const encodedText = encodeURIComponent(shareText);
+
+        // WhatsApp Paýlaş
+        document.getElementById('shareWa').onclick = () => {
+            window.open(`whatsapp://send?text=${encodedText}`);
+        };
+
+        // IMO Paýlaş
+        document.getElementById('shareImo').onclick = () => {
+            window.open(`imocom://chat?text=${encodedText}`);
+        };
+        // -------------------------
+
         document.getElementById('hModal').style.display = 'flex';
     }
 
