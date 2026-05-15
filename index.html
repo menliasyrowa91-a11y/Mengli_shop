@@ -3,11 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⛰️ GARAKEL E-SHOP | 2026</title>
-    <meta property="og:image" content="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg">
-    <meta property="og:title" content="Menli Shop">
-    <meta property="og:description" content="Köp dürli kosmetiki önümler!">
     
+    <!-- --- SEO WE META TEGLER (TÄZE GOŞULDY) --- -->
+    <title>⛰️ GARAKEL E-SHOP | Onlaýn Dükan 2026</title>
+    <meta name="description" content="Garakel E-Shop - Köp dürli kosmetika, ideg we ýuwujy serişdeler. Elýeterli bahalar we Garakel içine mugt eltip bermek hyzmaty.">
+    <meta name="keywords" content="Garakel, shop, onlaýn dükan, kosmetika, Türkmenistan, ideg serişdeleri, şampun, parfum">
+    <meta name="author" content="Meňli Aşyrowa">
+    
+    <!-- Open Graph (Imo, WhatsApp, Facebook üçin owadan görünüş) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://menliasyrowa91-a11y.github.io/Mengli_shop/">
+    <meta property="og:title" content="⛰️ GARAKEL E-SHOP — Siziň Onlaýn Dükaňyzy">
+    <meta property="og:description" content="Iň täze kosmetika we ideg önümleri bizde! Garakel içine eltip bermek mugt.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg">
+    
+    <!-- Accessibility we Reňk Sazlamalary -->
+    <meta name="theme-color" content="#0a140f">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- ----------------------------------------- -->
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -68,7 +82,6 @@
         
         .btn-wa { background: var(--yasyl); color: #000; border: none; padding: 15px; border-radius: 15px; font-weight: bold; flex: 1; cursor: pointer; font-size: 16px; }
         
-        /* TÄZE: Paýlaşmak düwme stilleri */
         .share-container { display: flex; gap: 10px; margin-top: 10px; }
         .btn-share { background: #33443a; color: white; border: none; padding: 15px; border-radius: 15px; font-weight: bold; flex: 1; cursor: pointer; font-size: 14px; }
         
@@ -110,7 +123,7 @@
         <div class="cat-btn" onclick="setCat('Ýuwujy serişdeleri', this)">Ýuwujy serişdeleri</div>
         <div class="cat-btn" onclick="setCat('Gözellik', this)">Gözellik</div>
         <div class="cat-btn" onclick="setCat('Parfum', this)">Parfum</div>
-          <div class="cat-btn" onclick="setCat('Agyry aýyryjy serişdeler', this)">Agyry aýyryjy serişdeler</div>
+        <div class="cat-btn" onclick="setCat('Agyry aýyryjy serişdeler', this)">Agyry aýyryjy serişdeler</div>
     </div>
 
     <div id="pGrid" class="grid"></div>
@@ -207,7 +220,6 @@
     let isAdmin = false;
     let allProducts = [], cart = [], selectedCat = 'Hemmesi';
 
-    // --- TKM STATISTIKA LOGIKASY ---
     function getTKMDate() {
         const d = new Date();
         const tkm = new Date(d.getTime() + (5 * 60 * 60 * 1000));
@@ -217,16 +229,13 @@
     const todayDate = getTKMDate();
     const statsRef = db.ref(`stats/${todayDate}`);
 
-    // 1. Görüliş
     statsRef.child('views').transaction(v => (v || 0) + 1);
 
-    // 2. Unique Visitors
     if (!localStorage.getItem('visited_' + todayDate)) {
         statsRef.child('unique').transaction(v => (v || 0) + 1);
         localStorage.setItem('visited_' + todayDate, 'true');
     }
 
-    // 3. Live Update
     statsRef.on('value', snap => {
         const data = snap.val() || {};
         const vCount = data.views || 0;
@@ -236,7 +245,6 @@
             viewEl.innerHTML = `👁️ Görüliş: ${vCount} | 👤 Adam: ${uCount}`;
         }
     });
-    // --- STATISTIKA SOŇY ---
 
     auth.onAuthStateChanged(user => {
         isAdmin = !!user;
@@ -271,22 +279,16 @@
         return `
             <div class="card" onclick="openProductModal('${h.id}')">
                 <div class="p-no">№${parseInt(h.id)+1}</div>
-                
                 ${itemStatus ? `<div class="discount-tag" style="background: var(--yasyl); color: #000;">${itemStatus}</div>` : ''}
-                
                 <div class="p-views">👁️ ${h.view_count || 0}</div>
-                
                 <div class="img-w">
-                    <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}">
+                    <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}" alt="${h.name}">
                 </div>
-                
                 <div style="font-weight:bold; height:35px; overflow:hidden; font-size:14px;">${h.name}</div>
-                
                 <div class="price-container">
                     ${h.old_price ? `<span class="old-price">${h.old_price} TMT</span>` : ''}
                     <div class="price">${h.price} TMT</div>
                 </div>
-
                 ${isAdmin ? `
                     <div class="admin-controls" onclick="event.stopPropagation()">
                         <button style="background:var(--sary)" onclick="editProduct('${h.id}')">✏️</button>
@@ -302,6 +304,7 @@
         const h = allProducts.find(p => p.id === id);
         db.ref(`products/${id}/view_count`).transaction(v => (v||0)+1);
         document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
+        document.getElementById('mImg').alt = h.name;
         document.getElementById('mName').innerText = h.name;
         document.getElementById('mDesc').innerText = h.desc || "Maglumat ýok.";
         document.getElementById('mPriceArea').innerHTML = `
@@ -309,7 +312,6 @@
             <div class="price" style="font-size:28px;">${h.price} TMT</div>
         `;
         
-        // Sargyt etmek (WhatsApp)
         document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${parseInt(h.id)+1} - ${h.name}`);
         
         const cb = document.getElementById('cartBtn');
@@ -321,20 +323,11 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        // --- PAÝLAŞMAK LOGIKASY ---
         const shareText = `⛰️ GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n\nSargyt etmek üçin:\nhttps://wa.me/99371563667`;
         const encodedText = encodeURIComponent(shareText);
 
-        // WhatsApp Paýlaş
-        document.getElementById('shareWa').onclick = () => {
-            window.open(`whatsapp://send?text=${encodedText}`);
-        };
-
-        // IMO Paýlaş
-        document.getElementById('shareImo').onclick = () => {
-            window.open(`imocom://chat?text=${encodedText}`);
-        };
-        // -------------------------
+        document.getElementById('shareWa').onclick = () => { window.open(`whatsapp://send?text=${encodedText}`); };
+        document.getElementById('shareImo').onclick = () => { window.open(`imocom://chat?text=${encodedText}`); };
 
         document.getElementById('hModal').style.display = 'flex';
     }
