@@ -329,19 +329,18 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        // Haryt maglumatlary, suraty we dükana girýän salgy
-        const productImgUrl = `https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}`;
-        const shareText = `GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n🖼️ Surat: ${productImgUrl}\n\nSargyt etmek we dükana girmek üçin:\nhttps://menliasyrowa91-a11y.github.io/Mengli_shop/`;
+        // Artykmaç tekstler aýryldy: diňe haryt ady, bahasy we göni dükanyň adresi galdy
+        const shareText = `${h.name} - ${h.price} TMT\nhttps://menliasyrowa91-a11y.github.io/Mengli_shop/`;
 
         // 1. WhatsApp düwmesi
         document.getElementById('shareWa').onclick = () => { 
             window.open(`https://wa.me/?text=` + encodeURIComponent(shareText)); 
         };
         
-        // 2. IMO düwmesi (Maglumaty we surat linkini kopiýa edýär)
+        // 2. IMO düwmesi (Arassa we gysga maglumaty kopiýa edýär)
         document.getElementById('shareImo').onclick = () => {
             navigator.clipboard.writeText(shareText).then(() => {
-                alert("Haryt maglumaty we surat linki kopiýalandy! IMO kanalyna ýapyşdyryp (Paste) bilersiňiz.");
+                alert("Haryt maglumaty kopiýalandy!");
             }).catch(() => {
                 alert("Kopiýalap bolmady.");
             });
@@ -426,7 +425,7 @@
     function openCartModal() {
         const list = document.getElementById('cartItemsList');
         let total = 0;
-        list.innerHTML = cart.path ? "" : cart.map(h => {
+        list.innerHTML = cart.map(h => {
             total += parseFloat(h.price);
             return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; background:#08110c; padding:10px; border-radius:10px;">
                 <span>${h.name}</span> <b>${h.price} TMT</b> <span onclick="removeFromCart('${h.id}')" style="color:red; cursor:pointer;">✖</span>
