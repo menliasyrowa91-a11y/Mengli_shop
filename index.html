@@ -329,14 +329,16 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        const shareText = `GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n\nSargyt etmek we dükana girmek üçin:`;
+        // Haryt ady, bahasy, hakyky suraty we dükanyň linki jemlenen tekst
+        const productImgUrl = `https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}`;
+        const shareText = `GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n🖼️ Surat: ${productImgUrl}\n\nSargyt etmek we dükana girmek üçin:\nhttps://menliasyrowa91-a11y.github.io/Mengli_shop/`;
 
         // 1. WhatsApp düwmesi
         document.getElementById('shareWa').onclick = () => { 
-            window.open(`https://wa.me/?text=` + encodeURIComponent(shareText + "\n" + window.location.href)); 
+            window.open(`https://wa.me/?text=` + encodeURIComponent(shareText)); 
         };
         
-        // 2. IMO we beýleki programmalarda surat, maglumat we saýt linki bile paýlaşmak üçin
+        // 2. IMO we beýleki kanallar üçin paýlaşma
         document.getElementById('shareImo').onclick = async () => {
             const shareData = {
                 title: h.name,
@@ -346,11 +348,10 @@
 
             try {
                 if (navigator.share) {
-                    // Telefonyň öz howpsuz we doly paýlaşma menýusyny açýar (Imo we s.b.)
                     await navigator.share(shareData);
                 } else {
-                    navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-                    alert("Haryt maglumaty we link kopiýalandy! Imo-da goýup (Paste) bilersiňiz.");
+                    navigator.clipboard.writeText(shareText);
+                    alert("Haryt maglumaty we surat linki kopiýalandy! Kanalda goýup (Paste) bilersiňiz.");
                 }
             } catch (err) {
                 console.log("Paýlaşmak ýatyryldy:", err);
