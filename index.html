@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- --- SEO WE META TEGLER (TÄZE GOŞULDY) --- -->
+    <!-- --- SEO WE META TEGLER --- -->
     <title>⛰️ GARAKEL E-SHOP | Onlaýn Dükan 2026</title>
     <meta name="description" content="Garakel E-Shop - Köp dürli kosmetika, ideg we ýuwujy serişdeler. Elýeterli bahalar we Garakel içine mugt eltip bermek hyzmaty.">
     <meta name="keywords" content="Garakel, shop, onlaýn dükan, kosmetika, Türkmenistan, ideg serişdeleri, şampun, parfum">
@@ -20,7 +20,6 @@
     <!-- Accessibility we Reňk Sazlamalary -->
     <meta name="theme-color" content="#0a140f">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <!-- ----------------------------------------- -->
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -327,7 +326,23 @@
         const encodedText = encodeURIComponent(shareText);
 
         document.getElementById('shareWa').onclick = () => { window.open(`whatsapp://send?text=${encodedText}`); };
-        document.getElementById('shareImo').onclick = () => { window.open(`imocom://chat?text=${encodedText}`); };
+        
+        // IMO düwmesi üçin täze 1-nji usul birikdirildi:
+        document.getElementById('shareImo').onclick = () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: h.name,
+                    text: shareText,
+                    url: window.location.href
+                }).catch((err) => console.log("Paýlaşmak ýatyryldy:", err));
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert("Haryt maglumaty kopiýalandy! Indi IMO-ny açyp, islendik adama iberip (Paste/Wставить) bilersiňiz.");
+                }).catch(() => {
+                    alert("Teksti kopiýalap bilmedi.");
+                });
+            }
+        };
 
         document.getElementById('hModal').style.display = 'flex';
     }
