@@ -10,12 +10,12 @@
     <meta name="keywords" content="Garakel, shop, onlaýn dükan, kosmetika, Türkmenistan, ideg serişdeleri, şampun, parfum">
     <meta name="author" content="Meňli Aşyrowa">
     
-    <!-- Open Graph -->
+    <!-- Open Graph (Dinamiki üýtgeýän surat üçin ID) -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://menliasyrowa91-a11y.github.io/Mengli_shop/">
-    <meta property="og:title" content="GARAKEL E-SHOP — Paýlaşalyň,mähribanlar!">
+    <meta property="og:url" id="ogUrl" content="https://menliasyrowa91-a11y.github.io/Mengli_shop/">
+    <meta property="og:title" id="ogTitle" content="GARAKEL E-SHOP — Paýlaşalyň,mähribanlar!">
     <meta property="og:description" content="Iň täze kosmetika we ideg önümleri bizde!">
-    <meta property="og:image" content="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg">
+    <meta property="og:image" id="ogImage" content="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg">
     
     <meta name="theme-color" content="#0a140f">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -276,7 +276,7 @@
         allProducts = Object.keys(pObj).map(key => ({ id: key, ...pObj[key] }));
         filterAll();
         
-        // Eger linkde haryt ID bar bolsa, awtomatiki şol harydyň modalyny açýar
+        // Eger linkde haryt ID bar bolsa, awtomatiki şol harydyň modalyny açýar we suratyny sazlaýar
         checkUrlProduct();
     });
 
@@ -317,8 +317,16 @@
             window.location.hash = `product=${id}`;
         }
 
+        // --- DINAMIKI SURAT WE OG TEGLERI ÜÝTGETMEK ---
+        const productImgUrl = `https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}`;
+        const productShareUrl = `https://menliasyrowa91-a11y.github.io/Mengli_shop/#product=${h.id}`;
+        
+        document.getElementById('ogImage').setAttribute('content', productImgUrl);
+        document.getElementById('ogUrl').setAttribute('content', productShareUrl);
+        document.getElementById('ogTitle').setAttribute('content', `${h.name} — ${h.price} TMT | GARAKEL E-SHOP`);
+
         db.ref(`products/${id}/view_count`).transaction(v => (v||0)+1);
-        document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
+        document.getElementById('mImg').src = productImgUrl;
         document.getElementById('mImg').alt = h.name;
         document.getElementById('mName').innerText = h.name;
         document.getElementById('mDesc').innerText = h.desc || "Maglumat ýok.";
@@ -338,8 +346,6 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        // Haryda ýörite goşulan ID-li göni link (Deep link)
-        const productShareUrl = `https://menliasyrowa91-a11y.github.io/Mengli_shop/#product=${h.id}`;
         const shareText = `${h.name} - ${h.price} TMT\n${productShareUrl}`;
 
         // 1. WhatsApp düwmesi
@@ -350,7 +356,7 @@
         // 2. IMO düwmesi
         document.getElementById('shareImo').onclick = () => {
             navigator.clipboard.writeText(shareText).then(() => {
-                alert("Haryt maglumaty we göni linki kopiýalandy!");
+                alert("Haryt maglumaty we surat linki kopiýalandy!");
             }).catch(() => {
                 alert("Kopiýalap bolmady.");
             });
@@ -359,7 +365,7 @@
         document.getElementById('hModal').style.display = 'flex';
     }
 
-    // Link açylanda haryt ID-sini barlaýan funksiýa
+    // Link açylanda haryt ID-sini barlaýan we suratyny sazlaýan funksiýa
     function checkUrlProduct() {
         const hash = window.location.hash;
         if (hash.includes("product=")) {
@@ -468,6 +474,10 @@
         document.getElementById(id).style.display = 'none'; 
         if(id === 'hModal') {
             window.location.hash = ""; // Modal ýapylanda linki arassalaýar
+            // Asyl baş sahypa suratyna we adyna gaýdyp gelýär
+            document.getElementById('ogImage').setAttribute('content', 'https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg');
+            document.getElementById('ogUrl').setAttribute('content', 'https://menliasyrowa91-a11y.github.io/Mengli_shop/');
+            document.getElementById('ogTitle').setAttribute('content', 'GARAKEL E-SHOP — Paýlaşalyň,mähribanlar!');
         }
     }
 
