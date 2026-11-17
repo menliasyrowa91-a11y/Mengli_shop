@@ -275,6 +275,9 @@
         const pObj = snap.val() || {};
         allProducts = Object.keys(pObj).map(key => ({ id: key, ...pObj[key] }));
         filterAll();
+        
+        // Eger linkde haryt ID bar bolsa, awtomatiki şol harydyň modalyny açýar
+        checkUrlProduct();
     });
 
    function renderProducts(list) {
@@ -306,8 +309,14 @@
     }).join('');
 }
 
-    function openProductModal(id) {
+    function openProductModal(id, updateHash = true) {
         const h = allProducts.find(p => p.id === id);
+        if(!h) return;
+        
+        if (updateHash) {
+            window.location.hash = `product=${id}`;
+        }
+
         db.ref(`products/${id}/view_count`).transaction(v => (v||0)+1);
         document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
         document.getElementById('mImg').alt = h.name;
@@ -329,24 +338,36 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        // Artykmaç tekstler aýryldy: diňe haryt ady, bahasy we göni dükanyň adresi galdy
-        const shareText = `${h.name} - ${h.price} TMT\nhttps://menliasyrowa91-a11y.github.io/Mengli_shop/`;
+        // Haryda ýörite goşulan ID-li göni link (Deep link)
+        const productShareUrl = `https://menliasyrowa91-a11y.github.io/Mengli_shop/#product=${h.id}`;
+        const shareText = `${h.name} - ${h.price} TMT\n${productShareUrl}`;
 
         // 1. WhatsApp düwmesi
         document.getElementById('shareWa').onclick = () => { 
             window.open(`https://wa.me/?text=` + encodeURIComponent(shareText)); 
         };
         
-        // 2. IMO düwmesi (Arassa we gysga maglumaty kopiýa edýär)
+        // 2. IMO düwmesi
         document.getElementById('shareImo').onclick = () => {
             navigator.clipboard.writeText(shareText).then(() => {
-                alert("Haryt maglumaty kopiýalandy!");
+                alert("Haryt maglumaty we göni linki kopiýalandy!");
             }).catch(() => {
                 alert("Kopiýalap bolmady.");
             });
         };
 
         document.getElementById('hModal').style.display = 'flex';
+    }
+
+    // Link açylanda haryt ID-sini barlaýan funksiýa
+    function checkUrlProduct() {
+        const hash = window.location.hash;
+        if (hash.includes("product=")) {
+            const prodId = hash.split("product=")[1];
+            if (prodId) {
+                openProductModal(prodId, false);
+            }
+        }
     }
 
     function openAdminForm() { 
@@ -443,7 +464,12 @@
         window.open(`https://wa.me/99371563667?text=${txt}`);
     }
 
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function closeModal(id) { 
+        document.getElementById(id).style.display = 'none'; 
+        if(id === 'hModal') {
+            window.location.hash = ""; // Modal ýapylanda linki arassalaýar
+        }
+    }
 
     let sIdx = 0; setInterval(() => { 
         const track = document.getElementById('sliderTrack');
