@@ -329,7 +329,7 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        // Haryt ady, bahasy, hakyky suraty we dükanyň linki jemlenen tekst
+        // Haryt maglumatlary, suraty we dükana girýän salgy
         const productImgUrl = `https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}`;
         const shareText = `GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n🖼️ Surat: ${productImgUrl}\n\nSargyt etmek we dükana girmek üçin:\nhttps://menliasyrowa91-a11y.github.io/Mengli_shop/`;
 
@@ -338,24 +338,13 @@
             window.open(`https://wa.me/?text=` + encodeURIComponent(shareText)); 
         };
         
-        // 2. IMO we beýleki kanallar üçin paýlaşma
-        document.getElementById('shareImo').onclick = async () => {
-            const shareData = {
-                title: h.name,
-                text: shareText,
-                url: window.location.href
-            };
-
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    navigator.clipboard.writeText(shareText);
-                    alert("Haryt maglumaty we surat linki kopiýalandy! Kanalda goýup (Paste) bilersiňiz.");
-                }
-            } catch (err) {
-                console.log("Paýlaşmak ýatyryldy:", err);
-            }
+        // 2. IMO düwmesi (Maglumaty we surat linkini kopiýa edýär)
+        document.getElementById('shareImo').onclick = () => {
+            navigator.clipboard.writeText(shareText).then(() => {
+                alert("Haryt maglumaty we surat linki kopiýalandy! IMO kanalyna ýapyşdyryp (Paste) bilersiňiz.");
+            }).catch(() => {
+                alert("Kopiýalap bolmady.");
+            });
         };
 
         document.getElementById('hModal').style.display = 'flex';
@@ -437,7 +426,7 @@
     function openCartModal() {
         const list = document.getElementById('cartItemsList');
         let total = 0;
-        list.innerHTML = cart.map(h => {
+        list.innerHTML = cart.path ? "" : cart.map(h => {
             total += parseFloat(h.price);
             return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; background:#08110c; padding:10px; border-radius:10px;">
                 <span>${h.name}</span> <b>${h.price} TMT</b> <span onclick="removeFromCart('${h.id}')" style="color:red; cursor:pointer;">✖</span>
