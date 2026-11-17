@@ -276,8 +276,8 @@
         allProducts = Object.keys(pObj).map(key => ({ id: key, ...pObj[key] }));
         filterAll();
         
-        // Firebase maglumatlary gelensoň derrew URL barlagyny edýäris
-        checkForDeepLink();
+        // Eger linkde haryt ID bar bolsa, awtomatiki şol harydyň modalyny açýar
+        checkUrlProduct();
     });
 
    function renderProducts(list) {
@@ -309,13 +309,12 @@
     }).join('');
 }
 
-    function openProductModal(id, updateUrl = true) {
+    function openProductModal(id, updateHash = true) {
         const h = allProducts.find(p => p.id === id);
         if(!h) return;
         
-        if (updateUrl) {
-            // Browser URL-ine haryt ID-sini ýazýar
-            window.location.hash = `id=${id}`;
+        if (updateHash) {
+            window.location.hash = `product=${id}`;
         }
 
         db.ref(`products/${id}/view_count`).transaction(v => (v||0)+1);
@@ -339,9 +338,9 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        // Harydyň öz ID-si bilen doly göni linki
-        const directLink = `https://menliasyrowa91-a11y.github.io/Mengli_shop/#id=${h.id}`;
-        const shareText = `${h.name} - ${h.price} TMT\n${directLink}`;
+        // Haryda ýörite goşulan ID-li göni link (Deep link)
+        const productShareUrl = `https://menliasyrowa91-a11y.github.io/Mengli_shop/#product=${h.id}`;
+        const shareText = `${h.name} - ${h.price} TMT\n${productShareUrl}`;
 
         // 1. WhatsApp düwmesi
         document.getElementById('shareWa').onclick = () => { 
@@ -351,7 +350,7 @@
         // 2. IMO düwmesi
         document.getElementById('shareImo').onclick = () => {
             navigator.clipboard.writeText(shareText).then(() => {
-                alert("Haryt ady, bahasy we göni modal linki kopiýalandy!");
+                alert("Haryt maglumaty we göni linki kopiýalandy!");
             }).catch(() => {
                 alert("Kopiýalap bolmady.");
             });
@@ -360,16 +359,13 @@
         document.getElementById('hModal').style.display = 'flex';
     }
 
-    // Göni link bilen girilende modal açýan usul
-    function checkForDeepLink() {
+    // Link açylanda haryt ID-sini barlaýan funksiýa
+    function checkUrlProduct() {
         const hash = window.location.hash;
-        if (hash && hash.includes("id=")) {
-            const targetId = hash.split("id=")[1];
-            if (targetId) {
-                // Haryt tapylýança 0.3 sekunt garaşyp modal açýar
-                setTimeout(() => {
-                    openProductModal(targetId, false);
-                }, 300);
+        if (hash.includes("product=")) {
+            const prodId = hash.split("product=")[1];
+            if (prodId) {
+                openProductModal(prodId, false);
             }
         }
     }
@@ -471,7 +467,7 @@
     function closeModal(id) { 
         document.getElementById(id).style.display = 'none'; 
         if(id === 'hModal') {
-            window.location.hash = ""; // Modal ýapylanda URL-i arassalaýar
+            window.location.hash = ""; // Modal ýapylanda linki arassalaýar
         }
     }
 
