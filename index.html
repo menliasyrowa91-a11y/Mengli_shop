@@ -45,7 +45,59 @@
         .delivery-bar { width: 100%; background: var(--sary); color: #000; font-size: 13px; font-weight: 900; text-align: center; padding: 5px 0; }
         .header-msg { width: 100%; background: #1a2a22; color: var(--sary); font-size: 12px; text-align: center; padding: 5px; border-bottom: 1px solid #33443a; }
         .header-msg a { color: #fff; text-decoration: none; font-weight: bold; }
-        .logo-area { font-size: 26px; font-weight: 900; color: #fff; margin-top: 5px; }
+        .Ine, siziň iberen kodyňyzdaky eskileşen emoji (`⛰️`) bilen ýazylan ýerleri aýryp, ýerine öňki taýýarlan arassa we owadan **SVG wektor logotipimizi** goşdum (`<div class="logo-area">` bölegi doly täzelendi). 
+
+Aşakdaky kody göni göçürip, GitHub-daky `index.html` faýlyňyza ýapyşdyryp bilersiňiz:
+
+```html
+<!DOCTYPE html>
+<html lang="tk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- --- SEO WE META TEGLER --- -->
+    <title>GARAKEL E-SHOP | Onlaýn Dükan 2026</title>
+    <meta name="description" content="Garakel E-Shop - Köp dürli kosmetika, ideg we ýuwujy serişdeler. Elýeterli bahalar we Garakel içine mugt eltip bermek hyzmaty.">
+    <meta name="keywords" content="Garakel, shop, onlaýn dükan, kosmetika, Türkmenistan, ideg serişdeleri, şampun, parfum">
+    <meta name="author" content="Meňli Aşyrowa">
+    
+    <!-- Open Graph (Imo, WhatsApp, Facebook üçin owadan görünüş) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="[https://menliasyrowa91-a11y.github.io/Mengli_shop/](https://menliasyrowa91-a11y.github.io/Mengli_shop/)">
+    <meta property="og:title" content="GARAKEL E-SHOP — Paýlaşalyň,mähribanlar!">
+    <meta property="og:description" content="Iň täze kosmetika we ideg önümleri bizde!">
+    <meta property="og:image" content="[https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg](https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg)">
+    
+    <!-- Accessibility we Reňk Sazlamalary -->
+    <meta name="theme-color" content="#0a140f">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <script src="[https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js](https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js](https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js](https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js)"></script>
+
+    <style>
+        :root { 
+            --arka: #0a140f; 
+            --kart: #14211a; 
+            --tekst: #ffffff; 
+            --yasyl: #4caf50; 
+            --sary: #ffcc00; 
+            --gypyl: #ff4444;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--arka); color: var(--tekst); padding-bottom: 100px; }
+
+        header { 
+            position: fixed; top: 0; width: 100%; height: 165px; background: rgba(10, 20, 15, 0.98); z-index: 5000; 
+            border-bottom: 2px solid var(--sary); display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding-bottom: 12px;
+        }
+        .delivery-bar { width: 100%; background: var(--sary); color: #000; font-size: 13px; font-weight: 900; text-align: center; padding: 5px 0; }
+        .header-msg { width: 100%; background: #1a2a22; color: var(--sary); font-size: 12px; text-align: center; padding: 5px; border-bottom: 1px solid #33443a; }
+        .header-msg a { color: #fff; text-decoration: none; font-weight: bold; }
+        .logo-area { font-size: 26px; font-weight: 900; color: #fff; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .logo-area span { color: var(--sary); }
 
         .container { max-width: 850px; margin: auto; padding-top: 175px; }
@@ -99,17 +151,26 @@
 
 <header>
     <div class="delivery-bar">🚚 Garakel içine eltip bermek mugt</div>
-    <div class="header-msg">📢 Hormatly müşderi!: <a href="https://wa.me/99371563667?text=Salam%20Garake%20E-Shop!" target="_blank">Dükanyň linkini paýlaşmagy unutmaň! Goý,bilmedikler bilsinler,görmedikler görsünler!</a></div>
-    <div class="logo-area">⛰️ GARAKEL <span>E-SHOP</span></div>
+    <div class="header-msg">📢 Hormatly müşderi!: <a href="[https://wa.me/99371563667?text=Salam%20Garake%20E-Shop](https://wa.me/99371563667?text=Salam%20Garake%20E-Shop)!" target="_blank">Dükanyň linkini paýlaşmagy unutmaň! Goý,bilmedikler bilsinler,görmedikler görsünler!</a></div>
+    
+    <!-- Hakyky Wektor Logotip (Emoji aýryldy) -->
+    <div class="logo-area">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)">
+            <path d="M12 2L2 19H22L12 2Z" fill="#ffcc00" stroke="#4caf50" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M12 8L7 17H17L12 8Z" fill="#0a140f"/>
+            <circle cx="12" cy="6" r="1.5" fill="#ffffff"/>
+        </svg>
+        GARAKEL <span>E-SHOP</span>
+    </div>
 </header>
 
 <div class="container">
     <div id="adminAddBtn" class="admin-add-btn" onclick="openAdminForm()">➕ TÄZE HARYT GOŞ</div>
 
     <div class="slider"><div class="track" id="sliderTrack">
-        <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg"></div>
-        <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/46.jpg"></div>
-        <div class="slide"><img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/51.jpg"></div>
+        <div class="slide"><img src="[https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg](https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg)"></div>
+        <div class="slide"><img src="[https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/46.jpg](https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/46.jpg)"></div>
+        <div class="slide"><img src="[https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/51.jpg](https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/51.jpg)"></div>
     </div></div>
 
     <div class="search-box">
@@ -209,7 +270,7 @@
 <script>
     const firebaseConfig = { 
         apiKey: "AIzaSyAdyL0Aqq19afQU0jHoqgH6EUvmZQRq-hY", 
-        databaseURL: "https://garakel-dukan-default-rtdb.firebaseio.com", 
+        databaseURL: "[https://garakel-dukan-default-rtdb.firebaseio.com](https://garakel-dukan-default-rtdb.firebaseio.com)", 
         projectId: "garakel-dukan" 
     };
     firebase.initializeApp(firebaseConfig);
@@ -281,7 +342,7 @@
                 ${itemStatus ? `<div class="discount-tag" style="background: var(--yasyl); color: #000;">${itemStatus}</div>` : ''}
                 <div class="p-views">👁️ ${h.view_count || 0}</div>
                 <div class="img-w">
-                    <img src="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/${h.img}" alt="${h.name}">
+                    <img src="[https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/$](https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/$){h.img}" alt="${h.name}">
                 </div>
                 <div style="font-weight:bold; height:35px; overflow:hidden; font-size:14px;">${h.name}</div>
                 <div class="price-container">
@@ -302,7 +363,7 @@
     function openProductModal(id) {
         const h = allProducts.find(p => p.id === id);
         db.ref(`products/${id}/view_count`).transaction(v => (v||0)+1);
-        document.getElementById('mImg').src = "https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/" + h.img;
+        document.getElementById('mImg').src = "[https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/](https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/)" + h.img;
         document.getElementById('mImg').alt = h.name;
         document.getElementById('mName').innerText = h.name;
         document.getElementById('mDesc').innerText = h.desc || "Maglumat ýok.";
@@ -311,7 +372,7 @@
             <div class="price" style="font-size:28px;">${h.price} TMT</div>
         `;
         
-        document.getElementById('waBtn').onclick = () => window.open(`https://wa.me/99371563667?text=Sargyt: №${parseInt(h.id)+1} - ${h.name}`);
+        document.getElementById('waBtn').onclick = () => window.open(`[https://wa.me/99371563667?text=Sargyt](https://wa.me/99371563667?text=Sargyt): №${parseInt(h.id)+1} - ${h.name}`);
         
         const cb = document.getElementById('cartBtn');
         cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
@@ -322,12 +383,11 @@
             cb.className = cart.some(x => x.id === id) ? 'btn-icon active-cart' : 'btn-icon';
         };
 
-        const shareText = `⛰️ GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n\nSargyt etmek üçin:\nhttps://wa.me/99371563667`;
+        const shareText = `GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n\nSargyt etmek üçin:\n[https://wa.me/99371563667](https://wa.me/99371563667)`;
         const encodedText = encodeURIComponent(shareText);
 
         document.getElementById('shareWa').onclick = () => { window.open(`whatsapp://send?text=${encodedText}`); };
         
-        // IMO düwmesi üçin täze 1-nji usul birikdirildi:
         document.getElementById('shareImo').onclick = () => {
             if (navigator.share) {
                 navigator.share({
@@ -438,7 +498,7 @@
     function orderAll() {
         if(!cart.length) return;
         const txt = encodeURIComponent("Sargytlarym:\n" + cart.map(h => "- " + h.name + " ("+h.price+" TMT)").join("\n") + "\n\nJemi: " + document.getElementById('totalCartPrice').innerText);
-        window.open(`https://wa.me/99371563667?text=${txt}`);
+        window.open(`[https://wa.me/99371563667?text=$](https://wa.me/99371563667?text=$){txt}`);
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
