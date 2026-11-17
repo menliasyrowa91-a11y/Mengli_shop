@@ -10,14 +10,13 @@
     <meta name="keywords" content="Garakel, shop, onlaýn dükan, kosmetika, Türkmenistan, ideg serişdeleri, şampun, parfum">
     <meta name="author" content="Meňli Aşyrowa">
     
-    <!-- Open Graph (Imo, WhatsApp, Facebook üçin owadan görünüş) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://menliasyrowa91-a11y.github.io/Mengli_shop/">
     <meta property="og:title" content="GARAKEL E-SHOP — Paýlaşalyň,mähribanlar!">
     <meta property="og:description" content="Iň täze kosmetika we ideg önümleri bizde!">
     <meta property="og:image" content="https://raw.githubusercontent.com/menliasyrowa91-a11y/Mengli_shop/main/39.jpg">
     
-    <!-- Accessibility we Reňk Sazlamalary -->
     <meta name="theme-color" content="#0a140f">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
@@ -101,13 +100,10 @@
     <div class="delivery-bar">🚚 Garakel içine eltip bermek mugt</div>
     <div class="header-msg">📢 Hormatly müşderi!: <a href="https://wa.me/99371563667?text=Salam%20Garake%20E-Shop!" target="_blank">Dükanyň linkini paýlaşmagy unutmaň! Goý,bilmedikler bilsinler,görmedikler görsünler!</a></div>
     
-    <!-- Dag we Ýoda (Ýol) görnüşindäki Täze Logotip -->
     <div class="logo-area">
         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Dagyn esasy şekili -->
             <path d="M12 2L2 19H22L12 2Z" fill="#ffcc00" stroke="#4caf50" stroke-width="1.2" stroke-linejoin="round"/>
             <path d="M12 7L7 17H17L12 7Z" fill="#14211a"/>
-            <!-- Dagyň üstüne çykýan ýoda (ýol) syky, egri çyzyk -->
             <path d="M8 15C10 15 11 12 12 10C13 8 15 7 16 5" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
         GARAKEL <span>E-SHOP</span>
@@ -334,10 +330,12 @@
         };
 
         const shareText = `GARAKEL E-SHOP\n\n🛍️ Haryt: ${h.name}\n💰 Baha: ${h.price} TMT\n\nSargyt etmek üçin:\nhttps://wa.me/99371563667`;
-        const encodedText = encodeURIComponent(shareText);
-
-        document.getElementById('shareWa').onclick = () => { window.open(`whatsapp://send?text=${encodedText}`); };
         
+        document.getElementById('shareWa').onclick = () => { 
+            window.open(`https://wa.me/99371563667?text=` + encodeURIComponent(shareText)); 
+        };
+        
+        // DÜZELDILEN IMO DÜWMESI (WhatsApp-a geçmeýär, howp duýduryşyny bermeýär)
         document.getElementById('shareImo').onclick = () => {
             if (navigator.share) {
                 navigator.share({
@@ -374,89 +372,31 @@
         document.getElementById('pPrice').value = h.price;
         document.getElementById('pOldPrice').value = h.old_price || "";
         document.getElementById('pImg').value = h.img;
-        document.getElementById('pDesc').value = h.desc || "";
-        document.getElementById('pCat').value = h.category || "Ideg serişdeleri";
-        document.getElementById('adminFormModal').style.display='flex';
-    }
+        document.getElementById('Bu ýagdaý gaty düşnükli. Ol ýerde iki sany mesele bar: biri — IMO-nyň düwmesine basylanda WhatsApp-a geçip gitmegi, beýlekisi bolsa brauzeriň ýa-da telefon howpsuzlyk ulgamynyň "howp duýduryşyny" (warning) bermegi.
 
-    function deleteProduct(id) { if(confirm("Pozmalymy?")) db.ref('products/'+id).remove(); }
+Bular nireden gelýär we olary nädip düzedmeli?
 
-    function saveProduct() {
-        const id = document.getElementById('editId').value || Date.now().toString();
-        const newP = {
-            name: document.getElementById('pName').value,
-            price: document.getElementById('pPrice').value,
-            old_price: document.getElementById('pOldPrice').value,
-            img: document.getElementById('pImg').value,
-            desc: document.getElementById('pDesc').value,
-            category: document.getElementById('pCat').value
+### 1. Näme üçin WhatsApp-a geçip gidýär?
+Öňki kodyňyzda IMO üçin ýörite funksiýa ýazan bolsak hem, telefonlaryň köpüsi brauzerden göni IMO-nyň açar sözüni (`imocom://`) goldamaýar. Şonuň üçin ulgam ýalňyşlyk edip, ýa öňki WhatsApp salgysyna ýönkezýär ýa-da hiç zat edip bilmeýär.
+
+### 2. Näme üçin "Howp duýduryşy" (Warning) çykýar?
+Brauzerler (Chrome we s.b.) we telefonlardaky howpsuzlyk programmalary, saýtdan göni daşarky programmalara (`imocom://` ýa-da `whatsapp://`) awtomatiki geçjek bolanynda ýa-da tanyş bolmadyk çuňňur baglanyşyklara (deep links) basylanda ulanyjyny howply ýagdaýdan goramak üçin duýduryş çykarýarlar.
+
+---
+
+### Munuň iň arassa we howpsuz çözgüdi:
+IMO-da web arkaly göni tekst paýlaşmak üçin açar sözler köplenç işlemeýär we howpsuzlyk duýduryşyny berýär. Şonuň üçin tanyş bolmadyk howply protokol (`imocom://`) ýerine, ulanyjyny howsala düşürmejek we **howp duýduryşyny bermejek iň ygtybarly usuly** — teksti göni ulanyjynyň **buferine (clipboard) kopiýalamak we ulanyja düşündiriş bermek** usulyny ulanmaly.
+
+Şol sebäpli, kodyňyzda IMO düwmesine basylanda howply salgylara barmaly däl, eýsem haryt maglumatyny awtomatiki kopiýalap, IMO-da ýoldaşa iberer ýaly etmeli. 
+
+GitHub-daky kodyňyzda `openProductModal` funksiýasynyň içindäki IMO düwmesiniň (`shareImo`) wezipesini aşakdaky ýaly **diňe kopiýalaýan we howpsuz** görnüşe üýtgediň:
+
+```javascript
+        document.getElementById('shareImo').onclick = () => {
+            // Howpsuzlyk duýduryşy çyzyk ýaly teksti göni kopiýalaýarys
+            navigator.clipboard.writeText(shareText).then(() => {
+                alert("Haryt maglumaty kopiýalandy! Indi IMO programmasyny açyp, islendik adama goýup (Paste / Вставить) bilersiňiz.");
+            }).catch(() => {
+                alert("Teksti kopiýalap bolmady.");
+            });
         };
-        db.ref('products/'+id).update(newP).then(() => closeModal('adminFormModal'));
-    }
-
-    db.ref('comments_general').on('value', snap => {
-        const comm = snap.val() || {};
-        let html = "";
-        Object.keys(comm).reverse().forEach(id => {
-            const c = comm[id];
-            let reps = "";
-            if(c.replies) Object.values(c.replies).forEach(r => reps += `<div style="margin-left:20px; border-left:2px solid var(--yasyl); padding-left:12px; margin-top:8px; font-size:12px;"><b>Admin:</b> ${r.text}</div>`);
-            html += `<div style="background:#08110c; padding:15px; border-radius:15px; margin-bottom:12px; border:1px solid #33443a; text-align:left;">
-                <b style="color:var(--sary)">${c.name}:</b> ${c.text} ${reps}
-                <div onclick="replyAdmin('${id}')" style="font-size:11px; color:var(--sary); cursor:pointer; margin-top:10px; font-weight:bold;">↳ Jogap ber</div>
-                ${isAdmin ? `<span onclick="db.ref('comments_general/${id}').remove()" style="color:red; cursor:pointer; font-size:10px; margin-left:10px;">[POZ]</span>` : ''}
-            </div>`;
-        });
-        document.getElementById('cList').innerHTML = html || "Ilkinji teswiri ýazyň...";
-    });
-
-    function sendMsg() {
-        const n = document.getElementById('uName').value || "Müşderi", m = document.getElementById('uMsg').value;
-        if(m.trim()) { db.ref('comments_general').push({ name:n, text:m }); document.getElementById('uMsg').value=""; }
-    }
-
-    function replyAdmin(id) { const t = prompt("Jogap ýazyň:"); if(t) db.ref(`comments_general/${id}/replies`).push({ text: t }); }
-
-    function setCat(cat, btn) {
-        selectedCat = cat;
-        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        filterAll();
-    }
-
-    function filterAll() {
-        const q = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = allProducts.filter(h => (selectedCat === 'Hemmesi' || h.category === selectedCat) && h.name.toLowerCase().includes(q));
-        renderProducts(filtered.reverse());
-    }
-
-    function openCartModal() {
-        const list = document.getElementById('cartItemsList');
-        let total = 0;
-        list.innerHTML = cart.map(h => {
-            total += parseFloat(h.price);
-            return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; background:#08110c; padding:10px; border-radius:10px;">
-                <span>${h.name}</span> <b>${h.price} TMT</b> <span onclick="removeFromCart('${h.id}')" style="color:red; cursor:pointer;">✖</span>
-            </div>`;
-        }).join('') || "Sebediňiz boş.";
-        document.getElementById('totalCartPrice').innerText = `Jemi: ${total} TMT`;
-        document.getElementById('cartModal').style.display = 'flex';
-    }
-
-    function removeFromCart(id) { cart = cart.filter(x => x.id !== id); document.getElementById('cartCount').innerText = cart.length; openCartModal(); }
-    
-    function orderAll() {
-        if(!cart.length) return;
-        const txt = encodeURIComponent("Sargytlarym:\n" + cart.map(h => "- " + h.name + " ("+h.price+" TMT)").join("\n") + "\n\nJemi: " + document.getElementById('totalCartPrice').innerText);
-        window.open(`https://wa.me/99371563667?text=${txt}`);
-    }
-
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    let sIdx = 0; setInterval(() => { 
-        const track = document.getElementById('sliderTrack');
-        if(track) { sIdx = (sIdx + 1) % 3; track.style.transform = `translateX(-${sIdx * 100}%)`; }
-    }, 5000);
-</script>
-</body>
-</html>
